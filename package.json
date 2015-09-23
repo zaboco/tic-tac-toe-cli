@@ -1,0 +1,16 @@
+{
+  "name": "tic-tac-toe",
+  "version": "0.1.0",
+  "description": "CLI for TicTacToe with AI",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:unit"
+  },
+  "keywords": [
+    "TicTacToe",
+    "game",
+    "CLI"
+  ],
+  "author": "Bogdan Zaharia",
+  "license": "MIT"
+}
