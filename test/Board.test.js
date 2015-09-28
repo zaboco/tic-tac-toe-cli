@@ -81,20 +81,26 @@ suite('Board', () => {
 
   suite('trying to fill the second cell', () => {
     let boardAfterFirstFill
-    const firstCellCoords = [1, 2], firstSign = X, anySign = '*'
+    const firstCellCoords = [1, 2], firstSign = X,
+      secondCellCoords = [0, 1], secondSign = O
     setup(() => {
       boardAfterFirstFill = emptyBoard.fillCell(firstCellCoords, firstSign)
     })
 
     test('fails for the same cell', () => {
+      const anySign = '*'
       boardAfterFirstFill.fillCell.bind(boardAfterFirstFill, firstCellCoords, anySign)
         .should.throw(BoardError, /not.*empty/i)
     })
 
     test('marks a free cell with the right sign', () => {
-      const secondCellCoords = [0, 1], secondSign = O
       let boardAfterSecondFill = boardAfterFirstFill.fillCell(secondCellCoords, secondSign)
       boardAfterSecondFill.getSignAt(secondCellCoords).should.equal(secondSign)
+    })
+
+    test('the previous board is not changed', () => {
+      boardAfterFirstFill.fillCell(secondCellCoords, secondSign)
+      boardAfterFirstFill.isEmptyAt(secondCellCoords).should.equal(true)
     })
   })
 })

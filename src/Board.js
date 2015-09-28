@@ -27,8 +27,7 @@ module.exports = class Board {
     if (!this.isEmptyAt(coords)) {
       throw BoardError.CellNotEmpty(coords)
     }
-    this.matrix[coords[0]][coords[1]] = sign
-    return new Board(this.matrix)
+    return new Board(newMatrixWithValueAt(this.matrix, coords, sign))
   }
 
   static _anyCoordsOutside(coords) {
@@ -44,6 +43,24 @@ module.exports = class Board {
       emptyArray = _.range(SIZE).map(() => emptyRow)
     return new Board(emptyArray)
   }
+}
+
+function newMatrixWithValueAt(matrix, coords, value) {
+  let newMatrix = copyMatrix(matrix)
+  setMatrixValueAt(newMatrix, coords, value)
+  return newMatrix
+}
+
+function copyMatrix(matrix) {
+  return matrix.map((row) => copyArray(row))
+}
+
+function copyArray(array) {
+  return [].concat(array)
+}
+
+function setMatrixValueAt(matrix, coords, value) {
+  matrix[coords[0]][coords[1]] = value
 }
 
 function outsideRange(range, value) {
