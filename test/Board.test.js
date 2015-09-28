@@ -33,4 +33,21 @@ suite('Board', () => {
         .should.throw(BoardError, /must.*be.*within/i)
     })
   })
+
+  suite('after filling a cell with a sign', () => {
+    let newBoard
+    const someCellCoords = [1, 2],
+      someSign = 'X'
+    setup(() => {
+      newBoard = emptyBoard.fillCell(someCellCoords, someSign)
+    })
+
+    test('a board is returned', () => {
+      newBoard.should.be.instanceOf(Board)
+    })
+
+    test('the board is different', () => {
+      newBoard.should.not.equal(emptyBoard)
+    })
+  })
 })

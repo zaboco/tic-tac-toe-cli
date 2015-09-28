@@ -21,6 +21,10 @@ module.exports = class Board {
     return true
   }
 
+  fillCell(coords, sign) {
+    return new Board()
+  }
+
   static _anyCoordsOutside(coords) {
     return _.any(coords, (coord) => outsideRange(Board._validCoordRange(), coord))
   }
