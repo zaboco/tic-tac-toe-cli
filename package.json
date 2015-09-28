@@ -15,7 +15,13 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.3.0",
+    "ghooks": "^0.3.2",
     "mocha": "^2.3.3"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm test"
+    }
   },
   "dependencies": {
     "lodash": "^3.10.1"
