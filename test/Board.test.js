@@ -91,5 +91,10 @@ suite('Board', () => {
         .should.throw(BoardError, /not.*empty/i)
     })
 
+    test('marks a free cell with the right sign', () => {
+      const secondCellCoords = [0, 1], secondSign = O
+      let boardAfterSecondFill = boardAfterFirstFill.fillCell(secondCellCoords, secondSign)
+      boardAfterSecondFill.getSignAt(secondCellCoords).should.equal(secondSign)
+    })
   })
 })
