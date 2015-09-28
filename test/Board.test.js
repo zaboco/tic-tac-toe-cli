@@ -6,6 +6,7 @@ const Board = require('../src/Board'),
   BoardError = require('../src/BoardError')
 
 suite('Board', () => {
+  const emptyCellSign = ' '
   let emptyBoard
   setup(() => {
     emptyBoard = Board.empty()
@@ -23,7 +24,6 @@ suite('Board', () => {
     })
 
     test('there is no sign at top left position', () => {
-      const emptyCellSign = ' '
       emptyBoard.getSignAt(topLeftCoords).should.equal(emptyCellSign)
     })
 
@@ -57,6 +57,14 @@ suite('Board', () => {
 
     test('other cell is still empty', () => {
       newBoard.isEmptyAt(otherCellCoords).should.equal(true)
+    })
+
+    test('the sign at the given position is the right one', () => {
+      newBoard.getSignAt(someCellCoords).should.equal(someSign)
+    })
+
+    test('the sign at another location is still the empty sign', () => {
+      newBoard.getSignAt(otherCellCoords).should.equal(emptyCellSign)
     })
   })
 })

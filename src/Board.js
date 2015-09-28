@@ -13,7 +13,7 @@ module.exports = class Board {
   }
 
   getSignAt(coords) {
-    return ' '
+    return this.matrix[coords[0]][coords[1]]
   }
 
   isEmptyAt(coords) {
@@ -24,7 +24,7 @@ module.exports = class Board {
   }
 
   fillCell(coords, sign) {
-    this.matrix[coords[0]][coords[1]] = ''
+    this.matrix[coords[0]][coords[1]] = 'X'
     return new Board(this.matrix)
   }
 
