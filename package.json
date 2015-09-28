@@ -4,7 +4,7 @@
   "description": "CLI for TicTacToe with AI",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:unit"
+    "test": "mocha --ui tdd --reporter dot --recursive test"
   },
   "keywords": [
     "TicTacToe",
@@ -12,5 +12,9 @@
     "CLI"
   ],
   "author": "Bogdan Zaharia",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  }
 }
