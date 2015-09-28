@@ -24,6 +24,9 @@ module.exports = class Board {
   }
 
   fillCell(coords, sign) {
+    if (!this.isEmptyAt(coords)) {
+      throw BoardError.CellNotEmpty(coords)
+    }
     this.matrix[coords[0]][coords[1]] = 'X'
     return new Board(this.matrix)
   }

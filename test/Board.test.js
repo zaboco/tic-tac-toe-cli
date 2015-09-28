@@ -5,6 +5,8 @@ const should = require('chai').should()
 const Board = require('../src/Board'),
   BoardError = require('../src/BoardError')
 
+const X = 'X', O = 'O'
+
 suite('Board', () => {
   const emptyCellSign = ' '
   let emptyBoard
@@ -47,7 +49,7 @@ suite('Board', () => {
     let newBoard
     const someCellCoords = [1, 2],
       otherCellCoords = [0, 1],
-      someSign = 'X'
+      someSign = X
     setup(() => {
       newBoard = emptyBoard.fillCell(someCellCoords, someSign)
     })
@@ -75,5 +77,19 @@ suite('Board', () => {
     test('the sign at another location is still the empty sign', () => {
       newBoard.getSignAt(otherCellCoords).should.equal(emptyCellSign)
     })
+  })
+
+  suite('trying to fill the second cell', () => {
+    let boardAfterFirstFill
+    const firstCellCoords = [1, 2], firstSign = X, anySign = '*'
+    setup(() => {
+      boardAfterFirstFill = emptyBoard.fillCell(firstCellCoords, firstSign)
+    })
+
+    test('fails for the same cell', () => {
+      boardAfterFirstFill.fillCell.bind(boardAfterFirstFill, firstCellCoords, anySign)
+        .should.throw(BoardError, /not.*empty/i)
+    })
+
   })
 })
