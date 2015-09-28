@@ -27,11 +27,20 @@ suite('Board', () => {
       emptyBoard.getSignAt(topLeftCoords).should.equal(emptyCellSign)
     })
 
-    test('cannot access position outside board', () => {
+
+    suite('for a position outside the board', () => {
       const outBoardCoords = [-1, 5]
-      emptyBoard.isEmptyAt.bind(emptyBoard, outBoardCoords)
-        .should.throw(BoardError, /must.*be.*within/i)
+      test('cannot check if it`s empty', () => {
+        emptyBoard.isEmptyAt.bind(emptyBoard, outBoardCoords)
+          .should.throw(BoardError, /must.*be.*within/i)
+      })
+
+      test('cannot get sign ', () => {
+        emptyBoard.getSignAt.bind(emptyBoard, outBoardCoords)
+          .should.throw(BoardError, /must.*be.*within/i)
+      })
     })
+
   })
 
   suite('after filling a cell with a sign', () => {

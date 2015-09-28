@@ -13,14 +13,14 @@ module.exports = class Board {
   }
 
   getSignAt(coords) {
+    if (Board._anyCoordsOutside(coords)) {
+      throw BoardError.CellOutsideBoard()
+    }
     return this.matrix[coords[0]][coords[1]]
   }
 
   isEmptyAt(coords) {
-    if (Board._anyCoordsOutside(coords)) {
-      throw BoardError.CellOutsideBoard()
-    }
-    return this.matrix[coords[0]][coords[1]] === EMPTY_CELL_SIGN
+    return this.getSignAt(coords) === EMPTY_CELL_SIGN
   }
 
   fillCell(coords, sign) {
