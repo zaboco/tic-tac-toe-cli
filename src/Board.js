@@ -10,6 +10,10 @@ module.exports = class Board {
   constructor() {
   }
 
+  getSignAt(coords) {
+    return ' '
+  }
+
   isEmptyAt(coords) {
     if (Board._anyCoordsOutside(coords)) {
       throw BoardError.CellOutsideBoard()
