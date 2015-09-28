@@ -8,7 +8,7 @@ const Board = require('../src/Board'),
 suite('Board', () => {
   let emptyBoard
   setup(() => {
-    emptyBoard = new Board()
+    emptyBoard = Board.empty()
   })
 
   suite('initially', () => {
@@ -37,6 +37,7 @@ suite('Board', () => {
   suite('after filling a cell with a sign', () => {
     let newBoard
     const someCellCoords = [1, 2],
+      otherCellCoords = [0, 1],
       someSign = 'X'
     setup(() => {
       newBoard = emptyBoard.fillCell(someCellCoords, someSign)
@@ -48,6 +49,14 @@ suite('Board', () => {
 
     test('the board is different', () => {
       newBoard.should.not.equal(emptyBoard)
+    })
+
+    test('the filled cell is no longer empty', () => {
+      newBoard.isEmptyAt(someCellCoords).should.equal(false)
+    })
+
+    test('other cell is still empty', () => {
+      newBoard.isEmptyAt(otherCellCoords).should.equal(true)
     })
   })
 })

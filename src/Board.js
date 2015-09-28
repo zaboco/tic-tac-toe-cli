@@ -4,10 +4,12 @@ const _ = require('lodash')
 
 const BoardError = require('./BoardError')
 
-const SIZE = 3
+const SIZE = 3,
+  EMPTY_CELL_SIGN = ' '
 
 module.exports = class Board {
-  constructor() {
+  constructor(matrix) {
+    this.matrix = matrix
   }
 
   getSignAt(coords) {
@@ -18,11 +20,12 @@ module.exports = class Board {
     if (Board._anyCoordsOutside(coords)) {
       throw BoardError.CellOutsideBoard()
     }
-    return true
+    return this.matrix[coords[0]][coords[1]] === EMPTY_CELL_SIGN
   }
 
   fillCell(coords, sign) {
-    return new Board()
+    this.matrix[coords[0]][coords[1]] = ''
+    return new Board(this.matrix)
   }
 
   static _anyCoordsOutside(coords) {
@@ -31,6 +34,12 @@ module.exports = class Board {
 
   static _validCoordRange() {
     return [0, SIZE - 1]
+  }
+
+  static empty() {
+    const emptyRow = _.range(SIZE).map(() => EMPTY_CELL_SIGN),
+      emptyArray = _.range(SIZE).map(() => emptyRow)
+    return new Board(emptyArray)
   }
 }
 
