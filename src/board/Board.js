@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('lodash')
+
 const BoardError = require('./BoardError'),
   BoardAnalyzer = require('./BoardAnalyzer'),
   WinnerBoard = require('./WinnerBoard'),
@@ -24,19 +26,25 @@ module.exports = class Board {
   }
 
   fillCell(coords, sign) {
-    const oldCell = this._getCellAt(coords)
     try {
-      const newMatrix = this._setCellAt(coords, oldCell.fillWith(sign))
-      let hasWinner = BoardAnalyzer.checkWinnerFor(newMatrix)
-      return hasWinner ? new WinnerBoard() : new Board(newMatrix)
+      return this._unsafeFillCell(coords, sign)
     }
     catch (err) {
       if (err instanceof CellError.AlreadyFilledError) {
         throw BoardError.cellNotEmpty(coords)
-      } else {
+      }
+      else {
         throw err
       }
     }
+  }
+
+  _unsafeFillCell(coords, sign) {
+    const oldCell = this._getCellAt(coords),
+      newCell = oldCell.fillWith(sign),
+      newMatrix = this._setCellAt(coords, newCell),
+      hasWinner = BoardAnalyzer.checkWinnerFor(newMatrix)
+    return hasWinner ? new WinnerBoard() : new Board(newMatrix)
   }
 
   _getCellAt(coords) {
