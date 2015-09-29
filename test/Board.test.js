@@ -41,6 +41,11 @@ suite('Board', () => {
         emptyBoard.getSignAt.bind(emptyBoard, outBoardCoords)
           .should.throw(BoardError, /must.*be.*within/i)
       })
+
+      test('cannot fill cell', () => {
+        emptyBoard.fillCell.bind(emptyBoard, outBoardCoords)
+          .should.throw(BoardError, /must.*be.*within/i)
+      })
     })
 
   })

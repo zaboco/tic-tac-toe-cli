@@ -3,10 +3,10 @@
 const _ = require('lodash')
 
 const BoardError = require('./BoardError'),
-  ImmutableMatrix = require('./ImmutableMatrix')
+  ImmutableMatrix = require('./ImmutableMatrix'),
+  emptyCell = require('./cell').empty()
 
-const SIZE = 3,
-  EMPTY_CELL_SIGN = ' '
+const SIZE = 3
 
 module.exports = class Board {
   constructor(matrix) {
@@ -14,21 +14,32 @@ module.exports = class Board {
   }
 
   getSignAt(coords) {
+    return this._getCellAt(coords).getSign()
+  }
+
+  isEmptyAt(coords) {
+    return this._getCellAt(coords).isEmpty()
+  }
+
+  fillCell(coords, sign) {
+    const oldCell = this._getCellAt(coords)
+    try {
+      return new Board(this._setCellAt(coords, oldCell.fillWith(sign)))
+    }
+    catch (err) {
+      throw BoardError.CellNotEmpty(coords)
+    }
+  }
+
+  _getCellAt(coords) {
     if (Board._anyCoordsOutside(coords)) {
       throw BoardError.CellOutsideBoard()
     }
     return this.matrix.getAtCoords(coords)
   }
 
-  isEmptyAt(coords) {
-    return this.getSignAt(coords) === EMPTY_CELL_SIGN
-  }
-
-  fillCell(coords, sign) {
-    if (!this.isEmptyAt(coords)) {
-      throw BoardError.CellNotEmpty(coords)
-    }
-    return new Board(this.matrix.setAtCoords(coords, sign))
+  _setCellAt(coords, cell) {
+    return this.matrix.setAtCoords(coords, cell)
   }
 
   hasWinner() {
@@ -36,12 +47,9 @@ module.exports = class Board {
   }
 
   _rowHasSameSign(rowIndex) {
-    const firstRowSigns = this.matrix.getRow(rowIndex),
-      targetSign = firstRowSigns[0]
-    if (targetSign === EMPTY_CELL_SIGN) {
-      return false
-    }
-    return _.all(firstRowSigns, (sign) => sign === targetSign)
+    const rowCells = this.matrix.getRow(rowIndex),
+      firstCellFromRow = rowCells[0]
+    return _.all(rowCells, (cell) => cell.sameAs(firstCellFromRow))
   }
 
   static _anyCoordsOutside(coords) {
@@ -53,7 +61,7 @@ module.exports = class Board {
   }
 
   static empty() {
-    return new Board(ImmutableMatrix.ofSize(SIZE, EMPTY_CELL_SIGN))
+    return new Board(ImmutableMatrix.ofSize(SIZE, emptyCell))
   }
 }
 
