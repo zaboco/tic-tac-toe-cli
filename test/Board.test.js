@@ -116,6 +116,10 @@ suite('Board', () => {
         boardWithMixedRow = boardWithPartialRow.fillCell([0, 0], O)
       boardWithMixedRow.hasWinner().should.equal(false)
     })
+
+    test('not when the board is empty', () => {
+      emptyBoard.hasWinner().should.equal(false)
+    })
   })
 })
 

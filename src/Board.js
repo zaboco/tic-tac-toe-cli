@@ -34,6 +34,9 @@ module.exports = class Board {
   hasWinner() {
     const firstRowSigns = this.matrix.getRow(0),
       targetSign = firstRowSigns[0]
+    if (targetSign === EMPTY_CELL_SIGN) {
+      return false
+    }
     return _.all(firstRowSigns, (sign) => sign === targetSign)
   }
 
