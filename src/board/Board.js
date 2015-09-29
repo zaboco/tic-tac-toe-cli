@@ -1,7 +1,7 @@
 'use strict'
 
 const BoardError = require('./BoardError'),
-  BoardAnalyzer = require('../BoardAnalyzer'),
+  BoardAnalyzer = require('./BoardAnalyzer'),
   WinnerBoard = require('./WinnerBoard'),
   ImmutableMatrix = require('./../matrix/ImmutableMatrix'),
   MatrixError = require('./../matrix/MatrixError'),

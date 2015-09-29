@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-const cellGroupings = require('./cell/groupings')
+const cellGroupings = require('./../cell/groupings/index')
 
 module.exports = class {
   constructor(matrix) {
