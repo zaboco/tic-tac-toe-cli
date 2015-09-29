@@ -2,6 +2,8 @@
 
 const _ = require('lodash')
 
+const cellGroupings = require('./cell/groupings')
+
 module.exports = class {
   constructor(matrix) {
     this.matrix = matrix
@@ -13,15 +15,10 @@ module.exports = class {
   }
 
   checkWinner() {
-    var anyRowIsWinner = _.any([0, 1, 2], (rowIndex) => this._rowHasSameSign(rowIndex)),
+    const rowGroupings = [0, 1, 2].map(index => cellGroupings.rowGrouping(this.matrix, index))
+    var anyRowIsWinner = _.any(rowGroupings, grouping => grouping.isWinner()),
       anyColumnIsWinner = _.any([0, 1, 2], (columnIndex) => this._columnHasSameSign(columnIndex))
     return anyRowIsWinner || anyColumnIsWinner || this._leftDiagonalHasSameSign()
-  }
-
-  _rowHasSameSign(rowIndex) {
-    const rowCells = this.matrix.getRow(rowIndex),
-      firstCellFromRow = rowCells[0]
-    return _.all(rowCells, (cell) => cell.sameAs(firstCellFromRow))
   }
 
   _columnHasSameSign(columnIndex) {
