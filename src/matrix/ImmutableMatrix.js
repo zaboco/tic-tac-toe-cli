@@ -35,6 +35,10 @@ module.exports = class ImmutableMatrix {
     return this.source[rowIndex]
   }
 
+  getColumn(columnIndex) {
+    return _.pluck(this.source, columnIndex)
+  }
+
   _anyCoordsOutside(coords) {
     const validCoordRange = [0, this.size - 1]
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))
