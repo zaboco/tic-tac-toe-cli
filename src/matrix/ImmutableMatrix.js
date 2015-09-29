@@ -2,6 +2,8 @@
 
 const _ = require('lodash')
 
+const MatrixError = require('./MatrixError')
+
 module.exports = class ImmutableMatrix {
   constructor(source) {
     this.source = source
@@ -20,7 +22,7 @@ module.exports = class ImmutableMatrix {
 
   getAtCoords(coords) {
     if (this._anyCoordsOutside(coords)) {
-      throw new Error()
+      throw MatrixError.invalidCoords(coords)
     }
     return this.get(coords[0], coords[1])
   }

@@ -34,17 +34,17 @@ suite('Board', () => {
       const outBoardCoords = [-1, 5]
       test('cannot check if it`s empty', () => {
         emptyBoard.isEmptyAt.bind(emptyBoard, outBoardCoords)
-          .should.throw(BoardError, /must.*be.*within/i)
+          .should.throw(BoardError.CellOutsideBoard)
       })
 
       test('cannot get sign ', () => {
         emptyBoard.getSignAt.bind(emptyBoard, outBoardCoords)
-          .should.throw(BoardError, /must.*be.*within/i)
+          .should.throw(BoardError.CellOutsideBoard)
       })
 
       test('cannot fill cell', () => {
         emptyBoard.fillCell.bind(emptyBoard, outBoardCoords)
-          .should.throw(BoardError, /must.*be.*within/i)
+          .should.throw(BoardError.CellOutsideBoard)
       })
     })
 
@@ -95,7 +95,7 @@ suite('Board', () => {
     test('fails for the same cell', () => {
       const anySign = '*'
       boardAfterFirstFill.fillCell.bind(boardAfterFirstFill, firstCellCoords, anySign)
-        .should.throw(BoardError, /not.*empty/i)
+        .should.throw(BoardError.CellNotEmpty)
     })
 
     test('marks a free cell with the right sign', () => {

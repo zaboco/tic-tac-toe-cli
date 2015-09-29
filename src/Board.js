@@ -4,7 +4,9 @@ const _ = require('lodash')
 
 const BoardError = require('./BoardError'),
   ImmutableMatrix = require('./matrix/ImmutableMatrix'),
-  emptyCell = require('./cell').empty()
+  MatrixError = require('./matrix/MatrixError'),
+  emptyCell = require('./cell').empty(),
+  CellError = require('./cell').CellError
 
 const SIZE = 3
 
@@ -27,7 +29,11 @@ module.exports = class Board {
       return new Board(this._setCellAt(coords, oldCell.fillWith(sign)))
     }
     catch (err) {
-      throw BoardError.CellNotEmpty(coords)
+      if (err instanceof CellError.AlreadyFilledError) {
+        throw BoardError.cellNotEmpty(coords)
+      } else {
+        throw err
+      }
     }
   }
 
@@ -36,7 +42,11 @@ module.exports = class Board {
       return this.matrix.getAtCoords(coords)
     }
     catch (err) {
-      throw BoardError.CellOutsideBoard()
+      if (err instanceof MatrixError.InvalidCoords) {
+        throw BoardError.cellOutsideBoard()
+      } else {
+        throw err
+      }
     }
   }
 

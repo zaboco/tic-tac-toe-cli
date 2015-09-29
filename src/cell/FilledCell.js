@@ -1,6 +1,7 @@
 'use strict'
 
-const BoardError = require('../BoardError')
+const BoardError = require('../BoardError'),
+  CellError = require('./CellError')
 
 module.exports = class FilledCell {
   constructor(sign) {
@@ -23,6 +24,6 @@ module.exports = class FilledCell {
   }
 
   fillWith() {
-    throw Error
+    throw CellError.alreadyFilled(this.sign)
   }
 }

@@ -1,13 +1,16 @@
 'use strict'
 
-module.exports = class BoardError extends Error {
-  static CellOutsideBoard() {
-    return new BoardError(`Coordinates must be within 0-2!`)
+const BoardError = module.exports = class BoardError extends Error {
+  static cellOutsideBoard() {
+    return new this.CellOutsideBoard(`Coordinates must be within 0-2!`)
   }
 
-  static CellNotEmpty(coords) {
-    return new BoardError(`Cell at ${coords.join(':')} is not empty!`)
+  static cellNotEmpty(coords) {
+    return new this.CellNotEmpty(`Cell at ${coords.join(':')} is not empty!`)
   }
 }
+
+BoardError.CellOutsideBoard = class CellOutsideBoard extends BoardError {}
+BoardError.CellNotEmpty = class CellNotEmpty extends BoardError {}
 
 
