@@ -5,6 +5,7 @@ const _ = require('lodash')
 module.exports = class ImmutableMatrix {
   constructor(source) {
     this.source = source
+    this.size = source.length
   }
 
   setAtCoords(coords, value) {
@@ -18,6 +19,9 @@ module.exports = class ImmutableMatrix {
   }
 
   getAtCoords(coords) {
+    if (this._anyCoordsOutside(coords)) {
+      throw new Error()
+    }
     return this.get(coords[0], coords[1])
   }
 
@@ -29,6 +33,11 @@ module.exports = class ImmutableMatrix {
     return this.source[rowIndex]
   }
 
+  _anyCoordsOutside(coords) {
+    const validCoordRange = [0, this.size - 1]
+    return _.any(coords, (coord) => outsideRange(validCoordRange, coord))
+  }
+
   _cloneSource() {
     return this.source.map(copyArray)
   }
@@ -38,6 +47,14 @@ module.exports = class ImmutableMatrix {
       emptyMatrix = _.range(size).map(() => emptyRow)
     return new ImmutableMatrix(emptyMatrix)
   }
+}
+
+function _anyCoordsOutside(coords) {
+  return _.any(coords, (coord) => outsideRange(Board._validCoordRange(), coord))
+}
+
+function outsideRange(range, value) {
+  return value < range[0] || value > range[1]
 }
 
 function copyArray(array) {

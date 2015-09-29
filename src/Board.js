@@ -3,7 +3,7 @@
 const _ = require('lodash')
 
 const BoardError = require('./BoardError'),
-  ImmutableMatrix = require('./ImmutableMatrix'),
+  ImmutableMatrix = require('./matrix/ImmutableMatrix'),
   emptyCell = require('./cell').empty()
 
 const SIZE = 3
@@ -32,10 +32,12 @@ module.exports = class Board {
   }
 
   _getCellAt(coords) {
-    if (Board._anyCoordsOutside(coords)) {
+    try {
+      return this.matrix.getAtCoords(coords)
+    }
+    catch (err) {
       throw BoardError.CellOutsideBoard()
     }
-    return this.matrix.getAtCoords(coords)
   }
 
   _setCellAt(coords, cell) {
@@ -52,19 +54,7 @@ module.exports = class Board {
     return _.all(rowCells, (cell) => cell.sameAs(firstCellFromRow))
   }
 
-  static _anyCoordsOutside(coords) {
-    return _.any(coords, (coord) => outsideRange(Board._validCoordRange(), coord))
-  }
-
-  static _validCoordRange() {
-    return [0, SIZE - 1]
-  }
-
   static empty() {
     return new Board(ImmutableMatrix.ofSize(SIZE, emptyCell))
   }
-}
-
-function outsideRange(range, value) {
-  return value < range[0] || value > range[1]
 }
