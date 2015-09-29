@@ -40,4 +40,10 @@ suite('ImmutableMatrix', () => {
       matrix.getColumn(2).should.eql([2, 12, 22])
     })
   })
+
+  suite('diagonals', () => {
+    test('left', () => {
+      matrix.getLeftDiagonal().should.eql([0, 11, 22])
+    })
+  })
 })

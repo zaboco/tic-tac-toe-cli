@@ -140,6 +140,11 @@ suite('Board', () => {
       const boardWithThirdColumn = multiFill(columnCoords(2), X)
       boardWithThirdColumn.hasWinner().should.equal(true)
     })
+
+    test('for left diagonal', () => {
+      const boardWithLeftDiagonal = multiFill(leftDiagonalCoords(), X)
+      boardWithLeftDiagonal.hasWinner().should.equal(true)
+    })
   })
 })
 
@@ -154,4 +159,8 @@ function rowCoords(rowIndex) {
 
 function columnCoords(columnIndex) {
   return [0, 1, 2].map((rowIndex) => [rowIndex, columnIndex])
+}
+
+function leftDiagonalCoords() {
+  return [0, 1, 2].map((index) => [index, index])
 }

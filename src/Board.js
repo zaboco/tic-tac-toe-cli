@@ -57,7 +57,7 @@ module.exports = class Board {
   hasWinner() {
     var anyRowIsWinner = _.any([0, 1, 2], (rowIndex) => this._rowHasSameSign(rowIndex)),
       anyColumnIsWinner = _.any([0, 1, 2], (columnIndex) => this._columnHasSameSign(columnIndex))
-    return anyRowIsWinner || anyColumnIsWinner
+    return anyRowIsWinner || anyColumnIsWinner || this._leftDiagonalHasSameSign()
   }
 
   _rowHasSameSign(rowIndex) {
@@ -70,6 +70,12 @@ module.exports = class Board {
     const columnCells = this.matrix.getColumn(columnIndex),
       firstCellFromColumn = columnCells[0]
     return _.all(columnCells, (cell) => cell.sameAs(firstCellFromColumn))
+  }
+
+  _leftDiagonalHasSameSign() {
+    const leftDiagonalCells = this.matrix.getLeftDiagonal(),
+      firstCellFromDiagonal = leftDiagonalCells[0]
+    return _.all(leftDiagonalCells, (cell) => cell.sameAs(firstCellFromDiagonal))
   }
 
   static empty() {
