@@ -11,9 +11,9 @@ module.exports = class ImmutableMatrix {
     return this.set(coords[0], coords[1], value)
   }
 
-  set(row, column, value) {
+  set(rowIndex, columnIndex, value) {
     const sourceClone = this._cloneSource()
-    sourceClone[row][column] = value
+    sourceClone[rowIndex][columnIndex] = value
     return new ImmutableMatrix(sourceClone)
   }
 
@@ -21,8 +21,12 @@ module.exports = class ImmutableMatrix {
     return this.get(coords[0], coords[1])
   }
 
-  get(row, column) {
-    return this.source[row][column]
+  get(rowIndex, columnIndex) {
+    return this.source[rowIndex][columnIndex]
+  }
+
+  getRow(rowIndex) {
+    return this.source[rowIndex]
   }
 
   _cloneSource() {

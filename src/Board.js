@@ -32,7 +32,9 @@ module.exports = class Board {
   }
 
   hasWinner() {
-    return true
+    const firstRowSigns = this.matrix.getRow(0),
+      targetSign = firstRowSigns[0]
+    return _.all(firstRowSigns, (sign) => sign === targetSign)
   }
 
   static _anyCoordsOutside(coords) {

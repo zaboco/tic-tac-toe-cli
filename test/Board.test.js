@@ -106,9 +106,15 @@ suite('Board', () => {
 
   suite('winning', () => {
     test('for first row with same sign', () => {
-      const firstRowCoords = [[0, 0], [0, 1], [0, 2]]
-      const boardWithFirstRow = multiFill(firstRowCoords, X)
+      const boardWithFirstRow = multiFill(rowCoords(0), X)
       boardWithFirstRow.hasWinner().should.equal(true)
+    })
+
+    test('not when the row is mixed', () => {
+      const partialRow = rowCoords(0).slice(1),
+        boardWithPartialRow = multiFill(partialRow, X),
+        boardWithMixedRow = boardWithPartialRow.fillCell([0, 0], O)
+      boardWithMixedRow.hasWinner().should.equal(false)
     })
   })
 })
@@ -116,4 +122,8 @@ suite('Board', () => {
 function multiFill(coordsList, sign) {
   const fillCell = (board, coords) => board.fillCell(coords, sign)
   return coordsList.reduce(fillCell, Board.empty())
+}
+
+function rowCoords(rowIndex) {
+  return [0, 1, 2].map((columnIndex) => [rowIndex, columnIndex])
 }
