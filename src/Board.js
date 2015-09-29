@@ -32,7 +32,11 @@ module.exports = class Board {
   }
 
   hasWinner() {
-    const firstRowSigns = this.matrix.getRow(0),
+    return _.any([0, 1, 2], (rowIndex) => this._rowHasSameSign(rowIndex))
+  }
+
+  _rowHasSameSign(rowIndex) {
+    const firstRowSigns = this.matrix.getRow(rowIndex),
       targetSign = firstRowSigns[0]
     if (targetSign === EMPTY_CELL_SIGN) {
       return false

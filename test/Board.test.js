@@ -120,6 +120,12 @@ suite('Board', () => {
     test('not when the board is empty', () => {
       emptyBoard.hasWinner().should.equal(false)
     })
+
+    test('for second row with same sign', () => {
+      const boardWithSecondRow = multiFill(rowCoords(1), X)
+      boardWithSecondRow.hasWinner().should.equal(true)
+    })
+
   })
 })
 
