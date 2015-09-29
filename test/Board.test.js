@@ -2,8 +2,8 @@
 
 const should = require('chai').should()
 
-const Board = require('../src/Board'),
-  BoardError = require('../src/BoardError')
+const Board = require('../src/board/Board'),
+  BoardError = require('../src/board/BoardError')
 
 const X = 'X', O = 'O'
 
