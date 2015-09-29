@@ -31,6 +31,10 @@ module.exports = class Board {
     return new Board(this.matrix.setAtCoords(coords, sign))
   }
 
+  hasWinner() {
+    return true
+  }
+
   static _anyCoordsOutside(coords) {
     return _.any(coords, (coord) => outsideRange(Board._validCoordRange(), coord))
   }

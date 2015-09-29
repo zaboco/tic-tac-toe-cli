@@ -103,4 +103,17 @@ suite('Board', () => {
       boardAfterFirstFill.isEmptyAt(secondCellCoords).should.equal(true)
     })
   })
+
+  suite('winning', () => {
+    test('for first row with same sign', () => {
+      const firstRowCoords = [[0, 0], [0, 1], [0, 2]]
+      const boardWithFirstRow = multiFill(firstRowCoords, X)
+      boardWithFirstRow.hasWinner().should.equal(true)
+    })
+  })
 })
+
+function multiFill(coordsList, sign) {
+  const fillCell = (board, coords) => board.fillCell(coords, sign)
+  return coordsList.reduce(fillCell, Board.empty())
+}
