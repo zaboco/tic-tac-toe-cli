@@ -59,10 +59,6 @@ module.exports = class ImmutableMatrix {
   }
 }
 
-function _anyCoordsOutside(coords) {
-  return _.any(coords, (coord) => outsideRange(Board._validCoordRange(), coord))
-}
-
 function outsideRange(range, value) {
   return value < range[0] || value > range[1]
 }

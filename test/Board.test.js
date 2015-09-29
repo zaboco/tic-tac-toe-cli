@@ -1,6 +1,6 @@
 'use strict'
 
-const should = require('chai').should()
+require('chai').should()
 
 const Board = require('../src/board/Board'),
   BoardError = require('../src/board/BoardError')

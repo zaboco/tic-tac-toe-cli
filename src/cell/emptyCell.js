@@ -4,7 +4,7 @@ const FilledCell = require('./FilledCell')
 
 const EMPTY_CELL_SIGN = ' '
 
-const emptyCell = module.exports = {
+module.exports = {
   isEmpty() {
     return true
   },

@@ -1,7 +1,6 @@
 'use strict'
 
-const BoardError = require('../board/BoardError'),
-  CellError = require('./CellError')
+const CellError = require('./CellError')
 
 module.exports = class FilledCell {
   constructor(sign) {
