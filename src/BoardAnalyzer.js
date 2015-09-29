@@ -7,6 +7,7 @@ const cellGroupings = require('./cell/groupings')
 module.exports = class {
   constructor(matrix) {
     this.matrix = matrix
+    this.groupings = this._makeGroupings()
   }
 
   static checkWinnerFor(matrix) {
@@ -15,21 +16,26 @@ module.exports = class {
   }
 
   checkWinner() {
-    const rowGroupings = [0, 1, 2].map(index => cellGroupings.rowGrouping(this.matrix, index))
-    var anyRowIsWinner = _.any(rowGroupings, grouping => grouping.isWinner()),
-      anyColumnIsWinner = _.any([0, 1, 2], (columnIndex) => this._columnHasSameSign(columnIndex))
-    return anyRowIsWinner || anyColumnIsWinner || this._leftDiagonalHasSameSign()
+    return _.any(this.groupings, grouping => grouping.isWinner())
   }
 
-  _columnHasSameSign(columnIndex) {
-    const columnCells = this.matrix.getColumn(columnIndex),
-      firstCellFromColumn = columnCells[0]
-    return _.all(columnCells, (cell) => cell.sameAs(firstCellFromColumn))
+  _makeGroupings() {
+    return [].concat(
+      this._makeRowGroupings(),
+      this._makeColumnGroupings(),
+      this._makeLeftDiagonalGrouping()
+    )
   }
 
-  _leftDiagonalHasSameSign() {
-    const leftDiagonalCells = this.matrix.getLeftDiagonal(),
-      firstCellFromDiagonal = leftDiagonalCells[0]
-    return _.all(leftDiagonalCells, (cell) => cell.sameAs(firstCellFromDiagonal))
+  _makeRowGroupings() {
+    return [0, 1, 2].map(index => cellGroupings.rowGrouping(this.matrix, index))
+  }
+
+  _makeColumnGroupings() {
+    return [0, 1, 2].map(index => cellGroupings.columnGrouping(this.matrix, index))
+  }
+
+  _makeLeftDiagonalGrouping() {
+    return cellGroupings.leftDiagonalGrouping(this.matrix)
   }
 }
