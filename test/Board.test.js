@@ -110,7 +110,7 @@ suite('Board', () => {
   })
 
   suite('winning', () => {
-    test('for first row with same sign', () => {
+    test('for first row, with same sign', () => {
       const boardWithFirstRow = multiFill(rowCoords(0), X)
       boardWithFirstRow.hasWinner().should.equal(true)
     })
@@ -126,11 +126,20 @@ suite('Board', () => {
       emptyBoard.hasWinner().should.equal(false)
     })
 
-    test('for second row with same sign', () => {
+    test('for second row, with same sign', () => {
       const boardWithSecondRow = multiFill(rowCoords(1), X)
       boardWithSecondRow.hasWinner().should.equal(true)
     })
 
+    test('for first column, with same sign', () => {
+      const boardWithFirstColumn = multiFill(columnCoords(0), X)
+      boardWithFirstColumn.hasWinner().should.equal(true)
+    })
+
+    test('for third column, with same sign', () => {
+      const boardWithThirdColumn = multiFill(columnCoords(2), X)
+      boardWithThirdColumn.hasWinner().should.equal(true)
+    })
   })
 })
 
@@ -141,4 +150,8 @@ function multiFill(coordsList, sign) {
 
 function rowCoords(rowIndex) {
   return [0, 1, 2].map((columnIndex) => [rowIndex, columnIndex])
+}
+
+function columnCoords(columnIndex) {
+  return [0, 1, 2].map((rowIndex) => [rowIndex, columnIndex])
 }
