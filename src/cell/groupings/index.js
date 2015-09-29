@@ -13,6 +13,10 @@ module.exports = {
 
   leftDiagonalGrouping(matrix){
     return new CellsGrouping(matrix.getLeftDiagonal())
+  },
+
+  rightDiagonalGrouping(matrix){
+    return new CellsGrouping(matrix.getRightDiagonal())
   }
 }
 

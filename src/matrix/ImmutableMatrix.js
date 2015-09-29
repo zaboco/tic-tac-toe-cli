@@ -43,6 +43,10 @@ module.exports = class ImmutableMatrix {
     return [0, 1, 2].map((index) => this.get(index, index))
   }
 
+  getRightDiagonal() {
+    return [0, 1, 2].map((index) => this.get(index, 2 - index))
+  }
+
   _anyCoordsOutside(coords) {
     const validCoordRange = [0, this.size - 1]
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))

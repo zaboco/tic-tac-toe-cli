@@ -23,7 +23,7 @@ module.exports = class {
     return [].concat(
       this._makeRowGroupings(),
       this._makeColumnGroupings(),
-      this._makeLeftDiagonalGrouping()
+      this._makeDiagonalGroupings()
     )
   }
 
@@ -35,7 +35,10 @@ module.exports = class {
     return [0, 1, 2].map(index => cellGroupings.columnGrouping(this.matrix, index))
   }
 
-  _makeLeftDiagonalGrouping() {
-    return cellGroupings.leftDiagonalGrouping(this.matrix)
+  _makeDiagonalGroupings() {
+    return [].concat(
+      cellGroupings.leftDiagonalGrouping(this.matrix),
+      cellGroupings.rightDiagonalGrouping(this.matrix)
+    )
   }
 }
