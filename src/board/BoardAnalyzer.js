@@ -7,11 +7,26 @@ const cellGroupings = require('./../cell/groupings/index')
 module.exports = class {
   constructor(matrix) {
     this.matrix = matrix
-    this.groupings = this._makeGroupings()
+    this.winner = this._checkForWinner()
+    this.tie = !this.winner && this._isFull()
   }
 
-  checkWinner() {
-    return _.any(this.groupings, grouping => grouping.isWinner())
+  _checkForWinner() {
+    const groupings = this._makeGroupings()
+    return _.any(groupings, grouping => grouping.isWinner())
+  }
+
+  isWinner() {
+    return this.winner
+  }
+
+  isTie() {
+    return this.tie
+  }
+
+  _isFull() {
+    var emptyCellsCount = this.matrix.countIf(cell => cell.isEmpty())
+    return emptyCellsCount === 0
   }
 
   _makeGroupings() {

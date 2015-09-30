@@ -1,7 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
-
 const BoardError = require('./BoardError'),
   BoardAnalyzer = require('./BoardAnalyzer'),
   WinnerBoard = require('./WinnerBoard'),
@@ -28,13 +26,11 @@ module.exports = class Board {
 
   fillCell(coords, sign) {
     const newMatrix = this._makeNewMatrixByFilling(coords, sign),
-      boardAnalyzer = new BoardAnalyzer(newMatrix),
-      hasWinner = boardAnalyzer.checkWinner(),
-      hasTie = !hasWinner && this._isFull(newMatrix)
+      boardAnalyzer = new BoardAnalyzer(newMatrix)
     switch (true) {
-      case hasWinner:
+      case boardAnalyzer.isWinner():
         return new WinnerBoard()
-      case hasTie:
+      case boardAnalyzer.isTie():
         return new TieBoard()
       default:
         return new Board(newMatrix)
@@ -54,11 +50,6 @@ module.exports = class Board {
         throw err
       }
     }
-  }
-
-  _isFull(matrix) {
-    var emptyCellsCount = matrix.countIf(cell => cell.isEmpty())
-    return emptyCellsCount === 0
   }
 
   _getCellAt(coords) {
