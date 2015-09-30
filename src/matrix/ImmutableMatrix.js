@@ -47,6 +47,14 @@ module.exports = class ImmutableMatrix {
     return [0, 1, 2].map((index) => this.get(index, 2 - index))
   }
 
+  countIf(predicate) {
+    return _.filter(this.allItems(), predicate).length
+  }
+
+  allItems() {
+    return _.flatten(this.source)
+  }
+
   _anyCoordsOutside(coords) {
     const validCoordRange = [0, this.size - 1]
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))

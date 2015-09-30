@@ -50,4 +50,12 @@ suite('ImmutableMatrix', () => {
       matrix.getRightDiagonal().should.eql([2, 11, 20])
     })
   })
+
+  test('allItems', () => {
+    matrix.allItems().should.eql([0, 1, 2, 10, 11, 12, 20, 21, 22])
+  })
+
+  test('countIf', () => {
+    matrix.countIf(it => it >= 10).should.equal(6)
+  })
 })

@@ -29,6 +29,13 @@ suite('Board', () => {
       emptyBoard.getSignAt(topLeftCoords).should.equal(emptyCellSign)
     })
 
+    test('it has no winner', () => {
+      emptyBoard.hasWinner().should.equal(false)
+    })
+
+    test('it is not tie', () => {
+      emptyBoard.hasTie().should.equal(false)
+    })
 
     suite('for a position outside the board', () => {
       const outBoardCoords = [-1, 5]
@@ -128,10 +135,6 @@ suite('Board', () => {
       boardWithMixedRow.hasWinner().should.equal(false)
     })
 
-    test('not when the board is empty', () => {
-      emptyBoard.hasWinner().should.equal(false)
-    })
-
     test('for second row, with same sign', () => {
       const boardWithSecondRow = multiFill(rowCoords(1), X)
       boardWithSecondRow.hasWinner().should.equal(true)
@@ -156,6 +159,27 @@ suite('Board', () => {
       const boardWithRightDiagonal = multiFill(rightDiagonalCoords(), X)
       boardWithRightDiagonal.hasWinner().should.equal(true)
     })
+
+    test('when it is a win it is not a tie', () => {
+      const winnerBoard = multiFill(rowCoords(0), X)
+      winnerBoard.hasTie().should.equal(false)
+    })
+  })
+
+  suite('for non-winning full board', () => {
+    const fullMixedBoard = fillFromMatrix([
+      [X, X, O],
+      [O, X, X],
+      [X, O, O]
+    ])
+
+    test('it is a tie', () => {
+      fullMixedBoard.hasTie().should.equal(true)
+    })
+
+    test('it is not winner', () => {
+      fullMixedBoard.hasWinner().should.equal(false)
+    })
   })
 })
 
@@ -163,6 +187,17 @@ function multiFill(coordsList, sign) {
   const fillCell = (board, coords) => board.fillCell(coords, sign)
   return coordsList.reduce(fillCell, Board.empty())
 }
+
+function fillFromMatrix(matrix) {
+  return matrix.reduce(fillFromRow, Board.empty())
+}
+
+function fillFromRow(board, row, rowIndex) {
+  return row.reduce((board, sign, columnIndex) => {
+    return board.fillCell([rowIndex, columnIndex], sign)
+  }, board)
+}
+
 
 function rowCoords(rowIndex) {
   return [0, 1, 2].map((columnIndex) => [rowIndex, columnIndex])

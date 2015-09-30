@@ -5,6 +5,7 @@ const _ = require('lodash')
 const BoardError = require('./BoardError'),
   BoardAnalyzer = require('./BoardAnalyzer'),
   WinnerBoard = require('./WinnerBoard'),
+  TieBoard = require('./TieBoard'),
   ImmutableMatrix = require('./../matrix/ImmutableMatrix'),
   MatrixError = require('./../matrix/MatrixError'),
   emptyCell = require('./../cell/index').empty(),
@@ -43,8 +44,21 @@ module.exports = class Board {
     const oldCell = this._getCellAt(coords),
       newCell = oldCell.fillWith(sign),
       newMatrix = this._setCellAt(coords, newCell),
-      hasWinner = BoardAnalyzer.checkWinnerFor(newMatrix)
-    return hasWinner ? new WinnerBoard() : new Board(newMatrix)
+      hasWinner = BoardAnalyzer.checkWinnerFor(newMatrix),
+      hasTie = !hasWinner && this._isFull(newMatrix)
+    switch (true) {
+      case hasWinner:
+        return new WinnerBoard()
+      case hasTie:
+        return new TieBoard()
+      default:
+        return new Board(newMatrix)
+    }
+  }
+
+  _isFull(matrix) {
+    var emptyCellsCount = matrix.countIf(cell => cell.isEmpty())
+    return emptyCellsCount === 0
   }
 
   _getCellAt(coords) {
@@ -65,6 +79,10 @@ module.exports = class Board {
   }
 
   hasWinner() {
+    return false
+  }
+
+  hasTie() {
     return false
   }
 
