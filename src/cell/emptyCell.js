@@ -14,7 +14,7 @@ module.exports = {
   },
 
   fillWith(sign) {
-    return new FilledCell(sign)
+    return sign != null ? new FilledCell(sign) : this
   },
 
   sameAs() {

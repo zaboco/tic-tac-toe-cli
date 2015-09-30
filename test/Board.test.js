@@ -84,6 +84,12 @@ suite('Board', () => {
     })
   })
 
+  test('filling a board with a `null` leaves the cell empty', () => {
+    const someCoords = [1, 2]
+    const boardAfterSettingNullSign = emptyBoard.fillCell(someCoords, null)
+    boardAfterSettingNullSign.isEmptyAt(someCoords)
+  })
+
   suite('trying to fill the second cell', () => {
     let boardAfterFirstFill
     const firstCellCoords = [1, 2], firstSign = X,
