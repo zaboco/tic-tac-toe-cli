@@ -4,7 +4,8 @@
   "description": "CLI for TicTacToe with AI",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --ui tdd --reporter dot --recursive test"
+    "test": "mocha --ui tdd --reporter dot --recursive test",
+    "coverage": "istanbul cover ./node_modules/.bin/_mocha -- --ui tdd"
   },
   "keywords": [
     "TicTacToe",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "chai": "^3.3.0",
     "ghooks": "^0.3.2",
+    "istanbul": "^0.3.21",
     "mocha": "^2.3.3"
   },
   "config": {
