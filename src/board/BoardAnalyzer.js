@@ -10,11 +10,6 @@ module.exports = class {
     this.groupings = this._makeGroupings()
   }
 
-  static checkWinnerFor(matrix) {
-    const boardAnalyzer = new this(matrix)
-    return boardAnalyzer.checkWinner()
-  }
-
   checkWinner() {
     return _.any(this.groupings, grouping => grouping.isWinner())
   }

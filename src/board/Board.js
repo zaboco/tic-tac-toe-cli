@@ -27,24 +27,9 @@ module.exports = class Board {
   }
 
   fillCell(coords, sign) {
-    try {
-      return this._unsafeFillCell(coords, sign)
-    }
-    catch (err) {
-      if (err instanceof CellError.AlreadyFilledError) {
-        throw BoardError.cellNotEmpty(coords)
-      }
-      else {
-        throw err
-      }
-    }
-  }
-
-  _unsafeFillCell(coords, sign) {
-    const oldCell = this._getCellAt(coords),
-      newCell = oldCell.fillWith(sign),
-      newMatrix = this._setCellAt(coords, newCell),
-      hasWinner = BoardAnalyzer.checkWinnerFor(newMatrix),
+    const newMatrix = this._makeNewMatrixByFilling(coords, sign),
+      boardAnalyzer = new BoardAnalyzer(newMatrix),
+      hasWinner = boardAnalyzer.checkWinner(),
       hasTie = !hasWinner && this._isFull(newMatrix)
     switch (true) {
       case hasWinner:
@@ -53,6 +38,21 @@ module.exports = class Board {
         return new TieBoard()
       default:
         return new Board(newMatrix)
+    }
+  }
+
+  _makeNewMatrixByFilling(coords, sign) {
+    try {
+      const newCell = this._getCellAt(coords).fillWith(sign)
+      return this._setCellAt(coords, newCell)
+    }
+    catch (err) {
+      if (err instanceof CellError.AlreadyFilledError) {
+        throw BoardError.cellNotEmpty(coords)
+      }
+      else {
+        throw err
+      }
     }
   }
 
