@@ -8,14 +8,14 @@ module.exports = class CellsGrouping {
   }
 
   isWinner() {
-    return _.all(this._allCells(), (cell) => cell.sameAs(this._firstCell()))
+    return _.all(this._tail(), (cell) => cell.sameAs(this._head()))
   }
 
-  _firstCell() {
+  _head() {
     return this.cells[0]
   }
 
-  _allCells() {
-    return this.cells
+  _tail() {
+    return this.cells.slice(1)
   }
 }

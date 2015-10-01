@@ -3,20 +3,19 @@
 const CellsGrouping = require('./CellsGrouping')
 
 module.exports = {
-  rowGrouping(matrix, rowIndex) {
-    return new CellsGrouping(matrix.getRow(rowIndex))
+  row(index) {
+    return makeGrouper('getRow', index)
   },
 
-  columnGrouping(matrix, columnIndex) {
-    return new CellsGrouping(matrix.getColumn(columnIndex))
+  column(index) {
+    return makeGrouper('getColumn', index)
   },
 
-  leftDiagonalGrouping(matrix){
-    return new CellsGrouping(matrix.getLeftDiagonal())
-  },
-
-  rightDiagonalGrouping(matrix){
-    return new CellsGrouping(matrix.getRightDiagonal())
+  diagonal(direction) {
+    return direction === 'left' ? makeGrouper('getLeftDiagonal') : makeGrouper('getRightDiagonal')
   }
 }
 
+function makeGrouper(matrixMethod, arg) {
+  return matrix => new CellsGrouping(matrix[matrixMethod](arg))
+}

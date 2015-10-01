@@ -1,19 +1,36 @@
 'use strict'
 
+const _ = require('lodash')
+
 const BoardError = require('./BoardError'),
   BoardAnalyzer = require('./BoardAnalyzer'),
-  WinnerBoard = require('./WinnerBoard'),
-  TieBoard = require('./TieBoard'),
-  ImmutableMatrix = require('./../matrix/ImmutableMatrix'),
-  MatrixError = require('./../matrix/MatrixError'),
-  emptyCell = require('./../cell/index').empty(),
-  CellError = require('./../cell/index').CellError
+  groupsMaker = require('../cell/groupings/groupsMaker'),
+  ImmutableMatrix = require('../matrix/ImmutableMatrix'),
+  MatrixError = require('../matrix/MatrixError'),
+  emptyCell = require('../cell').empty(),
+  CellError = require('../cell').CellError
 
 const SIZE = 3
 
 module.exports = class Board {
   constructor(matrix) {
     this.matrix = matrix
+    this.groupings = groupsMaker.from(matrix)
+    this.cells = matrix.allItems()
+    this.status = this.analyzeStatus()
+  }
+
+  analyzeStatus() {
+    const boardAnalyzer = new BoardAnalyzer()
+    return boardAnalyzer.statusFor(this)
+  }
+
+  findGroupings(predicate) {
+    return _.filter(this.groupings, predicate)
+  }
+
+  findCells(predicate) {
+    return _.filter(this.cells, predicate)
   }
 
   getSignAt(coords) {
@@ -25,16 +42,8 @@ module.exports = class Board {
   }
 
   fillCell(coords, sign) {
-    const newMatrix = this._makeNewMatrixByFilling(coords, sign),
-      boardAnalyzer = new BoardAnalyzer(newMatrix)
-    switch (true) {
-      case boardAnalyzer.isWinner():
-        return new WinnerBoard()
-      case boardAnalyzer.isTie():
-        return new TieBoard()
-      default:
-        return new Board(newMatrix)
-    }
+    const newMatrix = this._makeNewMatrixByFilling(coords, sign)
+    return new Board(newMatrix)
   }
 
   _makeNewMatrixByFilling(coords, sign) {
@@ -56,7 +65,7 @@ module.exports = class Board {
     try {
       return this.matrix.getAtCoords(coords)
     }
-    catch (err) {
+    catch (err) { /* istanbul ignore else */
       if (err instanceof MatrixError.InvalidCoords) {
         throw BoardError.cellOutsideBoard()
       } else {
@@ -70,11 +79,11 @@ module.exports = class Board {
   }
 
   hasWinner() {
-    return false
+    return this.status === 'winner'
   }
 
   hasTie() {
-    return false
+    return this.status === 'tie'
   }
 
   static empty() {
