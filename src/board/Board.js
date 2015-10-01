@@ -65,7 +65,7 @@ module.exports = class Board {
     try {
       return this.matrix.getAtCoords(coords)
     }
-    catch (err) {
+    catch (err) { /* istanbul ignore else */
       if (err instanceof MatrixError.InvalidCoords) {
         throw BoardError.cellOutsideBoard()
       } else {
