@@ -10,15 +10,10 @@ class GroupsMaker {
 
 function allGroupers() {
   return [
-    groupings._rowGrouping(0),
-    groupings._rowGrouping(1),
-    groupings._rowGrouping(2),
-    groupings._columnGrouping(0),
-    groupings._columnGrouping(1),
-    groupings._columnGrouping(2),
-    groupings._diagonalGrouping('left'),
-    groupings._diagonalGrouping('right')
-  ]
+    [0, 1, 2].map(groupings.row),
+    [0, 1, 2].map(groupings.column),
+    ['left', 'right'].map(groupings.diagonal)
+  ].reduce((a, b) => a.concat(b))
 }
 
 module.exports = new GroupsMaker()
