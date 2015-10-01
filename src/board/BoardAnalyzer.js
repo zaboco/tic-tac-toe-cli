@@ -1,31 +1,30 @@
 'use strict'
 
-const _ = require('lodash')
-
-const groupsMaker = require('../cell/groupings/GroupsMaker')
-
 module.exports = class {
-  constructor(matrix) {
-    this.matrix = matrix
-    this.winner = this._checkForWinner()
-    this.tie = !this.winner && this._isFull()
+  statusFor(board) {
+    const statuses = [
+      winnerIfAnyGroupingIsWinner,
+      tieIfFull,
+      partialOtherwise
+    ].map(checker => checker(board))
+    return statuses.reduce((result, status) => result || status)
   }
+}
 
-  _checkForWinner() {
-    const groupings = groupsMaker.from(this.matrix)
-    return _.any(groupings, grouping => grouping.isWinner())
+function winnerIfAnyGroupingIsWinner(board) {
+  const winningGroupings = board.findGroupings(it => it.isWinner())
+  if (winningGroupings.length) {
+    return 'winner'
   }
+}
 
-  isWinner() {
-    return this.winner
+function tieIfFull(board) {
+  var filledCells = board.findCells(cell => !cell.isEmpty())
+  if (filledCells.length) {
+    return 'tie'
   }
+}
 
-  isTie() {
-    return this.tie
-  }
-
-  _isFull() {
-    var emptyCellsCount = this.matrix.countIf(cell => cell.isEmpty())
-    return emptyCellsCount === 0
-  }
+function partialOtherwise() {
+  return 'partial'
 }
