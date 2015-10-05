@@ -5,21 +5,13 @@ const wco = require('co').wrap
 require('chai').should()
 
 const Player = require('../src/Player'),
-  Board = require('../src/board/Board')
+  Board = require('../src/board/Board'),
+  StaticMoveAdviser = require('./StaticMoveAdviser')
 
 const someSign = 'X',
   emptyBoard = Board.empty()
 
-const staticMoveAdviser = {
-  setNextAdvice(coords) {
-    this.coords = coords
-    return this
-  },
-
-  coordsFor() {
-    return Promise.resolve(this.coords)
-  }
-}
+const staticMoveAdviser = new StaticMoveAdviser()
 
 suite('Player', () => {
   let player

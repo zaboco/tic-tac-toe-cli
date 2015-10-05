@@ -19,6 +19,8 @@ Places the `sign` in the cell at the given location and returns a new `Board`
 
 #### Methods
 
+##### `constructor: ([players]) -> Game`
+
 ##### `hasNext: () -> Boolean`
 Returns true if the game should continue, false when it is finished.
 
@@ -30,7 +32,7 @@ Starts the game and returns a `Promise` that is fulfilled when the game ends, ei
 
 #### Events
 
-##### `game.start (board, currentPlayer)`
+##### `game.start ()`
 
 ##### `round.start (board, currentPlayer)`
 
