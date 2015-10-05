@@ -24,7 +24,7 @@ const staticMoveAdviser = {
 suite('Player', () => {
   let player
   setup(() => {
-    player = new Player(someSign, staticMoveAdviser)
+    player = Player(someSign, staticMoveAdviser)
   })
 
   test('places sign on board at top left', wco(function* () {
@@ -32,5 +32,12 @@ suite('Player', () => {
     staticMoveAdviser.setNextAdvice(topLeft)
     let newBoard = yield player.fillCellOnBoard(emptyBoard)
     newBoard.getSignAt(topLeft).should.equal(someSign)
+  }))
+
+  test('places sign on board at top left', wco(function* () {
+    const bottomRight = [2, 2]
+    staticMoveAdviser.setNextAdvice(bottomRight)
+    let newBoard = yield player.fillCellOnBoard(emptyBoard)
+    newBoard.getSignAt(bottomRight).should.equal(someSign)
   }))
 })

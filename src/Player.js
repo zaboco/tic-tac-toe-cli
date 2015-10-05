@@ -1,12 +1,14 @@
 'use strict'
 
-module.exports = class Player {
-  constructor(sign) {
-    this.sign = sign
-  }
+const wco = require('co').wrap
 
-  fillCellOnBoard(board) {
-    let newBoard = board.fillCell([0, 0], this.sign)
-    return Promise.resolve(newBoard)
+module.exports = Player
+
+function Player(sign, moveAdviser) {
+  return {
+    fillCellOnBoard: wco(function* (board) {
+      const coords = yield moveAdviser.coordsFor(board, sign)
+      return board.fillCell(coords, sign)
+    })
   }
 }
