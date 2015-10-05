@@ -34,9 +34,9 @@ Starts the game and returns a `Promise` that is fulfilled when the game ends, ei
 
 ##### `game.start ()`
 
-##### `round.start (board, currentPlayer)`
+##### `round.start (currentPlayer, board)`
 
-##### `round.end (coords, currentPlayer)`
+##### `round.end (currentPlayer, coords)`
 
 ##### `game.won (board, winningPlayer)`
 

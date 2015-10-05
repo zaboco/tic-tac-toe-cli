@@ -3,7 +3,8 @@
 const EventEmitter = require('events').EventEmitter
 
 module.exports = class Game {
-  constructor() {
+  constructor(players) {
+    this.players = players
     this.emitter = new EventEmitter()
   }
 
@@ -17,5 +18,6 @@ module.exports = class Game {
 
   run() {
     this.emit('game.start')
+    this.emit('round.start', this.players[0])
   }
 }

@@ -1,7 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
-
 require('chai').should()
 
 const Game = require('../src/Game'),
@@ -13,11 +11,8 @@ suite('Game', function() {
 
   let game, players
   setup(() => {
-    players = {
-      X: makePlayer('X'),
-      O: makePlayer('O')
-    }
-    game = new Game(_.values(players))
+    players = [makePlayer('X'), makePlayer('O')]
+    game = new Game(players)
   })
 
   suite('on run', () => {
@@ -26,6 +21,13 @@ suite('Game', function() {
       game.run()
     })
 
+    test('the first round starts with first player', done => {
+      game.emitter.on('round.start', currentPlayer => {
+        currentPlayer.should.equal(players[0])
+        done()
+      })
+      game.run()
+    })
   })
 })
 
