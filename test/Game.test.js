@@ -28,6 +28,14 @@ suite('Game', function() {
       })
       game.run()
     })
+
+    test('the first round starts with empty board', done => {
+      game.emitter.on('round.start', (__, board) => {
+        board.isEmpty().should.be.true
+        done()
+      })
+      game.run()
+    })
   })
 })
 
