@@ -25,6 +25,10 @@ suite('Board', () => {
       emptyBoard.isEmptyAt(bottomRightCoords).should.equal(true)
     })
 
+    test('is all empty', () => {
+      emptyBoard.isEmpty().should.equal(true)
+    })
+
     test('there is no sign at top left position', () => {
       emptyBoard.getSignAt(topLeftCoords).should.equal(emptyCellSign)
     })
@@ -72,6 +76,10 @@ suite('Board', () => {
 
     test('the board is different', () => {
       newBoard.should.not.equal(emptyBoard)
+    })
+
+    test('the board is no longer empty', () => {
+      newBoard.isEmpty().should.equal(false)
     })
 
     test('the filled cell is no longer empty', () => {

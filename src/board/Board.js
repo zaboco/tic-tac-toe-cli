@@ -29,6 +29,11 @@ module.exports = class Board {
     return _.filter(this.groupings, predicate)
   }
 
+  isEmpty() {
+    const filledCells = this.findCells(it => !it.isEmpty())
+    return filledCells.length === 0
+  }
+
   findCells(predicate) {
     return _.filter(this.cells, predicate)
   }
