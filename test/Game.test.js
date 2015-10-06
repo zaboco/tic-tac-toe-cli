@@ -4,7 +4,7 @@ require('chai').should()
 
 const Game = require('../src/Game'),
   Player = require('../src/Player'),
-  StaticMoveAdviser = require('./StaticMoveAdviser')
+  ManualMoveAdviser = require('./ManualMoveAdviser')
 
 suite('Game', function() {
   this.timeout(100)
@@ -40,9 +40,9 @@ suite('Game', function() {
 })
 
 function makePlayer(sign) {
-  const player = new Player(sign, new StaticMoveAdviser())
-  player.willMove = function(coords) {
-    this.staticMoveAdviser.setNextAdvice(coords)
+  const player = new Player(sign, new ManualMoveAdviser())
+  player.chooseCoords = function(coords) {
+    this.moveAdviser.setNextAdvice(coords)
   }
   return player
 }

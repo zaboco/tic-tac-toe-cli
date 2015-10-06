@@ -1,35 +1,37 @@
 'use strict'
 
-const wco = require('co').wrap
-
 require('chai').should()
 
 const Player = require('../src/Player'),
   Board = require('../src/board/Board'),
-  StaticMoveAdviser = require('./StaticMoveAdviser')
+  ManualMoveAdviser = require('./ManualMoveAdviser')
 
 const someSign = 'X',
   emptyBoard = Board.empty()
 
-const staticMoveAdviser = new StaticMoveAdviser()
+const manualMoveAdviser = new ManualMoveAdviser()
 
-suite('Player', () => {
+suite('Player', function() {
+  this.timeout(100)
+
   let player
   setup(() => {
-    player = Player(someSign, staticMoveAdviser)
+    player = Player(someSign, manualMoveAdviser)
   })
 
-  test('places sign on board at top left', wco(function* () {
+  test('places sign on board at top left', () => {
     const topLeft = [0, 0]
-    staticMoveAdviser.setNextAdvice(topLeft)
-    let newBoard = yield player.fillCellOnBoard(emptyBoard)
-    newBoard.getSignAt(topLeft).should.equal(someSign)
-  }))
+    player.fillCellOnBoard(emptyBoard).then(newBoard => {
+      newBoard.getSignAt(topLeft).should.equal(someSign)
+    })
+    return manualMoveAdviser.triggerAdvice(topLeft)
+  })
 
-  test('places sign on board at top left', wco(function* () {
+  test('places sign on board at top left', () => {
     const bottomRight = [2, 2]
-    staticMoveAdviser.setNextAdvice(bottomRight)
-    let newBoard = yield player.fillCellOnBoard(emptyBoard)
-    newBoard.getSignAt(bottomRight).should.equal(someSign)
-  }))
+    player.fillCellOnBoard(emptyBoard).then(newBoard => {
+      newBoard.getSignAt(bottomRight).should.equal(someSign)
+    })
+    manualMoveAdviser.triggerAdvice(bottomRight)
+  })
 })
