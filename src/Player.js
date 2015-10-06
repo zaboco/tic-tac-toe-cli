@@ -1,14 +1,16 @@
 'use strict'
 
-const wco = require('co').wrap
+module.exports = class Player {
+  constructor(sign, moveAdviser) {
+    this.sign = sign
+    this.moveAdviser = moveAdviser
+  }
 
-module.exports = Player
+  willChooseCoordsFor(board) {
+    return this.moveAdviser.coordsFor(board, this.sign)
+  }
 
-function Player(sign, moveAdviser) {
-  return {
-    fillCellOnBoard: wco(function* (board) {
-      const coords = yield moveAdviser.coordsFor(board, sign)
-      return board.fillCell(coords, sign)
-    })
+  fillCellOnBoard(board, coords) {
+    return board.fillCell(coords, this.sign)
   }
 }
