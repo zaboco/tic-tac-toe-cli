@@ -47,10 +47,22 @@ suite('Game', function() {
         expectedPlayer = players[0]
       })
 
+      function playerChoosesCoords(coords) {
+        game.run()
+        expectedPlayer.chooseCoords(coords)
+      }
+
       test('when the player chooses coords', done => {
         game.on('round.end', () => { done() })
-        game.run()
-        expectedPlayer.chooseCoords(someCoords)
+        playerChoosesCoords(someCoords)
+      })
+
+      test('with current player', done => {
+        game.on('round.end', currentPlayer => {
+          currentPlayer.should.equal(players[0])
+          done()
+        })
+        playerChoosesCoords(someCoords)
       })
     })
   })
