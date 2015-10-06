@@ -20,9 +20,8 @@ suite('Game', function() {
       game.on('game.start', done)
       game.run()
     })
-  })
-  suite('first round', () => {
-    suite('starts', () => {
+
+    suite('first round starts', () => {
       test('with first player', done => {
         game.on('round.start', currentPlayer => {
           currentPlayer.should.equal(players[0])
@@ -39,8 +38,10 @@ suite('Game', function() {
         game.run()
       })
     })
+  })
 
-    suite('ends', () => {
+  suite('after player chooses coords', () => {
+    suite('first round ends', () => {
       const someCoords = [0, 0]
       let expectedPlayer
       setup(() => {
