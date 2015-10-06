@@ -21,19 +21,24 @@ module.exports = class Game {
 
   run() {
     this.emit('game.start')
+    this._next()
+  }
+
+  _next() {
     this.emit('round.start', this._currentPlayer(), this.board)
     this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
       this.emit('round.end', this._currentPlayer(), coords)
-      let updatedBoard = this._currentPlayer().fillCellOnBoard(this.board, coords)
-      this.emit('round.start', this._otherPlayer(), updatedBoard)
+      this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
+      this._swapPlayers()
+      return this._next()
     })
+  }
+
+  _swapPlayers() {
+    this.players.reverse()
   }
 
   _currentPlayer() {
     return this.players[0]
-  }
-
-  _otherPlayer() {
-    return this.players[1]
   }
 }
