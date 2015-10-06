@@ -21,6 +21,13 @@ module.exports = class Game {
 
   run() {
     this.emit('game.start')
-    this.emit('round.start', this.players[0], this.board)
+    this.emit('round.start', this._currentPlayer(), this.board)
+    this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
+      this.emit('round.end', this._currentPlayer())
+    })
+  }
+
+  _currentPlayer() {
+    return this.players[0]
   }
 }

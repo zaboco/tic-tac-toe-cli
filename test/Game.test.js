@@ -20,21 +20,38 @@ suite('Game', function() {
       game.on('game.start', done)
       game.run()
     })
-
-    test('the first round starts with first player', done => {
-      game.emitter.on('round.start', currentPlayer => {
-        currentPlayer.should.equal(players[0])
-        done()
+  })
+  suite('first round', () => {
+    suite('starts', () => {
+      test('with first player', done => {
+        game.on('round.start', currentPlayer => {
+          currentPlayer.should.equal(players[0])
+          done()
+        })
+        game.run()
       })
-      game.run()
+
+      test('with empty board', done => {
+        game.on('round.start', (__, board) => {
+          board.isEmpty().should.be.true
+          done()
+        })
+        game.run()
+      })
     })
 
-    test('the first round starts with empty board', done => {
-      game.emitter.on('round.start', (__, board) => {
-        board.isEmpty().should.be.true
-        done()
+    suite('ends', () => {
+      const someCoords = [0, 0]
+      let expectedPlayer
+      setup(() => {
+        expectedPlayer = players[0]
       })
-      game.run()
+
+      test('when the player chooses coords', done => {
+        game.on('round.end', () => { done() })
+        game.run()
+        expectedPlayer.chooseCoords(someCoords)
+      })
     })
   })
 })
@@ -42,7 +59,7 @@ suite('Game', function() {
 function makePlayer(sign) {
   const player = new Player(sign, new ManualMoveAdviser())
   player.chooseCoords = function(coords) {
-    this.moveAdviser.setNextAdvice(coords)
+    this.moveAdviser.triggerAdvice(coords)
   }
   return player
 }
