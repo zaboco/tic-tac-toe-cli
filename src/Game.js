@@ -23,7 +23,7 @@ module.exports = class Game {
     this.emit('game.start')
     this.emit('round.start', this._currentPlayer(), this.board)
     this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
-      this.emit('round.end', this._currentPlayer())
+      this.emit('round.end', this._currentPlayer(), coords)
     })
   }
 

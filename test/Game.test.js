@@ -64,6 +64,14 @@ suite('Game', function() {
         })
         playerChoosesCoords(someCoords)
       })
+
+      test('with chosen coords', done => {
+        game.on('round.end', (__, coords) => {
+          coords.should.equal(someCoords)
+          done()
+        })
+        playerChoosesCoords(someCoords)
+      })
     })
   })
 })
