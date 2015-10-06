@@ -41,29 +41,20 @@ suite('Game', function() {
   })
 
   suite('after player chooses coords', () => {
+    const someCoords = [0, 0]
+    let currentPlayer
+    setup(() => {
+      currentPlayer = players[0]
+      game.run()
+    })
+
     suite('first round ends', () => {
-      const someCoords = [0, 0]
-      let expectedPlayer
-      setup(() => {
-        expectedPlayer = players[0]
-      })
-
-      function playerChoosesCoords(coords) {
-        game.run()
-        expectedPlayer.chooseCoords(coords)
-      }
-
-      test('when the player chooses coords', done => {
-        game.on('round.end', () => { done() })
-        playerChoosesCoords(someCoords)
-      })
-
       test('with current player', done => {
-        game.on('round.end', currentPlayer => {
-          currentPlayer.should.equal(players[0])
+        game.on('round.end', player => {
+          player.should.equal(currentPlayer)
           done()
         })
-        playerChoosesCoords(someCoords)
+        currentPlayer.chooseCoords(someCoords)
       })
 
       test('with chosen coords', done => {
@@ -71,7 +62,26 @@ suite('Game', function() {
           coords.should.equal(someCoords)
           done()
         })
-        playerChoosesCoords(someCoords)
+        currentPlayer.chooseCoords(someCoords)
+      })
+    })
+
+    suite('second round starts', () => {
+      test('with the other player', done => {
+        let otherPlayer = players[1]
+        game.on('round.start', currentPlayer => {
+          currentPlayer.should.equal(otherPlayer)
+          done()
+        })
+        currentPlayer.chooseCoords(someCoords)
+      })
+
+      test('with the updated board', done => {
+        game.on('round.start', (__, board) => {
+          board.getSignAt(someCoords).should.equal(currentPlayer.sign)
+          done()
+        })
+        currentPlayer.chooseCoords(someCoords)
       })
     })
   })
