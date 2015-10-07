@@ -28,6 +28,8 @@ module.exports = class Game {
     this._emit('round.start', this._currentPlayer(), this.board)
     this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
       this._endRound(coords)
+    }).catch(err => {
+      this._emit('error', err)
     })
   }
 

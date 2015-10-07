@@ -4,6 +4,7 @@ require('chai').should()
 
 const Game = require('../src/Game'),
   Player = require('../src/Player'),
+  BoardError = require('../src/board/BoardError'),
   ManualMoveAdviser = require('../../advisers/manual')
 
 suite('Game', function() {
@@ -47,6 +48,15 @@ suite('Game', function() {
       game.run()
     })
 
+    test('board error is emitted if wrong coords', done => {
+      const wrongCoords = [3, 5]
+      game.on('error', err => {
+        err.should.be.instanceOf(BoardError)
+        done()
+      })
+      firstPlayer.chooseCoords(wrongCoords)
+    })
+
     suite('first round ends', () => {
       test('with first player', done => {
         game.on('round.end', currentPlayer => {
@@ -87,9 +97,10 @@ suite('Game', function() {
   suite('after second player chooses coords', () => {
     const firstCoords = [0, 0], secondCoords = [0, 1]
 
-    setup(() => {
+    setup(done => {
+      game.on('error', done)
       game.run()
-      return firstPlayer.chooseCoords(firstCoords)
+      return firstPlayer.chooseCoords(firstCoords).then(() => done())
     })
 
     test('second round ends with second player', done => {
