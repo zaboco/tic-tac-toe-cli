@@ -39,4 +39,8 @@ suite('Player', function() {
     var newBoard = player.fillCellOnBoard(emptyBoard, bottomRight)
     newBoard.getSignAt(bottomRight).should.equal(someSign)
   })
+
+  test('toString contains sign', () => {
+    player.toString().should.contain(someSign)
+  })
 })

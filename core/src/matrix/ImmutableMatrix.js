@@ -60,6 +60,11 @@ module.exports = class ImmutableMatrix {
     return this.source.map(copyArray)
   }
 
+  /* istanbul ignore next */
+  toString() {
+    return this.source.map(row => row.join('|')).join(' : ')
+  }
+
   static ofSize(size, value) {
     const emptyRow = _.range(size).map(() => value),
       emptyMatrix = _.range(size).map(() => emptyRow)

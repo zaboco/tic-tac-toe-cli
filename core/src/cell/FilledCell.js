@@ -25,4 +25,8 @@ module.exports = class FilledCell {
   fillWith() {
     throw CellError.alreadyFilled(this.sign)
   }
+
+  toString() {
+    return `${this.sign}`
+  }
 }

@@ -1,6 +1,8 @@
 'use strict'
 
-require('chai').should()
+const sinon = require('sinon')
+
+require('chai').use(require('sinon-chai')).should()
 
 const wco = require('co').wrap
 
@@ -10,37 +12,38 @@ const FakeGame = require('./util/FakeGame'),
   ManualMoveAdviser = require('../../advisers/manual')
 
 suite('Game', function() {
-  this.timeout(100)
-
   const X = 'X', O = 'O', _ = null
   let game, firstPlayer, secondPlayer
+
+  const __ = sinon.match.any
+  let eventHandler
   setup(() => {
     firstPlayer = makePlayer(X)
     secondPlayer = makePlayer(O)
     game = new FakeGame([firstPlayer, secondPlayer])
+    eventHandler = sinon.spy()
   })
 
   suite('on run', () => {
-    test('the game starts', done => {
-      game.on('game.start', done)
+    test('the game starts', () => {
+      game.on('game.start', eventHandler)
       game.run()
+      eventHandler.should.have.been.called
     })
 
     suite('first round starts', () => {
-      test('with first player', done => {
-        game.on('round.start', currentPlayer => {
-          currentPlayer.should.equal(firstPlayer)
-          done()
-        })
-        game.run()
+      setup(() => {
+        game.on('round.start', eventHandler)
       })
 
-      test('with empty board', done => {
-        game.on('round.start', (__, board) => {
-          board.isEmpty().should.be.true
-          done()
-        })
+      test('with first player', () => {
         game.run()
+        eventHandler.should.have.been.calledWith(firstPlayer)
+      })
+
+      test('with empty board', () => {
+        game.run()
+        eventHandler.should.have.been.calledWith(__, sinon.match(board => board.isEmpty()))
       })
     })
   })
@@ -61,39 +64,37 @@ suite('Game', function() {
     })
 
     suite('first round ends', () => {
-      test('with first player', done => {
-        game.on('round.end', currentPlayer => {
-          currentPlayer.should.equal(firstPlayer)
-          done()
-        })
-        firstPlayer.chooseCoords(someCoords)
+      setup(() => {
+        game.on('round.end', eventHandler)
       })
 
-      test('with chosen coords', done => {
-        game.on('round.end', (__, coords) => {
-          coords.should.equal(someCoords)
-          done()
-        })
-        firstPlayer.chooseCoords(someCoords)
-      })
+      test('with the first player', wco(function* () {
+        yield firstPlayer.chooseCoords(someCoords)
+        eventHandler.should.have.been.calledWith(firstPlayer)
+      }))
+
+      test('with chosen coords', wco(function* () {
+        yield firstPlayer.chooseCoords(someCoords)
+        eventHandler.should.have.been.calledWith(__, someCoords)
+      }))
     })
 
     suite('second round starts', () => {
-      test('with the second player', done => {
-        game.on('round.start', currentPlayer => {
-          currentPlayer.should.equal(secondPlayer)
-          done()
-        })
-        firstPlayer.chooseCoords(someCoords)
+      setup(() => {
+        game.on('round.start', eventHandler)
       })
 
-      test('with the updated board', done => {
-        game.on('round.start', (__, board) => {
-          board.getSignAt(someCoords).should.equal(firstPlayer.sign)
-          done()
-        })
-        firstPlayer.chooseCoords(someCoords)
-      })
+      test('with the second player', wco(function* () {
+        yield firstPlayer.chooseCoords(someCoords)
+        eventHandler.should.have.been.calledWith(secondPlayer)
+      }))
+
+      test('with the updated board', wco(function* () {
+        yield firstPlayer.chooseCoords(someCoords)
+        eventHandler.should.have.been.calledWith(__, sinon.match(board => {
+          return board.getSignAt(someCoords) === firstPlayer.sign
+        }))
+      }))
     })
   })
 
@@ -103,24 +104,20 @@ suite('Game', function() {
     setup(done => {
       game.on('error', done)
       game.run()
-      return firstPlayer.chooseCoords(firstCoords).then(() => done())
+      firstPlayer.chooseCoords(firstCoords).then(() => done())
     })
 
-    test('second round ends with second player', done => {
-      game.on('round.end', player => {
-        player.should.equal(secondPlayer)
-        done()
-      })
-      secondPlayer.chooseCoords(secondCoords)
-    })
+    test('with the second player', wco(function* () {
+      game.on('round.end', eventHandler)
+      yield secondPlayer.chooseCoords(secondCoords)
+      eventHandler.should.have.been.calledWith(secondPlayer)
+    }))
 
-    test('third round starts with the first player', done => {
-      game.on('round.start', player => {
-        player.should.equal(firstPlayer)
-        done()
-      })
-      secondPlayer.chooseCoords(secondCoords)
-    })
+    test('third round starts with the first player', wco(function* () {
+      game.on('round.start', eventHandler)
+      yield secondPlayer.chooseCoords(secondCoords)
+      eventHandler.should.have.been.calledWith(firstPlayer)
+    }))
   })
 
   suite('end game', () => {
@@ -137,18 +134,16 @@ suite('Game', function() {
     })
 
     test('first player wins on next round start', wco(function* () {
-      game.on('round.start', (player, board) => {
-        board.hasWinner().should.be.true
-      })
+      game.on('round.start', eventHandler)
       yield firstPlayer.chooseCoords(winningCoords)
+      eventHandler.should.have.been.calledWith(__, sinon.match(board => board.hasWinner()))
     }))
 
     test('it is a tie if first player chooses poorly', wco(function* () {
       yield firstPlayer.chooseCoords(tieCoords)
-      game.on('round.start', (player, board) => {
-        board.hasTie().should.be.true
-      })
+      game.on('round.start', eventHandler)
       yield secondPlayer.chooseCoords(winningCoords)
+      eventHandler.should.have.been.calledWith(__, sinon.match(board => board.hasTie()))
     }))
   })
 })

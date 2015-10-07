@@ -19,5 +19,10 @@ module.exports = {
 
   sameAs() {
     return false
+  },
+
+  /* istanbul ignore next */
+  toString() {
+    return '_'
   }
 }

@@ -13,4 +13,8 @@ module.exports = class Player {
   fillCellOnBoard(board, coords) {
     return board.fillCell(coords, this.sign)
   }
+
+  toString() {
+    return `Player(${this.sign})`
+  }
 }

@@ -91,6 +91,10 @@ module.exports = class Board {
     return this.status === 'tie'
   }
 
+  toString() {
+    return this.matrix.toString()
+  }
+
   static empty() {
     return new Board(ImmutableMatrix.ofSize(SIZE, emptyCell))
   }

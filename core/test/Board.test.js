@@ -106,6 +106,10 @@ suite('Board', () => {
     test('the board does not have tie', () => {
       newBoard.hasTie().should.equal(false)
     })
+
+    test('toString contains the added sign', () => {
+      newBoard.toString().should.contain(someSign)
+    })
   })
 
   test('filling a board with a `null` leaves the cell empty', () => {
