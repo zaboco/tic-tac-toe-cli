@@ -38,9 +38,8 @@ Starts the game and returns a `Promise` that is fulfilled when the game ends, ei
 
 ##### `round.end (currentPlayer, coords)`
 
-##### `game.won (board, winningPlayer)`
-
-##### `game.tie (board)`
+##### `game.end (status[, winningPlayer])`
+The status is one of `win` or `tie`. The winning is specified when it is the case.
 
 ### Player
 #### Methods

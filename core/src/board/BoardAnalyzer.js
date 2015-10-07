@@ -14,7 +14,8 @@ module.exports = class {
 function winnerIfAnyGroupingIsWinner(board) {
   const winningGroupings = board.findGroupings(it => it.isWinner())
   if (winningGroupings.length) {
-    return 'winner'
+    const winnerSign = winningGroupings[0].winnerSign()
+    return `winner:${winnerSign}`
   }
 }
 

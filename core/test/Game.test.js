@@ -133,17 +133,17 @@ suite('Game', function() {
       done()
     })
 
-    test('first player wins on next round start', wco(function* () {
-      game.on('round.start', eventHandler)
+    test('first player wins', wco(function* () {
+      game.on('game.end', eventHandler)
       yield firstPlayer.chooseCoords(winningCoords)
-      eventHandler.should.have.been.calledWith(__, sinon.match(board => board.hasWinner()))
+      eventHandler.should.have.been.calledWith('win', firstPlayer.sign)
     }))
 
     test('it is a tie if first player chooses poorly', wco(function* () {
       yield firstPlayer.chooseCoords(tieCoords)
-      game.on('round.start', eventHandler)
+      game.on('game.end', eventHandler)
       yield secondPlayer.chooseCoords(winningCoords)
-      eventHandler.should.have.been.calledWith(__, sinon.match(board => board.hasTie()))
+      eventHandler.should.have.been.calledWith('tie')
     }))
   })
 })

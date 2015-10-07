@@ -84,7 +84,14 @@ module.exports = class Board {
   }
 
   hasWinner() {
-    return this.status === 'winner'
+    return this.status.startsWith('winner')
+  }
+
+  winnerSign() {
+    if (!this.hasWinner()) {
+      return null
+    }
+    return this.status.match(/winner:(.*)/)[1]
   }
 
   hasTie() {
