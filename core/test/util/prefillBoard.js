@@ -3,15 +3,16 @@
 const Board = require('../../src/board')
 
 exports.fromMatrix = function prefillBoardFromMatrix(matrix) {
+  matrix = matrix || []
   return matrix.reduce(fillFromRow, Board.empty())
 }
 
 exports.fromRow = function prefillBoardFromRow(row, index) {
-  return fillFromRow(Board.empty(), row, index || 0)
+  return fillFromRow(Board.empty(), row || [], index || 0)
 }
 
 exports.fromColumn = function prefillBoardFromRow(column, index) {
-  return fillFromColumn(Board.empty(), column, index || 0)
+  return fillFromColumn(Board.empty(), column || [], index || 0)
 }
 
 function fillFromRow(board, row, rowIndex) {

@@ -2,7 +2,9 @@
 
 require('chai').should()
 
-const Game = require('../src/Game'),
+const wco = require('co').wrap
+
+const FakeGame = require('./util/FakeGame'),
   Player = require('../src/Player'),
   BoardError = require('../src/board/BoardError'),
   ManualMoveAdviser = require('../../advisers/manual')
@@ -10,11 +12,12 @@ const Game = require('../src/Game'),
 suite('Game', function() {
   this.timeout(100)
 
+  const X = 'X', O = 'O', _ = null
   let game, firstPlayer, secondPlayer
   setup(() => {
-    firstPlayer = makePlayer('X')
-    secondPlayer = makePlayer('O')
-    game = new Game([firstPlayer, secondPlayer])
+    firstPlayer = makePlayer(X)
+    secondPlayer = makePlayer(O)
+    game = new FakeGame([firstPlayer, secondPlayer])
   })
 
   suite('on run', () => {
@@ -118,6 +121,35 @@ suite('Game', function() {
       })
       secondPlayer.chooseCoords(secondCoords)
     })
+  })
+
+  suite('end game', () => {
+    const winningCoords = [2, 2], tieCoords = [2, 1]
+    setup(done => {
+      game.fillBoardFromMatrix([
+        [X, O, O],
+        [O, X, X],
+        [X, _, _]
+      ])
+      game.on('error', done)
+      game.run()
+      done()
+    })
+
+    test('first player wins on next round start', wco(function* () {
+      game.on('round.start', (player, board) => {
+        board.hasWinner().should.be.true
+      })
+      yield firstPlayer.chooseCoords(winningCoords)
+    }))
+
+    test('it is a tie if first player chooses poorly', wco(function* () {
+      yield firstPlayer.chooseCoords(tieCoords)
+      game.on('round.start', (player, board) => {
+        board.hasTie().should.be.true
+      })
+      yield secondPlayer.chooseCoords(winningCoords)
+    }))
   })
 })
 
