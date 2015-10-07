@@ -2,10 +2,11 @@
 
 require('chai').should()
 
-const Board = require('../src/board/Board'),
-  BoardError = require('../src/board/BoardError')
+const Board = require('../src/board'),
+  BoardError = require('../src/board/BoardError'),
+  prefillBoard = require('./util/prefillBoard')
 
-const X = 'X', O = 'O'
+const X = 'X', O = 'O', _ = null
 
 suite('Board', () => {
   const emptyCellSign = ' '
@@ -132,50 +133,56 @@ suite('Board', () => {
 
   suite('winning', () => {
     test('for first row, with same sign', () => {
-      const boardWithFirstRow = multiFill(rowCoords(0), X)
+      const boardWithFirstRow = prefillBoard.fromRow([X, X, X])
       boardWithFirstRow.hasWinner().should.equal(true)
     })
 
     test('not when the row is mixed', () => {
-      const partialRow = rowCoords(0).slice(1),
-        boardWithPartialRow = multiFill(partialRow, X),
-        boardWithMixedRow = boardWithPartialRow.fillCell([0, 0], O)
+      const boardWithMixedRow = prefillBoard.fromRow([X, X, O])
       boardWithMixedRow.hasWinner().should.equal(false)
     })
 
     test('for second row, with same sign', () => {
-      const boardWithSecondRow = multiFill(rowCoords(1), X)
+      const boardWithSecondRow = prefillBoard.fromRow([X, X, X], 1)
       boardWithSecondRow.hasWinner().should.equal(true)
     })
 
     test('for first column, with same sign', () => {
-      const boardWithFirstColumn = multiFill(columnCoords(0), X)
+      const boardWithFirstColumn = prefillBoard.fromColumn([X, X, X])
       boardWithFirstColumn.hasWinner().should.equal(true)
     })
 
     test('for third column, with same sign', () => {
-      const boardWithThirdColumn = multiFill(columnCoords(2), X)
+      const boardWithThirdColumn = prefillBoard.fromColumn([X, X, X], 1)
       boardWithThirdColumn.hasWinner().should.equal(true)
     })
 
     test('for left diagonal', () => {
-      const boardWithLeftDiagonal = multiFill(leftDiagonalCoords(), X)
+      const boardWithLeftDiagonal = prefillBoard.fromMatrix([
+        [X, _, _],
+        [_, X, _],
+        [_, _, X]
+      ])
       boardWithLeftDiagonal.hasWinner().should.equal(true)
     })
 
     test('for right diagonal', () => {
-      const boardWithRightDiagonal = multiFill(rightDiagonalCoords(), X)
+      const boardWithRightDiagonal = prefillBoard.fromMatrix([
+        [_, _, X],
+        [_, X, _],
+        [X, _, _]
+      ])
       boardWithRightDiagonal.hasWinner().should.equal(true)
     })
 
     test('when it is a win it is not a tie', () => {
-      const winnerBoard = multiFill(rowCoords(0), X)
+      const winnerBoard = prefillBoard.fromRow([X, X, X])
       winnerBoard.hasTie().should.equal(false)
     })
   })
 
   suite('for non-winning full board', () => {
-    const fullMixedBoard = fillFromMatrix([
+    const fullMixedBoard = prefillBoard.fromMatrix([
       [X, X, O],
       [O, X, X],
       [X, O, O]
@@ -190,35 +197,3 @@ suite('Board', () => {
     })
   })
 })
-
-function multiFill(coordsList, sign) {
-  const fillCell = (board, coords) => board.fillCell(coords, sign)
-  return coordsList.reduce(fillCell, Board.empty())
-}
-
-function fillFromMatrix(matrix) {
-  return matrix.reduce(fillFromRow, Board.empty())
-}
-
-function fillFromRow(board, row, rowIndex) {
-  return row.reduce((board, sign, columnIndex) => {
-    return board.fillCell([rowIndex, columnIndex], sign)
-  }, board)
-}
-
-
-function rowCoords(rowIndex) {
-  return [0, 1, 2].map((columnIndex) => [rowIndex, columnIndex])
-}
-
-function columnCoords(columnIndex) {
-  return [0, 1, 2].map((rowIndex) => [rowIndex, columnIndex])
-}
-
-function leftDiagonalCoords() {
-  return [0, 1, 2].map((index) => [index, index])
-}
-
-function rightDiagonalCoords() {
-  return [0, 1, 2].map((index) => [2 - index, index])
-}

@@ -2,7 +2,7 @@
 
 const EventEmitter = require('events').EventEmitter
 
-const Board = require('./board/Board')
+const Board = require('./board')
 
 module.exports = class Game {
   constructor(players) {

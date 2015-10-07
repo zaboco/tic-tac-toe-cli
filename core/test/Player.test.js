@@ -3,7 +3,7 @@
 require('chai').should()
 
 const Player = require('../src/Player'),
-  Board = require('../src/board/Board'),
+  Board = require('../src/board'),
   ManualMoveAdviser = require('../../advisers/manual')
 
 const someSign = 'X',
