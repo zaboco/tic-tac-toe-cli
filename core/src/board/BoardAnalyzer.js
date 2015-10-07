@@ -19,8 +19,8 @@ function winnerIfAnyGroupingIsWinner(board) {
 }
 
 function tieIfFull(board) {
-  var filledCells = board.findCells(cell => !cell.isEmpty())
-  if (filledCells.length) {
+  var emptyCells = board.findCells(cell => cell.isEmpty())
+  if (!emptyCells.length) {
     return 'tie'
   }
 }

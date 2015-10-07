@@ -98,6 +98,14 @@ suite('Board', () => {
     test('the sign at another location is still the empty sign', () => {
       newBoard.getSignAt(otherCellCoords).should.equal(emptyCellSign)
     })
+
+    test('the board does not have winner', () => {
+      newBoard.hasWinner().should.equal(false)
+    })
+
+    test('the board does not have tie', () => {
+      newBoard.hasTie().should.equal(false)
+    })
   })
 
   test('filling a board with a `null` leaves the cell empty', () => {
