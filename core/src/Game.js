@@ -15,23 +15,27 @@ module.exports = class Game {
     this.emitter.on.apply(this.emitter, arguments)
   }
 
-  emit() {
+  _emit() {
     this.emitter.emit.apply(this.emitter, arguments)
   }
 
   run() {
-    this.emit('game.start')
-    this._next()
+    this._emit('game.start')
+    this._startRound()
   }
 
-  _next() {
-    this.emit('round.start', this._currentPlayer(), this.board)
+  _startRound() {
+    this._emit('round.start', this._currentPlayer(), this.board)
     this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
-      this.emit('round.end', this._currentPlayer(), coords)
-      this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
-      this._swapPlayers()
-      return this._next()
+      this._endRound(coords)
     })
+  }
+
+  _endRound(coords) {
+    this._emit('round.end', this._currentPlayer(), coords)
+    this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
+    this._swapPlayers()
+    return this._startRound()
   }
 
   _swapPlayers() {

@@ -7,8 +7,8 @@ const BoardError = require('./BoardError'),
   groupsMaker = require('../cell/groupings/groupsMaker'),
   ImmutableMatrix = require('../matrix/ImmutableMatrix'),
   MatrixError = require('../matrix/MatrixError'),
-  emptyCell = require('../cell').empty(),
-  CellError = require('../cell').CellError
+  emptyCell = require('../cell/index').empty(),
+  CellError = require('../cell/index').CellError
 
 const SIZE = 3
 

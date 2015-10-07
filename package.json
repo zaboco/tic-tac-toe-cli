@@ -4,8 +4,10 @@
   "description": "CLI for TicTacToe with AI",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --ui tdd --reporter dot --recursive test",
-    "coverage": "istanbul cover ./node_modules/.bin/_mocha -- --ui tdd"
+    "test": "npm run test:core",
+    "test:core": "mocha --ui tdd --reporter dot --recursive core/test",
+    "test:advisers": "mocha --ui tdd --reporter dot --recursive advisers/*/test",
+    "coverage": "istanbul cover ./node_modules/.bin/_mocha -- --ui tdd core/test advisers/*/test"
   },
   "keywords": [
     "TicTacToe",

@@ -4,7 +4,7 @@ require('chai').should()
 
 const Player = require('../src/Player'),
   Board = require('../src/board/Board'),
-  ManualMoveAdviser = require('./ManualMoveAdviser')
+  ManualMoveAdviser = require('../../advisers/manual')
 
 const someSign = 'X',
   emptyBoard = Board.empty()
