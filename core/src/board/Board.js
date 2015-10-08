@@ -18,15 +18,6 @@ module.exports = class Board {
     this.groupings = groupsMaker.from(matrix)
     this.cells = matrix.allItems()
     this.status = statuses.from(this)
-    this.statusText = this.analyzeStatus()
-  }
-
-  analyzeStatus() {
-    return this.performOnStatus({
-      win: sign => `winner:${sign}`,
-      tie: () => 'tie',
-      ongoing: () => 'ongoing'
-    })
   }
 
   performOnStatus(possibleActions) {
@@ -89,14 +80,6 @@ module.exports = class Board {
 
   _setCellAt(coords, cell) {
     return this.matrix.setAtCoords(coords, cell)
-  }
-
-  hasWinner() {
-    return this.statusText.startsWith('winner')
-  }
-
-  hasTie() {
-    return this.statusText === 'tie'
   }
 
   toString() {

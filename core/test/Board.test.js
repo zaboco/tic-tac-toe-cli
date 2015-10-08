@@ -1,6 +1,9 @@
 'use strict'
 
-require('chai').should()
+const sinon = require('sinon'),
+  lodash = require('lodash')
+
+require('chai').use(require('sinon-chai')).should()
 
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
@@ -35,11 +38,11 @@ suite('Board', () => {
     })
 
     test('it has no winner', () => {
-      emptyBoard.hasWinner().should.equal(false)
+      boardShouldNotHaveStatus(emptyBoard, 'win')
     })
 
     test('it is not tie', () => {
-      emptyBoard.hasTie().should.equal(false)
+      boardShouldNotHaveStatus(emptyBoard, 'tie')
     })
 
     suite('for a position outside the board', () => {
@@ -100,11 +103,11 @@ suite('Board', () => {
     })
 
     test('the board does not have winner', () => {
-      newBoard.hasWinner().should.equal(false)
+      boardShouldNotHaveStatus(newBoard, 'win')
     })
 
     test('the board does not have tie', () => {
-      newBoard.hasTie().should.equal(false)
+      boardShouldNotHaveStatus(newBoard, 'tie')
     })
 
     test('toString contains the added sign', () => {
@@ -146,27 +149,27 @@ suite('Board', () => {
   suite('winning', () => {
     test('for first row, with same sign', () => {
       const boardWithFirstRow = prefillBoard.fromRow([X, X, X])
-      boardWithFirstRow.hasWinner().should.equal(true)
+      boardShouldHaveStatus(boardWithFirstRow, 'win')
     })
 
     test('not when the row is mixed', () => {
       const boardWithMixedRow = prefillBoard.fromRow([X, X, O])
-      boardWithMixedRow.hasWinner().should.equal(false)
+      boardShouldNotHaveStatus(boardWithMixedRow, 'win')
     })
 
     test('for second row, with same sign', () => {
       const boardWithSecondRow = prefillBoard.fromRow([X, X, X], 1)
-      boardWithSecondRow.hasWinner().should.equal(true)
+      boardShouldHaveStatus(boardWithSecondRow, 'win')
     })
 
     test('for first column, with same sign', () => {
       const boardWithFirstColumn = prefillBoard.fromColumn([X, X, X])
-      boardWithFirstColumn.hasWinner().should.equal(true)
+      boardShouldHaveStatus(boardWithFirstColumn, 'win')
     })
 
     test('for third column, with same sign', () => {
       const boardWithThirdColumn = prefillBoard.fromColumn([X, X, X], 1)
-      boardWithThirdColumn.hasWinner().should.equal(true)
+      boardShouldHaveStatus(boardWithThirdColumn, 'win')
     })
 
     test('for left diagonal', () => {
@@ -175,7 +178,7 @@ suite('Board', () => {
         [_, X, _],
         [_, _, X]
       ])
-      boardWithLeftDiagonal.hasWinner().should.equal(true)
+      boardShouldHaveStatus(boardWithLeftDiagonal, 'win')
     })
 
     test('for right diagonal', () => {
@@ -184,12 +187,12 @@ suite('Board', () => {
         [_, X, _],
         [X, _, _]
       ])
-      boardWithRightDiagonal.hasWinner().should.equal(true)
+      boardShouldHaveStatus(boardWithRightDiagonal, 'win')
     })
 
     test('when it is a win it is not a tie', () => {
       const winnerBoard = prefillBoard.fromRow([X, X, X])
-      winnerBoard.hasTie().should.equal(false)
+      boardShouldNotHaveStatus(winnerBoard, 'tie')
     })
   })
 
@@ -204,11 +207,30 @@ suite('Board', () => {
     })
 
     test('it is a tie', () => {
-      fullMixedBoard.hasTie().should.equal(true)
+      boardShouldHaveStatus(fullMixedBoard, 'tie')
     })
 
     test('it is not winner', () => {
-      fullMixedBoard.hasWinner().should.equal(false)
+      boardShouldNotHaveStatus(fullMixedBoard, 'win')
     })
   })
 })
+
+function boardShouldHaveStatus(board, status) {
+  let statusSpy = makeStatusSpy(board)
+  statusSpy.should.have.been.calledWith(status)
+}
+
+function boardShouldNotHaveStatus(board, status) {
+  let statusSpy = makeStatusSpy(board)
+  statusSpy.should.not.have.been.calledWith(status)
+}
+
+function makeStatusSpy(board) {
+  let eventHandler = sinon.spy()
+  const statuses = ['win', 'tie', 'ongoing'],
+    handlers = statuses.map(status => () => eventHandler(status)),
+    handlersMap = lodash.object(statuses, handlers)
+  board.performOnStatus(handlersMap)
+  return eventHandler
+}
