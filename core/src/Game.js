@@ -35,15 +35,11 @@ module.exports = class Game {
 
   _handleMove(coords) {
     this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
-    if (this.board.hasWinner()) {
-      this._emit('game.end', 'win', this.board.winnerSign())
-    }
-    else if (this.board.hasTie()) {
-      this._emit('game.end', 'tie')
-    }
-    else {
-      this._endRound(coords)
-    }
+    this.board.performOnStatus({
+      win: (sign) => this._emit('game.end', 'win', sign),
+      tie: () => this._emit('game.end', 'tie'),
+      ongoing: () => this._endRound(coords)
+    })
   }
 
   _endRound(coords) {

@@ -16,7 +16,7 @@ module.exports = class CellsGrouping {
     return this.hasSameCells
   }
 
-  winnerSign() {
+  commonSign() {
     return this.hasSameCells && this._head().sign
   }
 

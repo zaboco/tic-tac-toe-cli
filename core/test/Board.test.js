@@ -194,11 +194,14 @@ suite('Board', () => {
   })
 
   suite('for non-winning full board', () => {
-    const fullMixedBoard = prefillBoard.fromMatrix([
-      [X, X, O],
-      [O, X, X],
-      [X, O, O]
-    ])
+    let fullMixedBoard
+    setup(() => {
+      fullMixedBoard = prefillBoard.fromMatrix([
+        [X, X, O],
+        [O, X, X],
+        [X, O, O]
+      ])
+    })
 
     test('it is a tie', () => {
       fullMixedBoard.hasTie().should.equal(true)

@@ -6,13 +6,16 @@ const Player = require('../src/Player'),
   Board = require('../src/board'),
   ManualMoveAdviser = require('../../advisers/manual')
 
-const someSign = 'X',
-  emptyBoard = Board.empty()
-
-const manualMoveAdviser = new ManualMoveAdviser()
+const someSign = 'X'
 
 suite('Player', function() {
   this.timeout(100)
+
+  let emptyBoard, manualMoveAdviser
+  suiteSetup(() => {
+    manualMoveAdviser = new ManualMoveAdviser()
+    emptyBoard = Board.empty()
+  })
 
   let player
   setup(() => {

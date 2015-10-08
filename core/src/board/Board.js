@@ -3,7 +3,7 @@
 const _ = require('lodash')
 
 const BoardError = require('./BoardError'),
-  BoardAnalyzer = require('./BoardAnalyzer'),
+  statuses = require('../statuses'),
   groupsMaker = require('../cell/groupings/groupsMaker'),
   ImmutableMatrix = require('../matrix/ImmutableMatrix'),
   MatrixError = require('../matrix/MatrixError'),
@@ -17,12 +17,20 @@ module.exports = class Board {
     this.matrix = matrix
     this.groupings = groupsMaker.from(matrix)
     this.cells = matrix.allItems()
-    this.status = this.analyzeStatus()
+    this.status = statuses.from(this)
+    this.statusText = this.analyzeStatus()
   }
 
   analyzeStatus() {
-    const boardAnalyzer = new BoardAnalyzer()
-    return boardAnalyzer.statusFor(this)
+    return this.performOnStatus({
+      win: sign => `winner:${sign}`,
+      tie: () => 'tie',
+      ongoing: () => 'ongoing'
+    })
+  }
+
+  performOnStatus(possibleActions) {
+    return this.status.performOneOf(possibleActions)
   }
 
   findGroupings(predicate) {
@@ -84,18 +92,11 @@ module.exports = class Board {
   }
 
   hasWinner() {
-    return this.status.startsWith('winner')
-  }
-
-  winnerSign() {
-    if (!this.hasWinner()) {
-      return null
-    }
-    return this.status.match(/winner:(.*)/)[1]
+    return this.statusText.startsWith('winner')
   }
 
   hasTie() {
-    return this.status === 'tie'
+    return this.statusText === 'tie'
   }
 
   toString() {
