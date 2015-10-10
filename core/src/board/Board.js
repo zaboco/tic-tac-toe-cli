@@ -7,8 +7,8 @@ const BoardError = require('./BoardError'),
   groupsMaker = require('../cell/groupings/groupsMaker'),
   ImmutableMatrix = require('../matrix/ImmutableMatrix'),
   MatrixError = require('../matrix/MatrixError'),
-  emptyCell = require('../cell/index').empty(),
-  CellError = require('../cell/index').CellError
+  Cell = require('../cell'),
+  CellError = require('../cell').CellError
 
 const SIZE = 3
 
@@ -87,6 +87,7 @@ module.exports = class Board {
   }
 
   static empty() {
-    return new Board(ImmutableMatrix.ofSize(SIZE, emptyCell))
+    let matrix = ImmutableMatrix.make(SIZE, (i, j) => Cell.emptyAt([i, j]))
+    return new Board(matrix)
   }
 }

@@ -6,7 +6,7 @@ require('chai').use(require('sinon-chai')).should()
 
 const wco = require('co').wrap
 
-const FakeGame = require('./util/FakeGame'),
+const FakeGame = require('./fakes/FakeGame'),
   Player = require('../src/Player'),
   BoardError = require('../src/board/BoardError'),
   ManualMoveAdviser = require('../../advisers/manual')

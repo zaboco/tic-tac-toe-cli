@@ -1,11 +1,11 @@
 'use strict'
 
 const Game = require('../../src/Game'),
-  prefillBoard = require('./prefillBoard')
+  prefilledBoard = require('../../src/board/prefilled')
 
 module.exports = class FakeGame extends Game {
   fillBoardFromMatrix(boardMatrix) {
-    this.board = prefillBoard.fromMatrix(boardMatrix)
+    this.board = prefilledBoard.fromMatrix(boardMatrix)
     return this
   }
 }

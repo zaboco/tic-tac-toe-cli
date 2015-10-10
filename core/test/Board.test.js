@@ -7,7 +7,7 @@ require('chai').use(require('sinon-chai')).should()
 
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
-  prefillBoard = require('./util/prefillBoard')
+  prefilledBoard = require('./../src/board/prefilled')
 
 const X = 'X', O = 'O', _ = null
 
@@ -148,32 +148,32 @@ suite('Board', () => {
 
   suite('winning', () => {
     test('for first row, with same sign', () => {
-      const boardWithFirstRow = prefillBoard.fromRow([X, X, X])
+      const boardWithFirstRow = prefilledBoard.fromRow([X, X, X])
       boardShouldHaveStatus(boardWithFirstRow, 'win')
     })
 
     test('not when the row is mixed', () => {
-      const boardWithMixedRow = prefillBoard.fromRow([X, X, O])
+      const boardWithMixedRow = prefilledBoard.fromRow([X, X, O])
       boardShouldNotHaveStatus(boardWithMixedRow, 'win')
     })
 
     test('for second row, with same sign', () => {
-      const boardWithSecondRow = prefillBoard.fromRow([X, X, X], 1)
+      const boardWithSecondRow = prefilledBoard.fromRow([X, X, X], 1)
       boardShouldHaveStatus(boardWithSecondRow, 'win')
     })
 
     test('for first column, with same sign', () => {
-      const boardWithFirstColumn = prefillBoard.fromColumn([X, X, X])
+      const boardWithFirstColumn = prefilledBoard.fromColumn([X, X, X])
       boardShouldHaveStatus(boardWithFirstColumn, 'win')
     })
 
     test('for third column, with same sign', () => {
-      const boardWithThirdColumn = prefillBoard.fromColumn([X, X, X], 1)
+      const boardWithThirdColumn = prefilledBoard.fromColumn([X, X, X], 1)
       boardShouldHaveStatus(boardWithThirdColumn, 'win')
     })
 
     test('for left diagonal', () => {
-      const boardWithLeftDiagonal = prefillBoard.fromMatrix([
+      const boardWithLeftDiagonal = prefilledBoard.fromMatrix([
         [X, _, _],
         [_, X, _],
         [_, _, X]
@@ -182,7 +182,7 @@ suite('Board', () => {
     })
 
     test('for right diagonal', () => {
-      const boardWithRightDiagonal = prefillBoard.fromMatrix([
+      const boardWithRightDiagonal = prefilledBoard.fromMatrix([
         [_, _, X],
         [_, X, _],
         [X, _, _]
@@ -191,7 +191,7 @@ suite('Board', () => {
     })
 
     test('when it is a win it is not a tie', () => {
-      const winnerBoard = prefillBoard.fromRow([X, X, X])
+      const winnerBoard = prefilledBoard.fromRow([X, X, X])
       boardShouldNotHaveStatus(winnerBoard, 'tie')
     })
   })
@@ -199,7 +199,7 @@ suite('Board', () => {
   suite('for non-winning full board', () => {
     let fullMixedBoard
     setup(() => {
-      fullMixedBoard = prefillBoard.fromMatrix([
+      fullMixedBoard = prefilledBoard.fromMatrix([
         [X, X, O],
         [O, X, X],
         [X, O, O]
