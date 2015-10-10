@@ -9,7 +9,7 @@
         * [x] Computer: "$sign [AI]"
     + [x] Repeat steps above for second player
 - [ ] Computer player
-    + [ ] Make dummy bot - chooses the first non empty cell
+    + [X] Make dummy bot - chooses the first non empty cell
     + [ ] Show board after it moves
     + [ ] Make smart bot
 - [ ] Move choosing

@@ -1,7 +1,8 @@
 'use strict'
 
 module.exports = class DummyMoveAdviser {
-  coordsFor() {
-    return [0, 0]
+  coordsFor(board) {
+    let emptyCells = board.findCells(it => it.isEmpty())
+    return emptyCells[0].positionAsCoords()
   }
 }
