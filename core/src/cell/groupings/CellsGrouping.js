@@ -17,7 +17,7 @@ module.exports = class CellsGrouping {
   }
 
   commonSign() {
-    return this.hasSameCells && this._head().sign
+    return this.hasSameCells && this._head().getSign()
   }
 
   _head() {

@@ -65,10 +65,11 @@ module.exports = class ImmutableMatrix {
     return this.source.map(row => row.join('|')).join(' : ')
   }
 
-  static ofSize(size, value) {
-    const emptyRow = _.range(size).map(() => value),
-      emptyMatrix = _.range(size).map(() => emptyRow)
-    return new ImmutableMatrix(emptyMatrix)
+  static make(size, iterator) {
+    let matrix = _.range(size).map(i => {
+      return _.range(size).map(j => iterator(i, j))
+    })
+    return new ImmutableMatrix(matrix)
   }
 }
 

@@ -1,7 +1,7 @@
 'use strict'
 
-const emptyCell = require('./emptyCell')
+const positioned = require('./positioned')
 
-exports.empty = () => emptyCell
+exports.emptyAt = positioned.emptyAt
 
 exports.CellError = require('./CellError')
