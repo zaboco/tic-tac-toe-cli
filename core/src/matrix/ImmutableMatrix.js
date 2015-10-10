@@ -51,22 +51,23 @@ module.exports = class ImmutableMatrix {
     return _.flatten(this.source)
   }
 
-  format(padding, verticalSeparator, horizontalSeparator) {
-    let formattedRows = this.source.map(row => this._formatRow(row, padding, verticalSeparator))
+  format(settings) {
+    settings = settings != null ? settings : {}
+    let formattedRows = this.source.map(row => this._formatRow(row, settings))
     let firstRowLength = formattedRows[0].length,
-      extraRowSeparator = _.repeat(horizontalSeparator, firstRowLength)
+      extraRowSeparator = _.repeat(settings.horizontalSeparator, firstRowLength)
     let rowSeparator = extraRowSeparator === '' ? '\n' : `\n${extraRowSeparator}\n`
     return formattedRows.join(rowSeparator)
   }
 
-  _formatRow(row, padding, itemsSeparator) {
-    let formattedRowItems = row.map(it => this._formatItem(it, padding))
-    return formattedRowItems.join(itemsSeparator || ' ')
+  _formatRow(row, settings) {
+    let formattedRowItems = row.map(it => this._formatItem(it, settings))
+    return formattedRowItems.join(settings.verticalSeparator || ' ')
   }
 
-  _formatItem(item, padding) {
+  _formatItem(item, settings) {
     let itemAsString = item.toString()
-    let spaceForItem = itemAsString.length + padding * 2
+    let spaceForItem = itemAsString.length + settings.padding * 2
     return _.pad(itemAsString, spaceForItem)
   }
 

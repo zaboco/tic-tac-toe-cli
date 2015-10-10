@@ -67,7 +67,7 @@ suite('ImmutableMatrix', () => {
       })
 
       test('pads the item left and right if padding is given', () => {
-        oneItemMatrix.format(1).should.equal(` ${item} `)
+        oneItemMatrix.format({ padding: 1 }).should.equal(` ${item} `)
       })
     })
 
@@ -80,17 +80,19 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the items with a spaces', () => {
-        oneRowMatrix.format(0).should.equal(`${first} ${second} ${third}`)
+        oneRowMatrix.format().should.equal(`${first} ${second} ${third}`)
       })
 
       test('joins the items with a custom separator', () => {
-        const sep = ' | '
-        oneRowMatrix.format(0, sep).should.equal(`${first}${sep}${second}${sep}${third}`)
+        const sep = '|'
+        oneRowMatrix.format({ verticalSeparator: sep })
+          .should.equal(`${first}${sep}${second}${sep}${third}`)
       })
 
       test('adds padding to each item if specified', () => {
-        const sep = ' | '
-        oneRowMatrix.format(1, sep).should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
+        const sep = '|'
+        oneRowMatrix.format({ verticalSeparator: sep, padding: 1 })
+          .should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
       })
     })
 
@@ -106,20 +108,31 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with new line', () => {
-        fullMatrix.format(0, ' | ').should.equal([
-          '0 | 1 | 2',
-          '3 | 4 | 5',
-          '6 | 7 | 8'
+        fullMatrix.format({ verticalSeparator: '|' }).should.equal([
+          '0|1|2',
+          '3|4|5',
+          '6|7|8'
         ].join('\n'))
       })
 
       test('joins the rows with custom separator, extended to the full row length', () => {
-        fullMatrix.format(0, ' | ', '-').should.equal([
-          '0 | 1 | 2',
-          '---------',
-          '3 | 4 | 5',
-          '---------',
-          '6 | 7 | 8'
+        fullMatrix.format({ verticalSeparator: '|', horizontalSeparator: '-' }).should.equal([
+          '0|1|2',
+          '-----',
+          '3|4|5',
+          '-----',
+          '6|7|8'
+        ].join('\n'))
+      })
+
+      test('joins the rows with custom separators and item paddings', () => {
+        const formatSettings = { verticalSeparator: '|', horizontalSeparator: '-', padding: 1 }
+        fullMatrix.format(formatSettings).should.equal([
+          ' 0 | 1 | 2 ',
+          '-----------',
+          ' 3 | 4 | 5 ',
+          '-----------',
+          ' 6 | 7 | 8 '
         ].join('\n'))
       })
     })
