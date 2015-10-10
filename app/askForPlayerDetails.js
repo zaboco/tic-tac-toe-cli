@@ -6,7 +6,9 @@ module.exports = askForDetails
 
 function askForDetails(defaultName) {
   return new Promise(resolve => {
-    inquirer.prompt(playerQuestions(defaultName), resolve)
+    inquirer.prompt(playerQuestions(defaultName), details => {
+      resolve(Object.assign({}, { name: defaultName }, details))
+    })
   })
 }
 
@@ -18,7 +20,7 @@ function typeQuestion() {
   return {
     type: 'list',
     name: 'type',
-    message: `Choose first player's type`,
+    message: `Choose player's type`,
     choices: ['Human', 'Computer']
   }
 }
