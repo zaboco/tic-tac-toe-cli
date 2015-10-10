@@ -56,9 +56,19 @@ suite('ImmutableMatrix', () => {
   })
 
   suite('format', () => {
-    test('is the item for one-item matrix', () => {
-      let matrix = new ImmutableMatrix([[1]])
-      matrix.format().should.equal('1')
+    suite('one item matrix', () => {
+      const item = 12
+      let oneItemMatrix
+      setup(() => {
+        oneItemMatrix = new ImmutableMatrix([[item]])
+      })
+      test('is the item for one-item matrix', () => {
+        oneItemMatrix.format().should.equal(`${item}`)
+      })
+
+      test('pads the item left and right if padding is given', () => {
+        oneItemMatrix.format(1).should.equal(` ${item} `)
+      })
     })
   })
 })

@@ -51,8 +51,10 @@ module.exports = class ImmutableMatrix {
     return _.flatten(this.source)
   }
 
-  format() {
-    return this.get(0, 0).toString()
+  format(padding) {
+    let itemAsString = this.get(0, 0).toString()
+    let spaceForItem = itemAsString.length + padding * 2
+    return _.pad(itemAsString, spaceForItem)
   }
 
   _anyCoordsOutside(coords) {
