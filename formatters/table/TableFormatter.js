@@ -27,4 +27,12 @@ module.exports = class TableFormatter {
     let spaceForItem = itemAsString.length + this.padding * 2
     return _.pad(itemAsString, spaceForItem)
   }
+
+  static solid() {
+    return new TableFormatter({
+      verticalSeparator: '|',
+      horizontalSeparator: '-',
+      padding: 1
+    })
+  }
 }

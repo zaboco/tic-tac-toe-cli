@@ -7,7 +7,8 @@ require('chai').use(require('sinon-chai')).should()
 
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
-  prefilledBoard = require('./../src/board/prefilled')
+  prefilledBoard = require('../src/board/prefilled'),
+  TableFormatter = require('../../formatters/table')
 
 const X = 'X', O = 'O', _ = null
 
@@ -213,6 +214,22 @@ suite('Board', () => {
     test('it is not winner', () => {
       boardShouldNotHaveStatus(fullMixedBoard, 'win')
     })
+  })
+
+  test('formatting as table', () => {
+    let fullBoard = prefilledBoard.fromMatrix([
+      [X, X, O],
+      [O, X, X],
+      [X, O, O]
+    ])
+    let formattedBoard = fullBoard.format(TableFormatter.solid())
+    formattedBoard.should.equal([
+      ' X | X | O ',
+      '-----------',
+      ' O | X | X ',
+      '-----------',
+      ' X | O | O '
+    ].join('\n'))
   })
 })
 
