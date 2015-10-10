@@ -51,6 +51,10 @@ module.exports = class ImmutableMatrix {
     return _.flatten(this.source)
   }
 
+  format() {
+    return this.get(0, 0).toString()
+  }
+
   _anyCoordsOutside(coords) {
     const validCoordRange = [0, this.size - 1]
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))

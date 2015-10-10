@@ -54,4 +54,11 @@ suite('ImmutableMatrix', () => {
   test('allItems', () => {
     matrix.allItems().should.eql([0, 1, 2, 10, 11, 12, 20, 21, 22])
   })
+
+  suite('format', () => {
+    test('is the item for one-item matrix', () => {
+      let matrix = new ImmutableMatrix([[1]])
+      matrix.format().should.equal('1')
+    })
+  })
 })
