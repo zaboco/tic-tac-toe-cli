@@ -2,7 +2,8 @@
 
 const _ = require('lodash')
 
-const MatrixError = require('./MatrixError')
+const MatrixError = require('./MatrixError'),
+  TableFormatter = require('./TableFormatter')
 
 module.exports = class ImmutableMatrix {
   constructor(source) {
@@ -52,23 +53,16 @@ module.exports = class ImmutableMatrix {
   }
 
   format(settings) {
-    settings = settings != null ? settings : {}
+    let tableFormatter = new TableFormatter(settings)
     let formattedRows = this.source.map(row => this._formatRow(row, settings))
-    let firstRowLength = formattedRows[0].length,
-      extraRowSeparator = _.repeat(settings.horizontalSeparator, firstRowLength)
-    let rowSeparator = extraRowSeparator === '' ? '\n' : `\n${extraRowSeparator}\n`
-    return formattedRows.join(rowSeparator)
+    let firstRowLength = formattedRows[0].length
+    return tableFormatter.formatMatrix(formattedRows, firstRowLength)
   }
 
   _formatRow(row, settings) {
-    let formattedRowItems = row.map(it => this._formatItem(it, settings))
-    return formattedRowItems.join(settings.verticalSeparator || ' ')
-  }
-
-  _formatItem(item, settings) {
-    let itemAsString = item.toString()
-    let spaceForItem = itemAsString.length + settings.padding * 2
-    return _.pad(itemAsString, spaceForItem)
+    let tableFormatter = new TableFormatter(settings)
+    let formattedRowItems = row.map(it => tableFormatter.formatItem(it))
+    return tableFormatter.formatRow(formattedRowItems)
   }
 
   _anyCoordsOutside(coords) {
