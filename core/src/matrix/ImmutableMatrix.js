@@ -2,8 +2,7 @@
 
 const _ = require('lodash')
 
-const MatrixError = require('./MatrixError'),
-  TableFormatter = require('./TableFormatter')
+const MatrixError = require('./MatrixError')
 
 module.exports = class ImmutableMatrix {
   constructor(source) {
@@ -52,17 +51,14 @@ module.exports = class ImmutableMatrix {
     return _.flatten(this.source)
   }
 
-  format(settings) {
-    let tableFormatter = new TableFormatter(settings)
-    let formattedRows = this.source.map(row => this._formatRow(row, settings))
-    let firstRowLength = formattedRows[0].length
-    return tableFormatter.formatMatrix(formattedRows, firstRowLength)
+  format(formatter) {
+    let formattedRows = this.source.map(row => this._formatRow(row, formatter))
+    return formatter.formatMatrix(formattedRows)
   }
 
-  _formatRow(row, settings) {
-    let tableFormatter = new TableFormatter(settings)
-    let formattedRowItems = row.map(it => tableFormatter.formatItem(it))
-    return tableFormatter.formatRow(formattedRowItems)
+  _formatRow(row, formatter) {
+    let formattedRowItems = row.map(it => formatter.formatItem(it))
+    return formatter.formatRow(formattedRowItems)
   }
 
   _anyCoordsOutside(coords) {

@@ -4,20 +4,22 @@ const _ = require('lodash')
 
 module.exports = class TableFormatter {
   constructor(settings) {
-    settings = settings != null ? settings : {}
-    this.padding = settings.padding
-    this.verticalSeparator = settings.verticalSeparator
-    this.horizontalSeparator = settings.horizontalSeparator
+    _.defaults(this, settings, {
+      padding: 0,
+      horizontalSeparator: '',
+      verticalSeparator: ' '
+    })
   }
 
-  formatMatrix(matrixRows, rowLength) {
+  formatMatrix(matrixRows) {
+    let rowLength = matrixRows[0].length
     let extraRowSeparator = _.repeat(this.horizontalSeparator, rowLength)
     let rowSeparator = extraRowSeparator === '' ? '\n' : `\n${extraRowSeparator}\n`
     return matrixRows.join(rowSeparator)
   }
 
   formatRow(rowItems) {
-    return rowItems.join(this.verticalSeparator || ' ')
+    return rowItems.join(this.verticalSeparator)
   }
 
   formatItem(item) {

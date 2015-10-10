@@ -2,7 +2,8 @@
 
 require('chai').should()
 
-const ImmutableMatrix = require('../src/matrix/ImmutableMatrix')
+const ImmutableMatrix = require('../src/matrix/ImmutableMatrix'),
+  TableFormatter = require('../../formatters/table')
 
 const matrixSource = [
   [0, 1, 2],
@@ -63,11 +64,11 @@ suite('ImmutableMatrix', () => {
         oneItemMatrix = new ImmutableMatrix([[item]])
       })
       test('is the item for one-item matrix', () => {
-        oneItemMatrix.format().should.equal(`${item}`)
+        oneItemMatrix.format(new TableFormatter()).should.equal(`${item}`)
       })
 
       test('pads the item left and right if padding is given', () => {
-        oneItemMatrix.format({ padding: 1 }).should.equal(` ${item} `)
+        oneItemMatrix.format(new TableFormatter({ padding: 1 })).should.equal(` ${item} `)
       })
     })
 
@@ -80,18 +81,18 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the items with a spaces', () => {
-        oneRowMatrix.format().should.equal(`${first} ${second} ${third}`)
+        oneRowMatrix.format(new TableFormatter()).should.equal(`${first} ${second} ${third}`)
       })
 
       test('joins the items with a custom separator', () => {
         const sep = '|'
-        oneRowMatrix.format({ verticalSeparator: sep })
+        oneRowMatrix.format(new TableFormatter({ verticalSeparator: sep }))
           .should.equal(`${first}${sep}${second}${sep}${third}`)
       })
 
       test('adds padding to each item if specified', () => {
         const sep = '|'
-        oneRowMatrix.format({ verticalSeparator: sep, padding: 1 })
+        oneRowMatrix.format(new TableFormatter({ verticalSeparator: sep, padding: 1 }))
           .should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
       })
     })
@@ -108,7 +109,7 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with new line', () => {
-        fullMatrix.format({ verticalSeparator: '|' }).should.equal([
+        fullMatrix.format(new TableFormatter({ verticalSeparator: '|' })).should.equal([
           '0|1|2',
           '3|4|5',
           '6|7|8'
@@ -116,7 +117,11 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with custom separator, extended to the full row length', () => {
-        fullMatrix.format({ verticalSeparator: '|', horizontalSeparator: '-' }).should.equal([
+        let customSeparatorsFormatter = new TableFormatter({
+          verticalSeparator: '|',
+          horizontalSeparator: '-'
+        })
+        fullMatrix.format(customSeparatorsFormatter).should.equal([
           '0|1|2',
           '-----',
           '3|4|5',
@@ -126,8 +131,12 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with custom separators and item paddings', () => {
-        const formatSettings = { verticalSeparator: '|', horizontalSeparator: '-', padding: 1 }
-        fullMatrix.format(formatSettings).should.equal([
+        let fullFormatter = new TableFormatter({
+          verticalSeparator: '|',
+          horizontalSeparator: '-',
+          padding: 1
+        })
+        fullMatrix.format(fullFormatter).should.equal([
           ' 0 | 1 | 2 ',
           '-----------',
           ' 3 | 4 | 5 ',
