@@ -93,5 +93,35 @@ suite('ImmutableMatrix', () => {
         oneRowMatrix.format(1, sep).should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
       })
     })
+
+    suite('multiple rows matrix', () => {
+      const matrixSource = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8]
+      ]
+      let fullMatrix
+      setup(() => {
+        fullMatrix = new ImmutableMatrix(matrixSource)
+      })
+
+      test('joins the rows with new line', () => {
+        fullMatrix.format(0, ' | ').should.equal([
+          '0 | 1 | 2',
+          '3 | 4 | 5',
+          '6 | 7 | 8'
+        ].join('\n'))
+      })
+
+      test('joins the rows with custom separator, extended to the full row length', () => {
+        fullMatrix.format(0, ' | ', '-').should.equal([
+          '0 | 1 | 2',
+          '---------',
+          '3 | 4 | 5',
+          '---------',
+          '6 | 7 | 8'
+        ].join('\n'))
+      })
+    })
   })
 })
