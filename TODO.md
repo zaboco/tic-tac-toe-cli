@@ -1,12 +1,13 @@
 ### TODO
 
-- [ ] Player choosing
-    + [ ] Ask for first player type: "Human" or "Computer" (it gets sign X)
-    + [ ] If the player is "Human", asks for name (defaults to the sign)
-    + [ ] Final names will be:
-        * [ ] Human: "$name ($sign) [H]" - sign is shown only if different from name
-        * [ ] Computer: "$sign [AI]"
-    + [ ] Repeat steps above for second player
+- [x] Player choosing
+    + [x] First player gets sign X, second get O
+    + [x] Ask for first player type: "Human" or "Computer"
+    + [x] If the player is "Human", asks for name (defaults to the sign)
+    + [x] Final names will be:
+        * [x] Human: "$name ($sign) [H]" - sign is shown only if different from name
+        * [x] Computer: "$sign [AI]"
+    + [x] Repeat steps above for second player
 - [ ] Computer player
     + [ ] Make dummy bot
     + [ ] Show board after it moves
