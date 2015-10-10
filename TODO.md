@@ -1,8 +1,9 @@
 ### TODO
 
 - [ ] Player choosing
-    + [ ] Ask for first player type: "Human" or "Computer" (it gets sign X)
-    + [ ] If the player is "Human", asks for name (defaults to the sign)
+    + [x] First player gets sign X, second get O
+    + [x] Ask for first player type: "Human" or "Computer"
+    + [x] If the player is "Human", asks for name (defaults to the sign)
     + [ ] Final names will be:
         * [ ] Human: "$name ($sign) [H]" - sign is shown only if different from name
         * [ ] Computer: "$sign [AI]"
