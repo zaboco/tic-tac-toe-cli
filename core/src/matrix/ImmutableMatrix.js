@@ -51,8 +51,14 @@ module.exports = class ImmutableMatrix {
     return _.flatten(this.source)
   }
 
-  format(padding) {
-    let itemAsString = this.get(0, 0).toString()
+  format(padding, itemsSeparator) {
+    let row = this.getRow(0)
+    let formattedRowItems = row.map(it => this._formatItem(it, padding))
+    return formattedRowItems.join(itemsSeparator || ' ')
+  }
+
+  _formatItem(item, padding) {
+    let itemAsString = item.toString()
     let spaceForItem = itemAsString.length + padding * 2
     return _.pad(itemAsString, spaceForItem)
   }

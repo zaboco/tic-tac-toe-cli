@@ -70,5 +70,28 @@ suite('ImmutableMatrix', () => {
         oneItemMatrix.format(1).should.equal(` ${item} `)
       })
     })
+
+    suite('one row matrix', () => {
+      const first = 3, second = 4, third = 5,
+        row = [first, second, third]
+      let oneRowMatrix
+      setup(() => {
+        oneRowMatrix = new ImmutableMatrix([row])
+      })
+
+      test('joins the items with a spaces', () => {
+        oneRowMatrix.format(0).should.equal(`${first} ${second} ${third}`)
+      })
+
+      test('joins the items with a custom separator', () => {
+        const sep = ' | '
+        oneRowMatrix.format(0, sep).should.equal(`${first}${sep}${second}${sep}${third}`)
+      })
+
+      test('adds padding to each item if specified', () => {
+        const sep = ' | '
+        oneRowMatrix.format(1, sep).should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
+      })
+    })
   })
 })
