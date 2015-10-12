@@ -28,15 +28,15 @@ module.exports = class ImmutableMatrix {
   }
 
   get(rowIndex, columnIndex) {
-    return this.source[rowIndex][columnIndex]
+    return this.getRow(rowIndex)[columnIndex]
   }
 
   getRow(rowIndex) {
-    return this.source[rowIndex]
+    return this.allRows()[rowIndex]
   }
 
   getColumn(columnIndex) {
-    return _.pluck(this.source, columnIndex)
+    return _.pluck(this.allRows(), columnIndex)
   }
 
   getLeftDiagonal() {
@@ -48,17 +48,11 @@ module.exports = class ImmutableMatrix {
   }
 
   allItems() {
-    return _.flatten(this.source)
+    return _.flatten(this.allRows())
   }
 
-  format(formatter) {
-    let formattedRows = this.source.map(row => this._formatRow(row, formatter))
-    return formatter.formatMatrix(formattedRows)
-  }
-
-  _formatRow(row, formatter) {
-    let formattedRowItems = row.map(it => formatter.formatItem(it))
-    return formatter.formatRow(formattedRowItems)
+  formatAs(structure) {
+    return structure.format(this)
   }
 
   _anyCoordsOutside(coords) {
@@ -67,12 +61,16 @@ module.exports = class ImmutableMatrix {
   }
 
   _cloneSource() {
-    return this.source.map(copyArray)
+    return this.allRows().map(copyArray)
   }
 
   /* istanbul ignore next */
   toString() {
-    return this.source.map(row => row.join('|')).join(' : ')
+    return this.allRows().map(row => row.join('|')).join(' : ')
+  }
+
+  allRows() {
+    return this.source
   }
 
   static make(size, iterator) {

@@ -8,7 +8,7 @@ require('chai').use(require('sinon-chai')).should()
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
   prefilledBoard = require('../src/board/prefilled'),
-  TableFormatter = require('../../formatters/table')
+  table = require('../../structures/table')
 
 const X = 'X', O = 'O', _ = null
 
@@ -222,7 +222,7 @@ suite('Board', () => {
       [O, X, X],
       [X, O, O]
     ])
-    let formattedBoard = fullBoard.format(TableFormatter.solid())
+    let formattedBoard = fullBoard.formatAs(table.defaultSimple())
     formattedBoard.should.equal([
       ' X | X | O ',
       '-----------',

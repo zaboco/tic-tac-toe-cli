@@ -86,8 +86,8 @@ module.exports = class Board {
     return this.matrix.toString()
   }
 
-  format(formatter) {
-    return this.matrix.format(formatter)
+  formatAs(structure) {
+    return this.matrix.formatAs(structure)
   }
 
   static empty() {

@@ -3,7 +3,7 @@
 require('chai').should()
 
 const ImmutableMatrix = require('../src/matrix/ImmutableMatrix'),
-  TableFormatter = require('../../formatters/table')
+  table = require('../../structures/table')
 
 const matrixSource = [
   [0, 1, 2],
@@ -56,7 +56,7 @@ suite('ImmutableMatrix', () => {
     matrix.allItems().should.eql([0, 1, 2, 10, 11, 12, 20, 21, 22])
   })
 
-  suite('format', () => {
+  suite('formatAs', () => {
     suite('one item matrix', () => {
       const item = 12
       let oneItemMatrix
@@ -64,11 +64,11 @@ suite('ImmutableMatrix', () => {
         oneItemMatrix = new ImmutableMatrix([[item]])
       })
       test('is the item for one-item matrix', () => {
-        oneItemMatrix.format(new TableFormatter()).should.equal(`${item}`)
+        oneItemMatrix.formatAs(table.simple()).should.equal(`${item}`)
       })
 
       test('pads the item left and right if padding is given', () => {
-        oneItemMatrix.format(new TableFormatter({ padding: 1 })).should.equal(` ${item} `)
+        oneItemMatrix.formatAs(table.simple({ padding: 1 })).should.equal(` ${item} `)
       })
     })
 
@@ -81,18 +81,18 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the items with a spaces', () => {
-        oneRowMatrix.format(new TableFormatter()).should.equal(`${first} ${second} ${third}`)
+        oneRowMatrix.formatAs(table.simple()).should.equal(`${first} ${second} ${third}`)
       })
 
       test('joins the items with a custom separator', () => {
         const sep = '|'
-        oneRowMatrix.format(new TableFormatter({ verticalSeparator: sep }))
+        oneRowMatrix.formatAs(table.simple({ verticalSeparator: sep }))
           .should.equal(`${first}${sep}${second}${sep}${third}`)
       })
 
       test('adds padding to each item if specified', () => {
         const sep = '|'
-        oneRowMatrix.format(new TableFormatter({ verticalSeparator: sep, padding: 1 }))
+        oneRowMatrix.formatAs(table.simple({ verticalSeparator: sep, padding: 1 }))
           .should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
       })
     })
@@ -109,7 +109,7 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with new line', () => {
-        fullMatrix.format(new TableFormatter({ verticalSeparator: '|' })).should.equal([
+        fullMatrix.formatAs(table.simple({ verticalSeparator: '|' })).should.equal([
           '0|1|2',
           '3|4|5',
           '6|7|8'
@@ -117,11 +117,11 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with custom separator, extended to the full row length', () => {
-        let customSeparatorsFormatter = new TableFormatter({
+        let customSeparatorsStructure = table.simple({
           verticalSeparator: '|',
           horizontalSeparator: '-'
         })
-        fullMatrix.format(customSeparatorsFormatter).should.equal([
+        fullMatrix.formatAs(customSeparatorsStructure).should.equal([
           '0|1|2',
           '-----',
           '3|4|5',
@@ -131,12 +131,12 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with custom separators and item paddings', () => {
-        let fullFormatter = new TableFormatter({
+        let fullTableStructure = table.simple({
           verticalSeparator: '|',
           horizontalSeparator: '-',
           padding: 1
         })
-        fullMatrix.format(fullFormatter).should.equal([
+        fullMatrix.formatAs(fullTableStructure).should.equal([
           ' 0 | 1 | 2 ',
           '-----------',
           ' 3 | 4 | 5 ',

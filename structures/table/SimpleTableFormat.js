@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-module.exports = class TableFormatter {
+module.exports = class SimpleTableFormat {
   constructor(settings) {
     _.defaults(this, settings, {
       padding: 0,
@@ -11,28 +11,20 @@ module.exports = class TableFormatter {
     })
   }
 
-  formatMatrix(matrixRows) {
+  matrix(matrixRows) {
     let rowLength = matrixRows[0].length
     let extraRowSeparator = _.repeat(this.horizontalSeparator, rowLength)
     let rowSeparator = extraRowSeparator === '' ? '\n' : `\n${extraRowSeparator}\n`
     return matrixRows.join(rowSeparator)
   }
 
-  formatRow(rowItems) {
+  row(rowItems) {
     return rowItems.join(this.verticalSeparator)
   }
 
-  formatItem(item) {
+  item(item) {
     let itemAsString = item.toString()
     let spaceForItem = itemAsString.length + this.padding * 2
     return _.pad(itemAsString, spaceForItem)
-  }
-
-  static solid() {
-    return new TableFormatter({
-      verticalSeparator: '|',
-      horizontalSeparator: '-',
-      padding: 1
-    })
   }
 }
