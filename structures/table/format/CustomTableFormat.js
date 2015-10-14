@@ -11,12 +11,13 @@ module.exports = class CustomTableFormat {
   }
 
   topBorder(rowLength) {
-    return this.tableFormat.topBorder(rowLength)
+    var originalTopBorder = this.tableFormat.topBorder(rowLength)
+    return this.tableModifier.modifyTopBorder(originalTopBorder)
   }
 
   innerBorder(rowLength) {
-    let originalSeparator = this.tableFormat.innerBorder(rowLength)
-    return this.tableModifier.modifyInnerBorder(originalSeparator)
+    let originalInnerBorder = this.tableFormat.innerBorder(rowLength)
+    return this.tableModifier.modifyInnerBorder(originalInnerBorder)
   }
 
   row(rowItems) {

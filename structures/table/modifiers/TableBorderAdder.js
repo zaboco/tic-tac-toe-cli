@@ -7,14 +7,18 @@ module.exports = class TableBorderAdder {
   }
 
   modifyInnerBorder(innerBorder) {
-    return this._modifyGenericRow(innerBorder)
+    return this._modifyInnerRow(innerBorder)
   }
 
   modifyRow(row) {
-    return this._modifyGenericRow(row)
+    return this._modifyInnerRow(row)
   }
 
-  _modifyGenericRow(genericRow) {
+  modifyTopBorder(topBorder) {
+    return topBorder.prepend(' ')
+  }
+
+  _modifyInnerRow(genericRow) {
     return genericRow.prepend(this.left).append(this.right)
   }
 }

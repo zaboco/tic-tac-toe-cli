@@ -187,7 +187,7 @@ suite('ImmutableMatrix', () => {
           padding: 1,
           border: { inner: '-' }
         }
-        test('top', () => {
+        test('on top', () => {
           let settingsWithTopBorder = _.merge({}, basicTableSettings, { border: { top: '-' } })
           let formattedMatrix = fullMatrix.formatAs(table.simple(settingsWithTopBorder))
           formattedMatrix.should.equal([
@@ -197,6 +197,21 @@ suite('ImmutableMatrix', () => {
             ' 3 | 4 | 5 ',
             '-----------',
             ' 6 | 7 | 8 '
+          ].join('\n'))
+        })
+
+        test('top border has margin if left border is present', () => {
+          let settingsWithTopBorder = _.merge({}, basicTableSettings, { border: { top: '-' } })
+          let borderModifier = table.modifiers.border({ left: '|' })
+          let tableStructure = table.custom(settingsWithTopBorder, borderModifier)
+          let formattedMatrix = fullMatrix.formatAs(tableStructure)
+          formattedMatrix.should.equal([
+            ' -----------',
+            '| 0 | 1 | 2 ',
+            '|-----------',
+            '| 3 | 4 | 5 ',
+            '|-----------',
+            '| 6 | 7 | 8 '
           ].join('\n'))
         })
       })
