@@ -11,11 +11,15 @@ module.exports = class BorderedTableFormat {
   }
 
   separator(rowLength) {
-    return this.tableFormat.separator(rowLength).prepend(this.borderSettings.left)
+    return this.tableFormat.separator(rowLength)
+      .prepend(this.borderSettings.left)
+      .append(this.borderSettings.right)
   }
 
   row(rowItems) {
-    return this.tableFormat.row(rowItems).prepend('|')
+    return this.tableFormat.row(rowItems)
+      .prepend(this.borderSettings.left)
+      .append(this.borderSettings.right)
   }
 
   item(item) {

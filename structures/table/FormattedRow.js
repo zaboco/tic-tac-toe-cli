@@ -6,6 +6,7 @@ module.exports = class FormattedRow {
   constructor(parts) {
     this.body = parts.body
     this.prefix = parts.prefix || ''
+    this.suffix = parts.suffix || ''
   }
 
   getBodyLength() {
@@ -15,7 +16,16 @@ module.exports = class FormattedRow {
   prepend(prefix) {
     return new FormattedRow({
       body: this.body,
-      prefix: prefix
+      prefix: prefix,
+      suffix: this.suffix
+    })
+  }
+
+  append(suffix) {
+    return new FormattedRow({
+      body: this.body,
+      prefix: this.prefix,
+      suffix: suffix
     })
   }
 
@@ -29,6 +39,6 @@ module.exports = class FormattedRow {
   }
 
   toString() {
-    return `${this.prefix}${this.body}`
+    return `${this.prefix}${this.body}${this.suffix}`
   }
 }
