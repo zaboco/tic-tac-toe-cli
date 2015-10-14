@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-const FormattedRow = require('./FormattedRow')
+const FormattedRow = require('./../structure/FormattedRow')
 
 module.exports = class SimpleTableFormat {
   constructor(settings) {

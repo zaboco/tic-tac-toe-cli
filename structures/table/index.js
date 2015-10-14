@@ -1,32 +1,34 @@
 'use strict'
 
-const TableStructure = require('./TableStructure'),
-  SimpleTableFormat = require('./SimpleTableFormat'),
-  HeadersTableFormat = require('./BorderedTableFormat')
+const TableStructure = require('./structure'),
+  SimpleTableFormat = require('./format/SimpleTableFormat'),
+  CustomTableFormat = require('./format/CustomTableFormat')
 
 exports.simple = function(settings) {
-  return new TableStructure(makeSimpleTableFormat(settings))
+  return new TableStructure(new SimpleTableFormat(settings))
 }
 
-exports.defaultSimple = function() {
-  return exports.simple({
+exports.custom = function(settings, modifiers) {
+  let simpleFormat = new SimpleTableFormat(settings)
+  let customFormat = new CustomTableFormat(simpleFormat, modifiers)
+  return new TableStructure(customFormat)
+}
+
+exports.full = function() {
+  const tableSettings = {
     verticalSeparator: '|',
     horizontalSeparator: '-',
     padding: 1
-  })
+  }
+  const borderSettings = {
+    left: '|',
+    right: '|'
+  }
+  return exports.custom(tableSettings, border(borderSettings))
 }
 
-exports.withBorders = function(basicSettings, headerSettings) {
-  let simpleTableFormat = makeSimpleTableFormat(basicSettings)
-  let tableWithHeadersFormat = new HeadersTableFormat(simpleTableFormat, headerSettings)
-  return new TableStructure(tableWithHeadersFormat)
-}
+exports.modifiers = require('./modifiers')
 
-function makeSimpleTableFormat(settings) {
-  settings = Object.assign({}, {
-    verticalSeparator: ' ',
-    horizontalSeparator: '',
-    padding: 0
-  }, settings)
-  return new SimpleTableFormat(settings)
+function border(settings) {
+  return exports.modifiers.border(settings)
 }

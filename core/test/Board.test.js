@@ -222,13 +222,13 @@ suite('Board', () => {
       [O, X, X],
       [X, O, O]
     ])
-    let formattedBoard = fullBoard.formatAs(table.defaultSimple())
+    let formattedBoard = fullBoard.formatAs(table.full())
     formattedBoard.should.equal([
-      ' X | X | O ',
-      '-----------',
-      ' O | X | X ',
-      '-----------',
-      ' X | O | O '
+      '| X | X | O |',
+      '|-----------|',
+      '| O | X | X |',
+      '|-----------|',
+      '| X | O | O |'
     ].join('\n'))
   })
 })

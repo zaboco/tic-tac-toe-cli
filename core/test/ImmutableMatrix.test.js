@@ -153,8 +153,8 @@ suite('ImmutableMatrix', () => {
         }
 
         test('on the left side', () => {
-          let borderSettings = { left: '|' }
-          let borderedTableFormatter = table.withBorders(basicTableSettings, borderSettings)
+          let borderModifier = table.modifiers.border({ left: '|' })
+          let borderedTableFormatter = table.custom(basicTableSettings, borderModifier)
           let formattedMatrix = fullMatrix.formatAs(borderedTableFormatter)
           formattedMatrix.should.equal([
             '| 0 | 1 | 2 ',
@@ -166,8 +166,8 @@ suite('ImmutableMatrix', () => {
         })
 
         test('on the right side', () => {
-          let borderSettings = { right: '|' }
-          let borderedTableFormatter = table.withBorders(basicTableSettings, borderSettings)
+          let borderModifier = table.modifiers.border({ right: '|' })
+          let borderedTableFormatter = table.custom(basicTableSettings, borderModifier)
           let formattedMatrix = fullMatrix.formatAs(borderedTableFormatter)
           formattedMatrix.should.equal([
             ' 0 | 1 | 2 |',
