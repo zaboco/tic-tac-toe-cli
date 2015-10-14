@@ -7,9 +7,15 @@ module.exports = class TableStructure {
 
   format(matrix) {
     let formattedRows = matrix.allRows().map(this._formatRow.bind(this))
-    let rowSeparator = this.formatter.separator(rowLength(formattedRows))
-    let allRows = interleave(formattedRows, rowSeparator)
+    let allRows = this._addBordersTo(formattedRows)
     return this.formatter.matrix(allRows)
+  }
+
+  _addBordersTo(rows) {
+    var length = rowLength(rows)
+    let rowSeparator = this.formatter.separator(length)
+    let topBorder = this.formatter.topBorder(length)
+    return topBorder.insertBefore(interleave(rows, rowSeparator))
   }
 
   _formatRow(row, rowIndex) {
@@ -21,7 +27,7 @@ module.exports = class TableStructure {
 function interleave(array, separator) {
   let head = array[0], tail = array.slice(1)
   return tail.reduce((extendedArray, item) => {
-    return extendedArray.concat(separator.concat(item))
+    return extendedArray.concat(separator.insertBefore([item]))
   }, [head])
 }
 

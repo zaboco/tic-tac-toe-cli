@@ -9,12 +9,20 @@ module.exports = class SimpleTableFormat {
     _.defaults(this, settings, {
       padding: 0,
       horizontalSeparator: '',
-      verticalSeparator: ' '
+      verticalSeparator: ' ',
+      border: {
+        top: ''
+      }
     })
   }
 
   matrix(matrixRows) {
     return matrixRows.join('\n')
+  }
+
+  topBorder(rowLength) {
+    var borderBody = _.repeat(this.border.top, rowLength)
+    return new FormattedRow({ body: borderBody })
   }
 
   separator(rowLength) {

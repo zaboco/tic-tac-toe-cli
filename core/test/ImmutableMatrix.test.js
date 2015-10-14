@@ -145,7 +145,7 @@ suite('ImmutableMatrix', () => {
         ].join('\n'))
       })
 
-      suite('with outer borders', () => {
+      suite('with outer vertical borders', () => {
         const basicTableSettings = {
           verticalSeparator: '|',
           horizontalSeparator: '-',
@@ -175,6 +175,26 @@ suite('ImmutableMatrix', () => {
             ' 3 | 4 | 5 |',
             '-----------|',
             ' 6 | 7 | 8 |'
+          ].join('\n'))
+        })
+      })
+
+      suite('with outer horizontal borders', () => {
+        const basicTableSettings = {
+          verticalSeparator: '|',
+          horizontalSeparator: '-',
+          padding: 1
+        }
+        test('top', () => {
+          let settingsWithTopBorder = Object.assign(basicTableSettings, { border: { top: '-' } })
+          let formattedMatrix = fullMatrix.formatAs(table.simple(settingsWithTopBorder))
+          formattedMatrix.should.equal([
+            '-----------',
+            ' 0 | 1 | 2 ',
+            '-----------',
+            ' 3 | 4 | 5 ',
+            '-----------',
+            ' 6 | 7 | 8 '
           ].join('\n'))
         })
       })

@@ -29,12 +29,12 @@ module.exports = class FormattedRow {
     })
   }
 
-  concat(other) {
+  insertBefore(otherRows) {
     if (_.isEmpty(this.body)) {
-      return [other]
+      return otherRows
     }
     else {
-      return [this, other]
+      return [this].concat(otherRows)
     }
   }
 

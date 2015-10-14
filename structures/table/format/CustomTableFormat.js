@@ -10,6 +10,10 @@ module.exports = class CustomTableFormat {
     return this.tableFormat.matrix(matrixRows)
   }
 
+  topBorder(rowLength) {
+    return this.tableFormat.topBorder(rowLength)
+  }
+
   separator(rowLength) {
     let originalSeparator = this.tableFormat.separator(rowLength)
     return this.tableModifier.modifySeparator(originalSeparator)
