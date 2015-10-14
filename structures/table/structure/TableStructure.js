@@ -1,40 +1,29 @@
 'use strict'
 
+const FormattedBlock = require('./FormattedBlock')
+
 module.exports = class TableStructure {
   constructor(formatter) {
     this.formatter = formatter
   }
 
   format(matrix) {
-    let formattedRows = matrix.allRows().map(this._formatRow.bind(this))
-    let allRows = this._addBordersTo(formattedRows)
-    return this.formatter.matrix(allRows)
+    let coreBlock = this._buildCoreBlock(matrix)
+    let blockWidth = coreBlock.getWidth()
+    return coreBlock
+      .interleave(this.formatter.innerBorder(blockWidth))
+      .prependRow(this.formatter.topBorder(blockWidth))
+      .appendRow(this.formatter.bottomBorder(blockWidth))
+      .join('\n')
   }
 
-  _addBordersTo(rows) {
-    var length = rowLength(rows)
-    let innerBorder = this.formatter.innerBorder(length)
-    let topBorder = this.formatter.topBorder(length)
-    let bottomBorder = this.formatter.bottomBorder(length)
-
-    let rowsWithInnerBorder = interleave(rows, innerBorder)
-    let blockWithTopBorder = topBorder.insertBefore(rowsWithInnerBorder)
-    return bottomBorder.insertAfter(blockWithTopBorder)
+  _buildCoreBlock(matrix) {
+    let formattedItemRows = matrix.allRows().map(this._formatRow.bind(this))
+    return new FormattedBlock(formattedItemRows)
   }
 
   _formatRow(row, rowIndex) {
     var formattedItems = row.map(it => this.formatter.item(it))
     return this.formatter.row(formattedItems, rowIndex)
   }
-}
-
-function interleave(array, separator) {
-  let head = array[0], tail = array.slice(1)
-  return tail.reduce((extendedArray, item) => {
-    return extendedArray.concat(separator.insertBefore([item]))
-  }, [head])
-}
-
-function rowLength(formattedRows) {
-  return formattedRows[0].getBodyLength()
 }

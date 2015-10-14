@@ -2,22 +2,15 @@
 
 const _ = require('lodash')
 
-const FormattedRow = require('./../structure/FormattedRow')
+const FormattedRow = require('../structure/FormattedRow')
 
 module.exports = class SimpleTableFormat {
   constructor(settings) {
     _.defaults(this, settings, {
       padding: 0,
       verticalSeparator: ' ',
-      border: {
-        top: '',
-        inner: ''
-      }
+      border: {}
     })
-  }
-
-  matrix(matrixRows) {
-    return matrixRows.join('\n')
   }
 
   topBorder(rowLength) {

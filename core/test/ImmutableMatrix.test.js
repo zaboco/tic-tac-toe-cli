@@ -229,6 +229,31 @@ suite('ImmutableMatrix', () => {
             ' -----------'
           ].join('\n'))
         })
+
+        test('with all borders', () => {
+          const vertical = '|', horizontal = '-'
+          let settings = {
+            verticalSeparator: vertical,
+            padding: 1,
+            border: {
+              inner: horizontal,
+              bottom: horizontal,
+              top: horizontal
+            }
+          }
+          let borderModifier = table.modifiers.border({ left: vertical, right: vertical })
+          let tableStructure = table.custom(settings, borderModifier)
+          let formattedMatrix = fullMatrix.formatAs(tableStructure)
+          formattedMatrix.should.equal([
+            ' -----------',
+            '| 0 | 1 | 2 |',
+            '|-----------|',
+            '| 3 | 4 | 5 |',
+            '|-----------|',
+            '| 6 | 7 | 8 |',
+            ' -----------'
+          ].join('\n'))
+        })
       })
     })
   })
