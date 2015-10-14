@@ -8,10 +8,10 @@ module.exports = class SimpleTableFormat {
   constructor(settings) {
     _.defaults(this, settings, {
       padding: 0,
-      horizontalSeparator: '',
       verticalSeparator: ' ',
       border: {
-        top: ''
+        top: '',
+        inner: ''
       }
     })
   }
@@ -25,8 +25,8 @@ module.exports = class SimpleTableFormat {
     return new FormattedRow({ body: borderBody })
   }
 
-  separator(rowLength) {
-    var separatorBody = _.repeat(this.horizontalSeparator, rowLength)
+  innerBorder(rowLength) {
+    var separatorBody = _.repeat(this.border.inner, rowLength)
     return new FormattedRow({ body: separatorBody })
   }
 

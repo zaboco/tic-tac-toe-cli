@@ -17,8 +17,10 @@ exports.custom = function(settings, modifiers) {
 exports.full = function() {
   const tableSettings = {
     verticalSeparator: '|',
-    horizontalSeparator: '-',
-    padding: 1
+    padding: 1,
+    border: {
+      inner: '-'
+    }
   }
   const borderSettings = {
     left: '|',

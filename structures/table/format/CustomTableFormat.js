@@ -14,9 +14,9 @@ module.exports = class CustomTableFormat {
     return this.tableFormat.topBorder(rowLength)
   }
 
-  separator(rowLength) {
-    let originalSeparator = this.tableFormat.separator(rowLength)
-    return this.tableModifier.modifySeparator(originalSeparator)
+  innerBorder(rowLength) {
+    let originalSeparator = this.tableFormat.innerBorder(rowLength)
+    return this.tableModifier.modifyInnerBorder(originalSeparator)
   }
 
   row(rowItems) {

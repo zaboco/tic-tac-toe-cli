@@ -2,6 +2,8 @@
 
 require('chai').should()
 
+const _ = require('lodash')
+
 const ImmutableMatrix = require('../src/matrix/ImmutableMatrix'),
   table = require('../../structures/table')
 
@@ -119,7 +121,7 @@ suite('ImmutableMatrix', () => {
       test('joins the rows with custom separator, extended to the full row length', () => {
         let customSeparatorsStructure = table.simple({
           verticalSeparator: '|',
-          horizontalSeparator: '-'
+          border: { inner: '-' }
         })
         fullMatrix.formatAs(customSeparatorsStructure).should.equal([
           '0|1|2',
@@ -133,8 +135,8 @@ suite('ImmutableMatrix', () => {
       test('joins the rows with custom separators and item paddings', () => {
         let fullTableStructure = table.simple({
           verticalSeparator: '|',
-          horizontalSeparator: '-',
-          padding: 1
+          padding: 1,
+          border: { inner: '-' }
         })
         fullMatrix.formatAs(fullTableStructure).should.equal([
           ' 0 | 1 | 2 ',
@@ -148,8 +150,8 @@ suite('ImmutableMatrix', () => {
       suite('with outer vertical borders', () => {
         const basicTableSettings = {
           verticalSeparator: '|',
-          horizontalSeparator: '-',
-          padding: 1
+          padding: 1,
+          border: { inner: '-' }
         }
 
         test('on the left side', () => {
@@ -182,11 +184,11 @@ suite('ImmutableMatrix', () => {
       suite('with outer horizontal borders', () => {
         const basicTableSettings = {
           verticalSeparator: '|',
-          horizontalSeparator: '-',
-          padding: 1
+          padding: 1,
+          border: { inner: '-' }
         }
         test('top', () => {
-          let settingsWithTopBorder = Object.assign(basicTableSettings, { border: { top: '-' } })
+          let settingsWithTopBorder = _.merge({}, basicTableSettings, { border: { top: '-' } })
           let formattedMatrix = fullMatrix.formatAs(table.simple(settingsWithTopBorder))
           formattedMatrix.should.equal([
             '-----------',

@@ -6,8 +6,8 @@ module.exports = class TableBorderAdder {
     this.right = settings.right || ''
   }
 
-  modifySeparator(separator) {
-    return this._modifyGenericRow(separator)
+  modifyInnerBorder(innerBorder) {
+    return this._modifyGenericRow(innerBorder)
   }
 
   modifyRow(row) {
