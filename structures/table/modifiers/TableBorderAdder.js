@@ -14,7 +14,7 @@ module.exports = class TableBorderAdder {
     return this._modifyInnerRow(row)
   }
 
-  modifyTopBorder(topBorder) {
+  modifyOuterBorder(topBorder) {
     return topBorder.prepend(' ')
   }
 

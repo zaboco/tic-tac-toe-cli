@@ -38,6 +38,15 @@ module.exports = class FormattedRow {
     }
   }
 
+  insertAfter(otherRows) {
+    if (_.isEmpty(this.body)) {
+      return otherRows
+    }
+    else {
+      return otherRows.concat(this)
+    }
+  }
+
   toString() {
     return `${this.prefix}${this.body}${this.suffix}`
   }

@@ -13,9 +13,13 @@ module.exports = class TableStructure {
 
   _addBordersTo(rows) {
     var length = rowLength(rows)
-    let rowSeparator = this.formatter.innerBorder(length)
+    let innerBorder = this.formatter.innerBorder(length)
     let topBorder = this.formatter.topBorder(length)
-    return topBorder.insertBefore(interleave(rows, rowSeparator))
+    let bottomBorder = this.formatter.bottomBorder(length)
+
+    let rowsWithInnerBorder = interleave(rows, innerBorder)
+    let blockWithTopBorder = topBorder.insertBefore(rowsWithInnerBorder)
+    return bottomBorder.insertAfter(blockWithTopBorder)
   }
 
   _formatRow(row, rowIndex) {

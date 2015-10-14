@@ -21,13 +21,20 @@ module.exports = class SimpleTableFormat {
   }
 
   topBorder(rowLength) {
-    var borderBody = _.repeat(this.border.top, rowLength)
-    return new FormattedRow({ body: borderBody })
+    return this._formatBorder('top', rowLength)
+  }
+
+  bottomBorder(rowLength) {
+    return this._formatBorder('bottom', rowLength)
   }
 
   innerBorder(rowLength) {
-    var separatorBody = _.repeat(this.border.inner, rowLength)
-    return new FormattedRow({ body: separatorBody })
+    return this._formatBorder('inner', rowLength)
+  }
+
+  _formatBorder(type, rowLength) {
+    let borderBody = _.repeat(this.border[type], rowLength)
+    return new FormattedRow({ body: borderBody })
   }
 
   row(rowItems) {

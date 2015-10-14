@@ -187,7 +187,7 @@ suite('ImmutableMatrix', () => {
           padding: 1,
           border: { inner: '-' }
         }
-        test('on top', () => {
+        test('top border', () => {
           let settingsWithTopBorder = _.merge({}, basicTableSettings, { border: { top: '-' } })
           let formattedMatrix = fullMatrix.formatAs(table.simple(settingsWithTopBorder))
           formattedMatrix.should.equal([
@@ -212,6 +212,21 @@ suite('ImmutableMatrix', () => {
             '| 3 | 4 | 5 ',
             '|-----------',
             '| 6 | 7 | 8 '
+          ].join('\n'))
+        })
+
+        test('bottom border', () => {
+          let settings = _.merge({}, basicTableSettings, { border: { bottom: '-' } })
+          let borderModifier = table.modifiers.border({ left: '|' })
+          let tableStructure = table.custom(settings, borderModifier)
+          let formattedMatrix = fullMatrix.formatAs(tableStructure)
+          formattedMatrix.should.equal([
+            '| 0 | 1 | 2 ',
+            '|-----------',
+            '| 3 | 4 | 5 ',
+            '|-----------',
+            '| 6 | 7 | 8 ',
+            ' -----------'
           ].join('\n'))
         })
       })
