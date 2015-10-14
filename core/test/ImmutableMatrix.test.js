@@ -144,6 +144,24 @@ suite('ImmutableMatrix', () => {
           ' 6 | 7 | 8 '
         ].join('\n'))
       })
+
+      test('adds outer left border', () => {
+        let basicTableSettings = {
+          verticalSeparator: '|',
+          horizontalSeparator: '-',
+          padding: 1
+        }
+        let borderSettings = { left: '|' }
+        let borderedTableFormatter = table.withBorders(basicTableSettings, borderSettings)
+        let formattedMatrix = fullMatrix.formatAs(borderedTableFormatter)
+        formattedMatrix.should.equal([
+          '| 0 | 1 | 2 ',
+          '|-----------',
+          '| 3 | 4 | 5 ',
+          '|-----------',
+          '| 6 | 7 | 8 '
+        ].join('\n'))
+      })
     })
   })
 })

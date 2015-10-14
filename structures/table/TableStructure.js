@@ -1,7 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
-
 module.exports = class TableStructure {
   constructor(formatter) {
     this.formatter = formatter
@@ -23,10 +21,10 @@ module.exports = class TableStructure {
 function interleave(array, separator) {
   let head = array[0], tail = array.slice(1)
   return tail.reduce((extendedArray, item) => {
-    return extendedArray.concat(_.compact([separator, item]))
+    return extendedArray.concat(separator.concat(item))
   }, [head])
 }
 
 function rowLength(formattedRows) {
-  return formattedRows[0].length
+  return formattedRows[0].getBodyLength()
 }

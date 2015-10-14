@@ -2,6 +2,8 @@
 
 const _ = require('lodash')
 
+const FormattedRow = require('./FormattedRow')
+
 module.exports = class SimpleTableFormat {
   constructor(settings) {
     _.defaults(this, settings, {
@@ -16,11 +18,13 @@ module.exports = class SimpleTableFormat {
   }
 
   separator(rowLength) {
-    return _.repeat(this.horizontalSeparator, rowLength)
+    var separatorBody = _.repeat(this.horizontalSeparator, rowLength)
+    return new FormattedRow({ body: separatorBody })
   }
 
   row(rowItems) {
-    return rowItems.join(this.verticalSeparator)
+    let rowBody = rowItems.join(this.verticalSeparator)
+    return new FormattedRow({ body: rowBody })
   }
 
   item(item) {
