@@ -12,10 +12,11 @@ module.exports = class SimpleTableFormat {
   }
 
   matrix(matrixRows) {
-    let rowLength = matrixRows[0].length
-    let extraRowSeparator = _.repeat(this.horizontalSeparator, rowLength)
-    let rowSeparator = extraRowSeparator === '' ? '\n' : `\n${extraRowSeparator}\n`
-    return matrixRows.join(rowSeparator)
+    return matrixRows.join('\n')
+  }
+
+  separator(rowLength) {
+    return _.repeat(this.horizontalSeparator, rowLength)
   }
 
   row(rowItems) {
