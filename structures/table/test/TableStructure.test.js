@@ -207,7 +207,7 @@ suite('structures/table', () => {
 
     suite('with header row', () => {
       const verticalBorder = table.modifiers.border
-      test('as column indexes', () => {
+      test('as numeric indexes', () => {
         let formatWithHeaderRow = table.format.solid().withHeaderRow()
         let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
         formattedMatrix.should.equal([
@@ -235,6 +235,18 @@ suite('structures/table', () => {
           '|-----------',
           '| 6 | 7 | 8 ',
           ' -----------'
+        ].join('\n'))
+      })
+
+      test('as alphabetic indexes', () => {
+        const alphaHeader = table.headers.alpha()
+        let oneLineMatrix = new Matrix([[0, 1, 2]])
+        let formatWithHeaderRow = table.format.solid().withHeaderRow(alphaHeader)
+        oneLineMatrix.formatAs(table.Structure, formatWithHeaderRow).should.equal([
+          ' a   b   c ',
+          '-----------',
+          ' 0 | 1 | 2 ',
+          '-----------'
         ].join('\n'))
       })
     })
