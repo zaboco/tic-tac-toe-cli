@@ -206,6 +206,7 @@ suite('structures/table', () => {
     })
 
     suite('with header row', () => {
+      const verticalBorder = table.modifiers.border
       test('as column indexes', () => {
         let formatWithHeaderRow = table.format.solid().withHeaderRow()
         let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
@@ -218,6 +219,22 @@ suite('structures/table', () => {
           '-----------',
           ' 6 | 7 | 8 ',
           '-----------'
+        ].join('\n'))
+      })
+
+      test('aligned if left border is present', () => {
+        let formatWithHeaderRow = table.format.solid().withHeaderRow()
+          .addModifier(verticalBorder({ left: '|' }))
+        let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
+        formattedMatrix.should.equal([
+          '  1   2   3 ',
+          ' -----------',
+          '| 0 | 1 | 2 ',
+          '|-----------',
+          '| 3 | 4 | 5 ',
+          '|-----------',
+          '| 6 | 7 | 8 ',
+          ' -----------'
         ].join('\n'))
       })
     })

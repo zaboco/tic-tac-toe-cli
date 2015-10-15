@@ -18,6 +18,10 @@ module.exports = class TableBorderAdder {
     return topBorder.prepend(' ')
   }
 
+  modifyHeaderRow(header) {
+    return header.prepend(' ')
+  }
+
   _modifyInnerRow(genericRow) {
     return genericRow.prepend(this.left).append(this.right)
   }

@@ -7,7 +7,8 @@ module.exports = class CustomTableFormat {
   }
 
   headerRow(rowLength) {
-    return this.tableFormat.headerRow(rowLength)
+    let originalHeader = this.tableFormat.headerRow(rowLength)
+    return this.tableModifier.modifyHeaderRow(originalHeader)
   }
 
   topBorder(rowLength) {
