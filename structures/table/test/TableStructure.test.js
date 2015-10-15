@@ -204,6 +204,23 @@ suite('structures/table', () => {
         ].join('\n'))
       })
     })
+
+    suite('with header row', () => {
+      test('as column indexes', () => {
+        let formatWithHeaderRow = table.format.solid().withHeaderRow()
+        let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
+        formattedMatrix.should.equal([
+          ' 1   2   3 ',
+          '-----------',
+          ' 0 | 1 | 2 ',
+          '-----------',
+          ' 3 | 4 | 5 ',
+          '-----------',
+          ' 6 | 7 | 8 ',
+          '-----------'
+        ].join('\n'))
+      })
+    })
   })
 
 })

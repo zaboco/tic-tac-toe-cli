@@ -10,8 +10,21 @@ module.exports = class SimpleTableFormat {
     _.defaults(this, settings, {
       padding: 0,
       verticalSeparator: ' ',
+      header: false,
       border: {}
     })
+  }
+
+  headerRow(rowLength) {
+    if (!this.header) {
+      return new FormattedRow({})
+    }
+    let headerBody = _.range(rowLength).map(index => this._formatItemHeader(index)).join(' ')
+    return new FormattedRow({ body: headerBody })
+  }
+
+  _formatItemHeader(index) {
+    return this._pad(index + 1)
   }
 
   topBorder(rowLength) {
@@ -37,9 +50,13 @@ module.exports = class SimpleTableFormat {
   }
 
   item(item) {
+    return this._pad(item)
+  }
+
+  _pad(item) {
     let itemAsString = item.toString()
     let spaceForItem = itemAsString.length + this.padding * 2
-    return _.pad(itemAsString, spaceForItem)
+    return _.pad(item, spaceForItem)
   }
 
   addModifier(modifier) {
@@ -52,6 +69,11 @@ module.exports = class SimpleTableFormat {
       verticalSeparator: this.verticalSeparator,
       border: Object.assign({}, this.border, borderSymbols)
     }
+    return new SimpleTableFormat(newSettings)
+  }
+
+  withHeaderRow() {
+    let newSettings = _.merge({}, _.pick(this, Object.keys(this)), { header: true })
     return new SimpleTableFormat(newSettings)
   }
 }

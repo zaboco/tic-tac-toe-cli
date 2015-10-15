@@ -10,9 +10,11 @@ module.exports = class TableStructure {
   format(matrix) {
     let coreBlock = this._buildCoreBlock(matrix)
     let blockWidth = coreBlock.getWidth()
+    let itemsCount = matrix.getRow(0).length
     return coreBlock
       .interleave(this.formatter.innerBorder(blockWidth))
       .prependRow(this.formatter.topBorder(blockWidth))
+      .prependRow(this.formatter.headerRow(itemsCount))
       .appendRow(this.formatter.bottomBorder(blockWidth))
       .join('\n')
   }

@@ -6,6 +6,10 @@ module.exports = class CustomTableFormat {
     this.tableModifier = tableModifier
   }
 
+  headerRow(rowLength) {
+    return this.tableFormat.headerRow(rowLength)
+  }
+
   topBorder(rowLength) {
     return this._modifyOuterBorder('topBorder', rowLength)
   }
