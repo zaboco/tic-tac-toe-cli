@@ -222,13 +222,17 @@ suite('Board', () => {
       [O, X, X],
       [X, O, O]
     ])
-    let formattedBoard = fullBoard.formatAs(table.full())
+    let fullTableFormat = table.format.solid()
+      .addModifier(table.modifiers.border({ left: '|', right: '|' }))
+    let formattedBoard = fullBoard.formatAs(table.Structure, fullTableFormat)
     formattedBoard.should.equal([
+      ' -----------',
       '| X | X | O |',
       '|-----------|',
       '| O | X | X |',
       '|-----------|',
-      '| X | O | O |'
+      '| X | O | O |',
+      ' -----------'
     ].join('\n'))
   })
 })

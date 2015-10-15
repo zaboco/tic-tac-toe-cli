@@ -2,8 +2,6 @@
 
 require('chai').should()
 
-const _ = require('lodash')
-
 const ImmutableMatrix = require('../src/matrix/ImmutableMatrix'),
   table = require('../../structures/table')
 
@@ -66,11 +64,12 @@ suite('ImmutableMatrix', () => {
         oneItemMatrix = new ImmutableMatrix([[item]])
       })
       test('is the item for one-item matrix', () => {
-        oneItemMatrix.formatAs(table.simple()).should.equal(`${item}`)
+        oneItemMatrix.formatAs(table.Structure, table.format()).should.equal(`${item}`)
       })
 
       test('pads the item left and right if padding is given', () => {
-        oneItemMatrix.formatAs(table.simple({ padding: 1 })).should.equal(` ${item} `)
+        oneItemMatrix.formatAs(table.Structure, table.format({ padding: 1 }))
+          .should.equal(` ${item} `)
       })
     })
 
@@ -83,18 +82,19 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the items with a spaces', () => {
-        oneRowMatrix.formatAs(table.simple()).should.equal(`${first} ${second} ${third}`)
+        oneRowMatrix.formatAs(table.Structure, table.format())
+          .should.equal(`${first} ${second} ${third}`)
       })
 
       test('joins the items with a custom separator', () => {
         const sep = '|'
-        oneRowMatrix.formatAs(table.simple({ verticalSeparator: sep }))
+        oneRowMatrix.formatAs(table.Structure, table.format({ verticalSeparator: sep }))
           .should.equal(`${first}${sep}${second}${sep}${third}`)
       })
 
       test('adds padding to each item if specified', () => {
         const sep = '|'
-        oneRowMatrix.formatAs(table.simple({ verticalSeparator: sep, padding: 1 }))
+        oneRowMatrix.formatAs(table.Structure, table.format({ verticalSeparator: sep, padding: 1 }))
           .should.equal(` ${first} ${sep} ${second} ${sep} ${third} `)
       })
     })
@@ -111,19 +111,20 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with new line', () => {
-        fullMatrix.formatAs(table.simple({ verticalSeparator: '|' })).should.equal([
-          '0|1|2',
-          '3|4|5',
-          '6|7|8'
-        ].join('\n'))
+        fullMatrix.formatAs(table.Structure, table.format({ verticalSeparator: '|' }))
+          .should.equal([
+            '0|1|2',
+            '3|4|5',
+            '6|7|8'
+          ].join('\n'))
       })
 
       test('joins the rows with custom separator, extended to the full row length', () => {
-        let customSeparatorsStructure = table.simple({
+        let customSeparatorsStructure = table.format({
           verticalSeparator: '|',
           border: { inner: '-' }
         })
-        fullMatrix.formatAs(customSeparatorsStructure).should.equal([
+        fullMatrix.formatAs(table.Structure, customSeparatorsStructure).should.equal([
           '0|1|2',
           '-----',
           '3|4|5',
@@ -133,12 +134,12 @@ suite('ImmutableMatrix', () => {
       })
 
       test('joins the rows with custom separators and item paddings', () => {
-        let fullTableStructure = table.simple({
+        let fullTableStructure = table.format({
           verticalSeparator: '|',
           padding: 1,
           border: { inner: '-' }
         })
-        fullMatrix.formatAs(fullTableStructure).should.equal([
+        fullMatrix.formatAs(table.Structure, fullTableStructure).should.equal([
           ' 0 | 1 | 2 ',
           '-----------',
           ' 3 | 4 | 5 ',
@@ -148,16 +149,19 @@ suite('ImmutableMatrix', () => {
       })
 
       suite('with outer vertical borders', () => {
-        const basicTableSettings = {
-          verticalSeparator: '|',
-          padding: 1,
-          border: { inner: '-' }
-        }
+        const verticalBorder = table.modifiers.border
+        let basicTableFormat
+        setup(() => {
+          basicTableFormat = table.format({
+            verticalSeparator: '|',
+            padding: 1,
+            border: { inner: '-' }
+          })
+        })
 
         test('on the left side', () => {
-          let borderModifier = table.modifiers.border({ left: '|' })
-          let borderedTableFormatter = table.custom(basicTableSettings, borderModifier)
-          let formattedMatrix = fullMatrix.formatAs(borderedTableFormatter)
+          let borderedTableFormatter = basicTableFormat.addModifier(verticalBorder({ left: '|' }))
+          let formattedMatrix = fullMatrix.formatAs(table.Structure, borderedTableFormatter)
           formattedMatrix.should.equal([
             '| 0 | 1 | 2 ',
             '|-----------',
@@ -168,9 +172,8 @@ suite('ImmutableMatrix', () => {
         })
 
         test('on the right side', () => {
-          let borderModifier = table.modifiers.border({ right: '|' })
-          let borderedTableFormatter = table.custom(basicTableSettings, borderModifier)
-          let formattedMatrix = fullMatrix.formatAs(borderedTableFormatter)
+          let borderedTableFormatter = basicTableFormat.addModifier(verticalBorder({ right: '|' }))
+          let formattedMatrix = fullMatrix.formatAs(table.Structure, borderedTableFormatter)
           formattedMatrix.should.equal([
             ' 0 | 1 | 2 |',
             '-----------|',
@@ -182,14 +185,18 @@ suite('ImmutableMatrix', () => {
       })
 
       suite('with outer horizontal borders', () => {
-        const basicTableSettings = {
-          verticalSeparator: '|',
-          padding: 1,
-          border: { inner: '-' }
-        }
+        const verticalBorder = table.modifiers.border
+        let basicTableFormat
+        setup(() => {
+          basicTableFormat = table.format({
+            verticalSeparator: '|',
+            padding: 1,
+            border: { inner: '-' }
+          })
+        })
         test('top border', () => {
-          let settingsWithTopBorder = _.merge({}, basicTableSettings, { border: { top: '-' } })
-          let formattedMatrix = fullMatrix.formatAs(table.simple(settingsWithTopBorder))
+          let formatWithTopBorder = basicTableFormat.withHorizontalBorders({ top: '-'})
+          let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithTopBorder)
           formattedMatrix.should.equal([
             '-----------',
             ' 0 | 1 | 2 ',
@@ -201,10 +208,10 @@ suite('ImmutableMatrix', () => {
         })
 
         test('top border has margin if left border is present', () => {
-          let settingsWithTopBorder = _.merge({}, basicTableSettings, { border: { top: '-' } })
-          let borderModifier = table.modifiers.border({ left: '|' })
-          let tableStructure = table.custom(settingsWithTopBorder, borderModifier)
-          let formattedMatrix = fullMatrix.formatAs(tableStructure)
+          let tableFormat = basicTableFormat
+            .withHorizontalBorders({ top: '-'})
+            .addModifier(verticalBorder({ left: '|' }))
+          let formattedMatrix = fullMatrix.formatAs(table.Structure, tableFormat)
           formattedMatrix.should.equal([
             ' -----------',
             '| 0 | 1 | 2 ',
@@ -216,10 +223,10 @@ suite('ImmutableMatrix', () => {
         })
 
         test('bottom border', () => {
-          let settings = _.merge({}, basicTableSettings, { border: { bottom: '-' } })
-          let borderModifier = table.modifiers.border({ left: '|' })
-          let tableStructure = table.custom(settings, borderModifier)
-          let formattedMatrix = fullMatrix.formatAs(tableStructure)
+          let tableFormat = basicTableFormat
+            .withHorizontalBorders({ bottom: '-'})
+            .addModifier(verticalBorder({ left: '|' }))
+          let formattedMatrix = fullMatrix.formatAs(table.Structure, tableFormat)
           formattedMatrix.should.equal([
             '| 0 | 1 | 2 ',
             '|-----------',
@@ -231,19 +238,10 @@ suite('ImmutableMatrix', () => {
         })
 
         test('with all borders', () => {
-          const vertical = '|', horizontal = '-'
-          let settings = {
-            verticalSeparator: vertical,
-            padding: 1,
-            border: {
-              inner: horizontal,
-              bottom: horizontal,
-              top: horizontal
-            }
-          }
-          let borderModifier = table.modifiers.border({ left: vertical, right: vertical })
-          let tableStructure = table.custom(settings, borderModifier)
-          let formattedMatrix = fullMatrix.formatAs(tableStructure)
+          let tableFormat = basicTableFormat
+            .withHorizontalBorders({ top: '-', bottom: '-'})
+            .addModifier(verticalBorder({ left: '|', right: '|' }))
+          let formattedMatrix = fullMatrix.formatAs(table.Structure, tableFormat)
           formattedMatrix.should.equal([
             ' -----------',
             '| 0 | 1 | 2 |',

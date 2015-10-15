@@ -2,7 +2,8 @@
 
 const _ = require('lodash')
 
-const FormattedRow = require('../structure/FormattedRow')
+const FormattedRow = require('../structure/FormattedRow'),
+  CustomTableFormat = require('./CustomTableFormat')
 
 module.exports = class SimpleTableFormat {
   constructor(settings) {
@@ -39,5 +40,18 @@ module.exports = class SimpleTableFormat {
     let itemAsString = item.toString()
     let spaceForItem = itemAsString.length + this.padding * 2
     return _.pad(itemAsString, spaceForItem)
+  }
+
+  addModifier(modifier) {
+    return new CustomTableFormat(this, modifier)
+  }
+
+  withHorizontalBorders(borderSymbols) {
+    let newSettings = {
+      padding: this.padding,
+      verticalSeparator: this.verticalSeparator,
+      border: Object.assign({}, this.border, borderSymbols)
+    }
+    return new SimpleTableFormat(newSettings)
   }
 }

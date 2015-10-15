@@ -26,4 +26,8 @@ module.exports = class TableStructure {
     var formattedItems = row.map(it => this.formatter.item(it))
     return this.formatter.row(formattedItems, rowIndex)
   }
+
+  static use(formatter) {
+    return new TableStructure(formatter)
+  }
 }
