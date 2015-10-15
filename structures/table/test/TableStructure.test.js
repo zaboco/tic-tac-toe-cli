@@ -207,6 +207,7 @@ suite('structures/table', () => {
 
     suite('with header row', () => {
       const verticalBorder = table.modifiers.border
+
       test('as numeric indexes', () => {
         let formatWithHeaderRow = table.format.solid().withHeaderRow()
         let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
@@ -247,6 +248,43 @@ suite('structures/table', () => {
           '-----------',
           ' 0 | 1 | 2 ',
           '-----------'
+        ].join('\n'))
+      })
+    })
+
+    suite('with header column', () => {
+      let oneColumnMatrix
+      setup(() => {
+        oneColumnMatrix = new Matrix([[0], [3], [6]])
+      })
+
+      test('numeric', () => {
+        let headerModifier = table.modifiers.headerColumn(table.headers.numeric(0))
+        let formatWithHeaderRow = table.format.solid().addModifier(headerModifier)
+        let formattedMatrix = oneColumnMatrix.formatAs(table.Structure, formatWithHeaderRow)
+        formattedMatrix.should.equal([
+          '  ---',
+          '0  0 ',
+          '  ---',
+          '1  3 ',
+          '  ---',
+          '2  6 ',
+          '  ---'
+        ].join('\n'))
+      })
+
+      test('alphabetic', () => {
+        let headerModifier = table.modifiers.headerColumn(table.headers.alpha('i'))
+        let formatWithHeaderRow = table.format.solid().addModifier(headerModifier)
+        let formattedMatrix = oneColumnMatrix.formatAs(table.Structure, formatWithHeaderRow)
+        formattedMatrix.should.equal([
+          '  ---',
+          'i  0 ',
+          '  ---',
+          'j  3 ',
+          '  ---',
+          'k  6 ',
+          '  ---'
         ].join('\n'))
       })
     })

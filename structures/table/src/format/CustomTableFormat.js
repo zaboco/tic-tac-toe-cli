@@ -29,9 +29,9 @@ module.exports = class CustomTableFormat {
     return this.tableModifier.modifyInnerBorder(originalInnerBorder)
   }
 
-  row(rowItems) {
+  row(rowItems, rowIndex) {
     let originalRow = this.tableFormat.row(rowItems)
-    return this.tableModifier.modifyRow(originalRow)
+    return this.tableModifier.modifyRow(originalRow, rowIndex)
   }
 
   item(item) {
