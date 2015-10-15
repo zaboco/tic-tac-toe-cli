@@ -11,12 +11,12 @@ module.exports = class TableStructure {
     let coreBlock = this._buildCoreBlock(matrix)
     let blockWidth = coreBlock.getWidth()
     let itemsCount = matrix.getRow(0).length
-    return coreBlock
+    var formattedBlock = coreBlock
       .interleave(this.formatter.innerBorder(blockWidth))
       .prependRow(this.formatter.topBorder(blockWidth))
       .prependRow(this.formatter.headerRow(itemsCount))
       .appendRow(this.formatter.bottomBorder(blockWidth))
-      .join('\n')
+    return formattedBlock.join('\n')
   }
 
   _buildCoreBlock(matrix) {

@@ -275,9 +275,8 @@ suite('structures/table', () => {
 
       test('alphabetic', () => {
         let headerModifier = table.modifiers.headerColumn(table.headers.alpha('i'))
-        let formatWithHeaderRow = table.format.solid().addModifier(headerModifier)
-        let formattedMatrix = oneColumnMatrix.formatAs(table.Structure, formatWithHeaderRow)
-        formattedMatrix.should.equal([
+        let formatWithHeaderColumn = table.format.solid().addModifier(headerModifier)
+        oneColumnMatrix.formatAs(table.Structure, formatWithHeaderColumn).should.equal([
           '  ---',
           'i  0 ',
           '  ---',
@@ -285,6 +284,21 @@ suite('structures/table', () => {
           '  ---',
           'k  6 ',
           '  ---'
+        ].join('\n'))
+      })
+
+      test('and left border', () => {
+        let formatWithHeaderColumnAndBorder = table.format.solid()
+          .addModifier(table.modifiers.border({ left: '|' }))
+          .addModifier(table.modifiers.headerColumn(table.headers.alpha('i')))
+        oneColumnMatrix.formatAs(table.Structure, formatWithHeaderColumnAndBorder).should.equal([
+          '   ---',
+          'i | 0 ',
+          '  |---',
+          'j | 3 ',
+          '  |---',
+          'k | 6 ',
+          '   ---'
         ].join('\n'))
       })
     })

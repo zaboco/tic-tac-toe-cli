@@ -1,5 +1,7 @@
 'use strict'
 
+const ComposedModifier = require('../modifiers/ComposedModifier')
+
 module.exports = class CustomTableFormat {
   constructor(tableFormat, tableModifier) {
     this.tableFormat = tableFormat
@@ -36,5 +38,10 @@ module.exports = class CustomTableFormat {
 
   item(item) {
     return this.tableFormat.item(item)
+  }
+
+  addModifier(otherModifier) {
+    var composedModifier = new ComposedModifier(this.tableModifier, otherModifier)
+    return new CustomTableFormat(this.tableFormat, composedModifier)
   }
 }

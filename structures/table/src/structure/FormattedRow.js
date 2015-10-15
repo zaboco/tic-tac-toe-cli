@@ -13,19 +13,19 @@ module.exports = class FormattedRow {
     return this.body.length
   }
 
-  prepend(prefix) {
+  prepend(extraPrefix) {
     return new FormattedRow({
       body: this.body,
-      prefix: prefix,
+      prefix: `${extraPrefix}${this.prefix}`,
       suffix: this.suffix
     })
   }
 
-  append(suffix) {
+  append(extraSuffix) {
     return new FormattedRow({
       body: this.body,
       prefix: this.prefix,
-      suffix: suffix
+      suffix: `${this.suffix}${extraSuffix}`
     })
   }
 
