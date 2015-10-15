@@ -86,6 +86,10 @@ module.exports = class Board {
     return this.matrix.toString()
   }
 
+  formatAs(Structure, format) {
+    return this.matrix.formatAs(Structure, format)
+  }
+
   static empty() {
     let matrix = ImmutableMatrix.make(SIZE, (i, j) => Cell.emptyAt([i, j]))
     return new Board(matrix)
