@@ -12,7 +12,7 @@ module.exports = class HeaderColumnAdder {
   }
 
   modifyRow(row, rowIndex) {
-    let paddedHeader = HeaderColumnAdder.padItem(this.header(rowIndex))
+    let paddedHeader = HeaderColumnAdder.padItem(this.header.fromIndex(rowIndex))
     return row.prepend(paddedHeader)
   }
 
