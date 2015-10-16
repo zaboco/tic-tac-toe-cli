@@ -45,6 +45,10 @@ module.exports = class Board {
     return this._getCellAt(coords).isEmpty()
   }
 
+  areCoordsOutside(coords) {
+    return this.matrix.areCoordsOutside(coords)
+  }
+
   fillCell(coords, sign) {
     const newMatrix = this._makeNewMatrixByFilling(coords, sign)
     return new Board(newMatrix)

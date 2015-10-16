@@ -48,6 +48,11 @@ suite('Board', () => {
 
     suite('for a position outside the board', () => {
       const outBoardCoords = [-1, 5]
+
+      test('areCoordsOutside returns true', () => {
+        emptyBoard.areCoordsOutside(outBoardCoords).should.be.true
+      })
+
       test('cannot check if it`s empty', () => {
         emptyBoard.isEmptyAt.bind(emptyBoard, outBoardCoords)
           .should.throw(BoardError.CellOutsideBoard)
