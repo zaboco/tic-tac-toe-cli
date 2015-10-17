@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-module.exports = class HeadersPairParser {
+module.exports = class HeadersParser {
   constructor(headersMapping) {
     this.columnHeader = headersMapping.column
     this.rowHeader = headersMapping.row

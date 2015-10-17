@@ -1,17 +1,13 @@
 'use strict'
 
-const PostValidatedParser = require('./PostValidatedParser'),
-  CoordsValidator = require('./CoordsValidator')
+const CoordsValidator = require('./CoordsValidator')
 
 module.exports = class InteractiveMoveAdviser {
-  constructor(inputSource, coordsParser) {
-    this.inputSource = inputSource
-    this.coordsParser = coordsParser
+  constructor(inputProcessor) {
+    this.inputProcessor = inputProcessor
   }
 
   coordsFor(board) {
-    let postValidator = CoordsValidator(board)
-    let fullParser = new PostValidatedParser(this.coordsParser, postValidator)
-    return this.inputSource.readWith(fullParser)
+    return this.inputProcessor.processWithValidator(CoordsValidator(board))
   }
 }

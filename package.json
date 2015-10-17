@@ -4,11 +4,12 @@
   "description": "CLI for TicTacToe with AI",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:core && npm run test:advisers && npm run test:structures",
+    "test": "npm run test:core && npm run test:advisers && npm run test:structures && npm run test:input",
     "test:core": "npm run _mocha:dot core/test",
     "test:advisers": "npm run _mocha:dot advisers/*/test",
     "test:structures": "npm run _mocha:dot structures/*/test",
-    "coverage": "npm run _istanbul core/test advisers/*/test structures/*/test",
+    "test:input": "npm run _mocha:dot input/*/test",
+    "coverage": "npm run _istanbul core/test advisers/*/test structures/*/test input/*/test",
     "_mocha:dot": "mocha --ui tdd --reporter dot --recursive",
     "_istanbul": "istanbul cover ./node_modules/.bin/_mocha -- --ui tdd -R dot"
   },

@@ -2,13 +2,13 @@
 
 require('chai').should()
 
-const HeadersPairParser = require('../src/parsers/HeadersPairParser'),
+const HeadersParser = require('../src/HeadersParser'),
   headers = require('../../../headers')
 
-suite('HeadersPairParser', () => {
+suite('HeadersParser', () => {
   let parser
   setup(() => {
-    parser = new HeadersPairParser({
+    parser = new HeadersParser({
       column: headers.Alphabetic(),
       row: headers.Numeric()
     })

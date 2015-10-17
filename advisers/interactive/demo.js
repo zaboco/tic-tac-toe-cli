@@ -3,20 +3,11 @@
 const co = require('co')
 
 const InteractiveMoveAdviser = require('.'),
-  HeadersPairParser = InteractiveMoveAdviser.parsers.HeadersPair,
-  InquirerTextInput = require('../../inputSources/InquirerTextInput'),
-  Board = require('../../core').Board,
-  headers = require('../../headers')
+  input = require('../../input'),
+  Board = require('../../core').Board
 
-const promptMessage = `Choose an empty cell ([column letter][row digit], e.g. a3)`
-
-let headersPairTextInput = new InquirerTextInput(promptMessage)
-let headersPairParser = new HeadersPairParser({
-  column: headers.Alphabetic(),
-  row: headers.Numeric()
-})
-
-let adviser = new InteractiveMoveAdviser(headersPairTextInput, headersPairParser)
+let inputProcessor = input.presets.coordsFromHeaders()
+let adviser = new InteractiveMoveAdviser(inputProcessor)
 
 co(function* () {
   const coords = yield adviser.coordsFor(Board.prefilled.fromRow(['X']))
