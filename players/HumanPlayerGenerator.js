@@ -2,8 +2,8 @@
 
 const _ = require('lodash')
 
-const InteractiveMoveAdviser = require('../../advisers/interactive/index'),
-  Player = require('../../core').Player
+const InteractiveMoveAdviser = require('../advisers/interactive/index'),
+  Player = require('../core/index').Player
 
 module.exports = HumanPlayersGenerator
 
