@@ -6,7 +6,7 @@ const InteractiveMoveAdviser = require('.'),
   input = require('../../input'),
   Board = require('../../core').Board
 
-let inputProcessor = input.presets.coordsFromHeaders()
+let inputProcessor = input.presets.CoordsFromHeaders()
 let adviser = new InteractiveMoveAdviser(inputProcessor)
 
 co(function* () {

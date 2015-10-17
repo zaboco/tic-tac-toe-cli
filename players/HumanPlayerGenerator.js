@@ -1,7 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
-
 const InteractiveMoveAdviser = require('../advisers/interactive/index'),
   Player = require('../core/index').Player
 
@@ -10,7 +8,8 @@ module.exports = HumanPlayersGenerator
 function HumanPlayersGenerator(inputProcessor) {
   return class HumanPlayer {
     constructor(sign, name) {
-      this.name = makeName(sign, name)
+      this.sign = sign
+      this.name = name
       this.gamePlayer = makeGamePlayer(sign, inputProcessor)
     }
 
@@ -23,13 +22,9 @@ function HumanPlayersGenerator(inputProcessor) {
     }
 
     toString() {
-      return `${this.name} [H]`
+      return `${this.name}(${this.sign}) [H]`
     }
   }
-}
-
-function makeName(sign, name) {
-  return (_.isEmpty(name)) ? sign : `${name} (${sign})`
 }
 
 function makeGamePlayer(sign, inputProcessor) {

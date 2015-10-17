@@ -8,7 +8,7 @@ module.exports = ComputerPlayersGenerator
 function ComputerPlayersGenerator(algorithm) {
   return class ComputerPlayer {
     constructor(sign) {
-      this.name = sign
+      this.sign = sign
       this.gamePlayer = makeGamePlayer(sign, algorithm)
     }
 
@@ -21,7 +21,7 @@ function ComputerPlayersGenerator(algorithm) {
     }
 
     toString() {
-      return `${this.sign} [AI]`
+      return `(${this.sign}) [AI]`
     }
   }
 }

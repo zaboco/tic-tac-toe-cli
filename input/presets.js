@@ -7,16 +7,16 @@ const TextInputSource = require('./sources').Text,
   TextInputProcessor = require('./processors/TextInputProcessor'),
   headers = require('../headers')
 
-module.exports = { coordsFromHeaders }
-
-function coordsFromHeaders(settings) {
-  settings = _.merge({}, _defaultSettings(), settings)
-  let inputSource = new TextInputSource(settings.message)
-  let headersParser = new HeadersParser({
-    column: headers[settings.headers.column](),
-    row: headers[settings.headers.row]()
-  })
-  return new TextInputProcessor(inputSource, headersParser)
+module.exports = {
+  CoordsFromHeaders(settings) {
+    settings = _.merge({}, _defaultSettings(), settings)
+    let inputSource = new TextInputSource(settings.message)
+    let headersParser = new HeadersParser({
+      column: headers[settings.headers.column](),
+      row: headers[settings.headers.row]()
+    })
+    return new TextInputProcessor(inputSource, headersParser)
+  }
 }
 
 function _defaultSettings() {
