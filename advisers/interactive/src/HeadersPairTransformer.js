@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('lodash')
+
 module.exports = class HeadersPairTransformer {
   constructor(headersMapping) {
     this.columnHeader = headersMapping.column
@@ -13,5 +15,15 @@ module.exports = class HeadersPairTransformer {
       row: this.rowHeader.toIndex(rowNumber),
       column: this.columnHeader.toIndex(columnLetter)
     }
+  }
+
+  preValidate(headersString) {
+    if (_.isEmpty(headersString)) {
+      return 'The input string cannot be empty'
+    }
+    if (headersString.length !== 2) {
+      return `The input's length must be 2`
+    }
+    return true
   }
 }

@@ -45,4 +45,20 @@ suite('HeadersPairTransformer', () => {
       transformer.parse('a3').should.have.property('row', 2)
     })
   })
+
+  suite('validate', () => {
+    test('returns true if the input has the right format', () => {
+      transformer.preValidate('a3').should.be.true
+    })
+
+    test('returns error string if the input is empty', () => {
+      transformer.preValidate().should.match(/input.*empty/i)
+      transformer.preValidate('').should.match(/input.*empty/i)
+    })
+
+    test('returns other error string if the input`s length is different from 2', () => {
+      transformer.preValidate('a').should.match(/input.*length.*2/i)
+      transformer.preValidate('ab12').should.match(/input.*length.*2/i)
+    })
+  })
 })
