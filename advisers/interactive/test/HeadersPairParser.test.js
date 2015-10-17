@@ -2,7 +2,7 @@
 
 require('chai').should()
 
-const HeadersPairParser = require('../src/HeadersPairParser'),
+const HeadersPairParser = require('../src/parsers/HeadersPairParser'),
   headers = require('../../../headers')
 
 suite('HeadersPairParser', () => {

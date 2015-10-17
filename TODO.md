@@ -9,12 +9,12 @@
         * [x] Computer: "$sign [AI]"
     + [x] Repeat steps above for second player
 - [ ] Computer player
-    + [X] Make dummy bot - chooses the first non empty cell
+    + [x] Make dummy bot - chooses the first non empty cell
     + [ ] Show board after it moves
     + [ ] Make smart bot
 - [ ] Move choosing
     + [ ] Show board
-    + [ ] Take input from user
+    + [x] Take input from user
     + [ ] Place sign on board
 - [ ] Status
     + [ ] At the start of the round: "It is $Player's turn"
