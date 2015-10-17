@@ -24,7 +24,7 @@ module.exports = class SimpleTableFormat {
   }
 
   _formatItemHeader(index) {
-    return this._pad(this.header(index))
+    return this._pad(this.header.fromIndex(index))
   }
 
   topBorder(rowLength) {
@@ -73,7 +73,6 @@ module.exports = class SimpleTableFormat {
   }
 
   withHeaderRow(header) {
-    header = header || require('../headers').numeric()
     let newSettings = _.merge({}, _.pick(this, Object.keys(this)), { header })
     return new SimpleTableFormat(newSettings)
   }

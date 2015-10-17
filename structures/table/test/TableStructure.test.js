@@ -3,7 +3,8 @@
 require('chai').should()
 
 const table = require('..'),
-  Matrix = require('../../../core').Matrix
+  Matrix = require('../../../core').Matrix,
+  headers = require('../../../headers')
 
 suite('structures/table', () => {
   suite('one item matrix', () => {
@@ -209,7 +210,7 @@ suite('structures/table', () => {
       const verticalBorder = table.modifiers.border
 
       test('as numeric indexes', () => {
-        let formatWithHeaderRow = table.format.solid().withHeaderRow()
+        let formatWithHeaderRow = table.format.solid().withHeaderRow(headers.Numeric())
         let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
         formattedMatrix.should.equal([
           ' 1   2   3 ',
@@ -224,7 +225,7 @@ suite('structures/table', () => {
       })
 
       test('aligned if left border is present', () => {
-        let formatWithHeaderRow = table.format.solid().withHeaderRow()
+        let formatWithHeaderRow = table.format.solid().withHeaderRow(headers.Numeric())
           .addModifier(verticalBorder({ left: '|' }))
         let formattedMatrix = fullMatrix.formatAs(table.Structure, formatWithHeaderRow)
         formattedMatrix.should.equal([
@@ -240,7 +241,7 @@ suite('structures/table', () => {
       })
 
       test('as alphabetic indexes', () => {
-        const alphaHeader = table.headers.alpha()
+        const alphaHeader = headers.Alphabetic()
         let oneLineMatrix = new Matrix([[0, 1, 2]])
         let formatWithHeaderRow = table.format.solid().withHeaderRow(alphaHeader)
         oneLineMatrix.formatAs(table.Structure, formatWithHeaderRow).should.equal([
@@ -259,7 +260,7 @@ suite('structures/table', () => {
       })
 
       test('numeric', () => {
-        let headerModifier = table.modifiers.headerColumn(table.headers.numeric(0))
+        let headerModifier = table.modifiers.headerColumn(headers.Numeric(0))
         let formatWithHeaderRow = table.format.solid().addModifier(headerModifier)
         let formattedMatrix = oneColumnMatrix.formatAs(table.Structure, formatWithHeaderRow)
         formattedMatrix.should.equal([
@@ -274,7 +275,7 @@ suite('structures/table', () => {
       })
 
       test('alphabetic', () => {
-        let headerModifier = table.modifiers.headerColumn(table.headers.alpha('i'))
+        let headerModifier = table.modifiers.headerColumn(headers.Alphabetic('i'))
         let formatWithHeaderColumn = table.format.solid().addModifier(headerModifier)
         oneColumnMatrix.formatAs(table.Structure, formatWithHeaderColumn).should.equal([
           '  ---',
@@ -290,7 +291,7 @@ suite('structures/table', () => {
       test('and left border', () => {
         let formatWithHeaderColumnAndBorder = table.format.solid()
           .addModifier(table.modifiers.border({ left: '|' }))
-          .addModifier(table.modifiers.headerColumn(table.headers.alpha('i')))
+          .addModifier(table.modifiers.headerColumn(headers.Alphabetic('i')))
         oneColumnMatrix.formatAs(table.Structure, formatWithHeaderColumnAndBorder).should.equal([
           '   ---',
           'i | 0 ',

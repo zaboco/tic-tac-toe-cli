@@ -21,7 +21,7 @@ module.exports = class ImmutableMatrix {
   }
 
   getAtCoords(coords) {
-    if (this._anyCoordsOutside(coords)) {
+    if (this.areCoordsOutside(coords)) {
       throw MatrixError.invalidCoords(coords)
     }
     return this.get(coords[0], coords[1])
@@ -55,7 +55,7 @@ module.exports = class ImmutableMatrix {
     return Structure.use(formatter).format(this)
   }
 
-  _anyCoordsOutside(coords) {
+  areCoordsOutside(coords) {
     const validCoordRange = [0, this.size - 1]
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))
   }
