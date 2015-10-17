@@ -11,10 +11,10 @@ module.exports = class HeadersPairParser {
   parse(headersString) {
     let columnLetter = headersString[0].toLowerCase()
     let rowNumber = headersString[1]
-    return {
-      row: this.rowHeader.toIndex(rowNumber),
-      column: this.columnHeader.toIndex(columnLetter)
-    }
+    return [
+      this.rowHeader.toIndex(rowNumber),
+      this.columnHeader.toIndex(columnLetter)
+    ]
   }
 
   preValidate(headersString) {

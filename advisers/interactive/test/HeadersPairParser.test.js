@@ -14,35 +14,36 @@ suite('HeadersPairParser', () => {
     })
   })
 
+  const row = 0, column = 1
   suite('first char is for column', () => {
     test('a -> 0', () => {
-      parser.parse('a1').should.have.property('column', 0)
+      parser.parse('a1').should.have.property(column, 0)
     })
 
     test('b -> 1', () => {
-      parser.parse('b1').should.have.property('column', 1)
+      parser.parse('b1').should.have.property(column, 1)
     })
 
     test('c -> 2', () => {
-      parser.parse('c1').should.have.property('column', 2)
+      parser.parse('c1').should.have.property(column, 2)
     })
 
     test('it is case insensitive', () => {
-      parser.parse('A1').should.have.property('column', 0)
+      parser.parse('A1').should.have.property(column, 0)
     })
   })
 
   suite('second char is for row', () => {
     test('1 -> 0', () => {
-      parser.parse('a1').should.have.property('row', 0)
+      parser.parse('a1').should.have.property(row, 0)
     })
 
     test('2 -> 1', () => {
-      parser.parse('a2').should.have.property('row', 1)
+      parser.parse('a2').should.have.property(row, 1)
     })
 
     test('3 -> 2', () => {
-      parser.parse('a3').should.have.property('row', 2)
+      parser.parse('a3').should.have.property(row, 2)
     })
   })
 
