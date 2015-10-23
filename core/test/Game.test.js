@@ -19,8 +19,8 @@ suite('Game', function() {
   const __ = sinon.match.any
   let eventHandler
   setup(wco(function*() {
-    firstPlayer = yield setupPlayer(X)
-    secondPlayer = yield setupPlayer(O)
+    firstPlayer = yield makeFakePlayer(X)
+    secondPlayer = yield makeFakePlayer(O)
     game = new FakeGame([firstPlayer, secondPlayer])
     eventHandler = sinon.spy()
   }))
@@ -149,17 +149,7 @@ suite('Game', function() {
   })
 })
 
-function setupPlayer(sign) {
-  return makePlayer(sign).then(player => {
-    player.chooseCoords = function(coords) {
-      return this.moveAdviser.triggerAdvice(coords)
-    }
-    return player
-  })
-}
-
-function makePlayer(sign) {
-  playerMakersDi.register(container, 'Simple')
-  container.set('adviser', () => new ManualMoveAdviser())
+function makeFakePlayer(sign) {
+  playerMakersDi.register(container, 'Fake')
   return container.playerMaker(sign)
 }

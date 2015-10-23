@@ -9,5 +9,9 @@ module.exports = {
 
   Simple(container) {
     return implementations.Simple(container.adviser)
+  },
+
+  Fake() {
+    return implementations.Fake()
   }
 }

@@ -13,8 +13,8 @@ module.exports = class NamedPlayer {
     return this.gamePlayer.willChooseCoordsFor(board)
   }
 
-  fillCellOnBoard(board) {
-    return this.gamePlayer.fillCellOnBoard(board)
+  fillCellOnBoard(board, coords) {
+    return this.gamePlayer.fillCellOnBoard(board, coords)
   }
 
   toString() {
