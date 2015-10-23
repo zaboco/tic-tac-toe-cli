@@ -7,7 +7,8 @@ require('chai').use(require('sinon-chai')).should()
 const wco = require('co').wrap
 
 const FakeGame = require('./fakes/FakeGame'),
-  Player = require('../src/Player'),
+  container = require('../../container'),
+  playerMakersDi = require('../../player/makers/di'),
   BoardError = require('../src/board/BoardError'),
   ManualMoveAdviser = require('../../advisers/manual')
 
@@ -17,12 +18,12 @@ suite('Game', function() {
 
   const __ = sinon.match.any
   let eventHandler
-  setup(() => {
-    firstPlayer = makePlayer(X)
-    secondPlayer = makePlayer(O)
+  setup(wco(function*() {
+    firstPlayer = yield setupPlayer(X)
+    secondPlayer = yield setupPlayer(O)
     game = new FakeGame([firstPlayer, secondPlayer])
     eventHandler = sinon.spy()
-  })
+  }))
 
   suite('on run', () => {
     test('the game starts', () => {
@@ -148,10 +149,17 @@ suite('Game', function() {
   })
 })
 
+function setupPlayer(sign) {
+  return makePlayer(sign).then(player => {
+    player.chooseCoords = function(coords) {
+      return this.moveAdviser.triggerAdvice(coords)
+    }
+    return player
+  })
+}
+
 function makePlayer(sign) {
-  const player = new Player(sign, new ManualMoveAdviser())
-  player.chooseCoords = function(coords) {
-    return this.moveAdviser.triggerAdvice(coords)
-  }
-  return player
+  playerMakersDi.register(container, 'Simple')
+  container.set('adviser', () => new ManualMoveAdviser())
+  return container.playerMaker(sign)
 }
