@@ -7,11 +7,8 @@ require('chai').use(require('sinon-chai')).should()
 const wco = require('co').wrap
 
 const FakeGame = require('./fakes/FakeGame'),
-  container = require('../../container'),
-  playerMakersDi = require('../../player/makers/di'),
-  BoardError = require('../src/board/BoardError'),
-  ManualMoveAdviser = require('../../advisers/manual')
-
+  services = require('../../services'),
+  BoardError = require('../src/board/BoardError')
 suite('Game', function() {
   const X = 'X', O = 'O', _ = null
   let game, firstPlayer, secondPlayer
@@ -150,6 +147,6 @@ suite('Game', function() {
 })
 
 function makeFakePlayer(sign) {
-  playerMakersDi.register(container, 'Fake')
-  return container.playerMaker(sign)
+  services.choose('playerMaker', 'Fake')
+  return services.playerMaker(sign)
 }
