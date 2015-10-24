@@ -2,28 +2,28 @@
 
 require('chai').should()
 
-const dummyAlgorithm = require('../src/algorithms/dummyAlgorithm'),
-  Board = require('../../../core').Board
+const DummySolverAdviser = require('../src/DummySolverAdviser'),
+  Board = require('../../core/index').Board
 
 suite('advisers/dummy', () => {
   const X = 'X', O = 'O'
-  const findBestMoveFor = dummyAlgorithm.findBestMoveFor
+  const dummySolver = DummySolverAdviser()
 
   test('chooses top-left on empty board', () => {
     const topLeft = [0, 0]
     let emptyBoard = Board.empty()
-    findBestMoveFor(emptyBoard).should.eql(topLeft)
+    dummySolver(emptyBoard).should.eql(topLeft)
   })
 
   test('chooses top-middle if top-left is taken', () => {
     const topMiddle = [0, 1]
     let boardWithTopLeftFilled = Board.prefilled.fromRow([X])
-    findBestMoveFor(boardWithTopLeftFilled).should.eql(topMiddle)
+    dummySolver(boardWithTopLeftFilled).should.eql(topMiddle)
   })
 
   test('chooses middle-left when first row is full', () => {
     const middleLeft = [1, 0]
     let boardWithFirstRowFull = Board.prefilled.fromRow([X, O, X])
-    findBestMoveFor(boardWithFirstRowFull).should.eql(middleLeft)
+    dummySolver(boardWithFirstRowFull).should.eql(middleLeft)
   })
 })
