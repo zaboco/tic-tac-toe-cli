@@ -1,3 +1,3 @@
 'use strict'
 
-exports.Messenger = require('./messenger')
+exports.messengers = require('./messengers')

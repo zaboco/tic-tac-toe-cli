@@ -2,17 +2,17 @@
 
 const EventEmitter = require('events').EventEmitter
 
-module.exports = PendingMessenger
+module.exports = PendingMessage
 
-const EmptyMessenger = require('./EmptyMessenger')
+const EmptyMessage = require('./EmptyMessage')
 
-function PendingMessenger() {
+function PendingMessage() {
   const emitter = new EventEmitter()
 
   return {
     send(value) {
       emitter.emit('send', value)
-      return EmptyMessenger()
+      return EmptyMessage()
     },
 
     onSend(handler){

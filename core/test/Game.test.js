@@ -90,7 +90,7 @@ suite('Game', function() {
       test('with the updated board', wco(function* () {
         yield firstPlayer.chooseCoords(someCoords)
         eventHandler.should.have.been.calledWith(__, sinon.match(board => {
-          return board.getSignAt(someCoords) === firstPlayer.sign
+          return firstPlayer.hasSign(board.getSignAt(someCoords))
         }))
       }))
     })
@@ -134,7 +134,7 @@ suite('Game', function() {
     test('first player wins', wco(function* () {
       game.on('game.end', eventHandler)
       yield firstPlayer.chooseCoords(winningCoords)
-      eventHandler.should.have.been.calledWith('win', firstPlayer.sign)
+      eventHandler.should.have.been.calledWith('win', firstPlayer)
     }))
 
     test('it is a tie if first player chooses poorly', wco(function* () {

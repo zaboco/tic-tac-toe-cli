@@ -1,10 +1,10 @@
 'use strict'
 
-module.exports = ReadyMessenger
+module.exports = ReadyMessage
 
-const EmptyMessenger = require('./EmptyMessenger')
+const EmptyMessage = require('./EmptyMessage')
 
-function ReadyMessenger(value) {
+function ReadyMessage(value) {
   return {
     send() {
       throw Error('Should not send twice in a row')
@@ -13,7 +13,7 @@ function ReadyMessenger(value) {
     onReceive(handler) {
       handler = handler || (() => {})
       handler(value)
-      return EmptyMessenger()
+      return EmptyMessage()
     }
   }
 }

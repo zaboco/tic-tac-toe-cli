@@ -1,17 +1,17 @@
 'use strict'
 
-const ManualMoveAdviser = require('./ManualMoveAdviser')
+const ManualAdviser = require('./ManualAdviser')
+const ConfirmedMessenger = require('../../../../util').messengers.Confirmed
 const Player = require('../../../../core').Player
 
 module.exports = class FakePlayer {
   constructor(sign) {
-    this.manualAdviser = ManualMoveAdviser()
-    this.gamePlayer = new Player(sign, this.manualAdviser)
-    this.sign = sign
+    this.messenger = ConfirmedMessenger()
+    this.gamePlayer = new Player(sign, ManualAdviser(this.messenger))
   }
 
   chooseCoords(coords) {
-    return this.manualAdviser.trigger(coords)
+    return this.messenger.send(coords)
   }
 
   willChooseCoordsFor(board) {
@@ -20,6 +20,10 @@ module.exports = class FakePlayer {
 
   fillCellOnBoard(board, coords) {
     return this.gamePlayer.fillCellOnBoard(board, coords)
+  }
+
+  hasSign(sign) {
+    return this.gamePlayer.hasSign(sign)
   }
 
   toString() {
