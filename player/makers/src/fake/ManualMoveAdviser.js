@@ -2,24 +2,26 @@
 
 const Messenger = require('../../../../util').Messenger
 
-module.exports = class ManualMoveAdviser {
-  constructor() {
-    this.move = Messenger.empty()
-    this.finished = Messenger.empty()
-  }
+module.exports = ManualMoveAdviser
 
-  triggerAdvice(coords) {
+function ManualMoveAdviser() {
+  let move = Messenger.empty()
+  let finished = Messenger.empty()
+
+  function sendCoords(coords) {
     return new Promise(resolve => {
-      this.move = this.move.send(coords)
-      this.finished = this.finished.onReceive(resolve)
+      move = move.send(coords)
+      finished = finished.onReceive(resolve)
     })
   }
 
-  coordsFor() {
+  function chooseCoords() {
     return new Promise(resolve => {
-      this.finished = this.finished.send()
-      this.move = this.move.onReceive(resolve)
+      finished = finished.send()
+      move = move.onReceive(resolve)
     })
   }
+
+  chooseCoords.trigger = sendCoords
+  return chooseCoords
 }
-

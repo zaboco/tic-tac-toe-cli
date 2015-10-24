@@ -5,13 +5,13 @@ const Player = require('../../../../core').Player
 
 module.exports = class FakePlayer {
   constructor(sign) {
-    this.manualAdviser = new ManualMoveAdviser()
+    this.manualAdviser = ManualMoveAdviser()
     this.gamePlayer = new Player(sign, this.manualAdviser)
     this.sign = sign
   }
 
   chooseCoords(coords) {
-    return this.manualAdviser.triggerAdvice(coords)
+    return this.manualAdviser.trigger(coords)
   }
 
   willChooseCoordsFor(board) {

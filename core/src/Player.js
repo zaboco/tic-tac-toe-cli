@@ -7,7 +7,7 @@ module.exports = class Player {
   }
 
   willChooseCoordsFor(board) {
-    return this.moveAdviser.coordsFor(board, this.sign)
+    return this.moveAdviser(board, this.sign)
   }
 
   fillCellOnBoard(board, coords) {
