@@ -7,7 +7,7 @@ module.exports = class Depender {
   constructor(implementationsRegistry) {
     this.container = new Pimple()
     this.implementationsRegistry = {}
-    _.forEach(implementationsRegistry, (implementations, serviceKey) => {
+    _.each(implementationsRegistry, (implementations, serviceKey) => {
       this.register(serviceKey, implementations)
     })
   }

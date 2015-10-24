@@ -1,6 +1,6 @@
 'use strict'
 
-const ManualMoveAdviser = require('../../../../advisers/manual')
+const ManualMoveAdviser = require('./ManualMoveAdviser')
 const Player = require('../../../../core').Player
 
 module.exports = class FakePlayer {

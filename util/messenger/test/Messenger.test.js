@@ -2,7 +2,7 @@
 
 require('chai').should()
 
-const Messenger = require('../src/messenger')
+const Messenger = require('..')
 
 suite('Messenger', function() {
   this.timeout(100)

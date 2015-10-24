@@ -1,6 +1,6 @@
 'use strict'
 
-const Messenger = require('./messenger')
+const Messenger = require('../../../../util').Messenger
 
 module.exports = class ManualMoveAdviser {
   constructor() {
