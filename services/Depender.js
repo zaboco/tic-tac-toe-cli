@@ -37,6 +37,11 @@ module.exports = class Depender {
     return this.container.get(serviceKey)
   }
 
+  set(key, value) {
+    this.container.set(key, value)
+    this._defineGetter(key)
+  }
+
   _retrieveImplementationsFor(serviceKey) {
     return this.implementationsRegistry[serviceKey] || {}
   }

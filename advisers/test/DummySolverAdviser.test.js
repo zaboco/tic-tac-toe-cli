@@ -3,9 +3,9 @@
 require('chai').should()
 
 const DummySolverAdviser = require('../src/DummySolverAdviser'),
-  Board = require('../../core/index').Board
+  Board = require('../../core').Board
 
-suite('advisers/dummy', () => {
+suite('advisers/dummySolver', () => {
   const X = 'X', O = 'O'
   const dummySolver = DummySolverAdviser()
 

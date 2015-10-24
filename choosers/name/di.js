@@ -1,6 +1,6 @@
 'use strict'
 
-const implementations = require('..')
+const implementations = require('.')
 
 module.exports = {
   Fake(container) {

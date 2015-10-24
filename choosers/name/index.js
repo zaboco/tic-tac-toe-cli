@@ -1,3 +1,3 @@
 'use strict'
 
-exports.Fake = require('./src/FakeNameChooser')
+exports.Fake = require('./FakeNameChooser')

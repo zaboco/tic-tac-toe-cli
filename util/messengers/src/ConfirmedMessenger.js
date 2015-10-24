@@ -15,9 +15,9 @@ function ConfirmedMessenger() {
       })
     },
 
-    wait() {
+    wait(value) {
       return new Promise(resolve => {
-        confirmation = confirmation.send()
+        confirmation = confirmation.send(value)
         message = message.onReceive(resolve)
       })
     },
