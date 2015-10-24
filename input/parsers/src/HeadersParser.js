@@ -2,28 +2,29 @@
 
 const _ = require('lodash')
 
-module.exports = class HeadersParser {
-  constructor(headersMapping) {
-    this.columnHeader = headersMapping.column
-    this.rowHeader = headersMapping.row
-  }
+module.exports = HeadersParser
 
-  parse(headersString) {
-    let columnLetter = headersString[0].toLowerCase()
-    let rowNumber = headersString[1]
-    return [
-      this.rowHeader.toIndex(rowNumber),
-      this.columnHeader.toIndex(columnLetter)
-    ]
-  }
+function HeadersParser(headerMappers) {
+  let columnHeaderMapper = headerMappers.column, rowHeaderMapper = headerMappers.row
 
-  preValidate(headersString) {
-    if (_.isEmpty(headersString)) {
-      return 'The input string cannot be empty'
+  return {
+    parse(textInput) {
+      let columnLetter = textInput[0].toLowerCase()
+      let rowNumber = textInput[1]
+      return [
+        rowHeaderMapper.toIndex(rowNumber),
+        columnHeaderMapper.toIndex(columnLetter)
+      ]
+    },
+
+    preValidate(headersString) {
+      if (_.isEmpty(headersString)) {
+        return 'The input string cannot be empty'
+      }
+      if (headersString.length !== 2) {
+        return `The input's length must be 2`
+      }
+      return true
     }
-    if (headersString.length !== 2) {
-      return `The input's length must be 2`
-    }
-    return true
   }
 }

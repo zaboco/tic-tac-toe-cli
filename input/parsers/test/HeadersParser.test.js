@@ -8,7 +8,7 @@ const HeadersParser = require('../src/HeadersParser'),
 suite('HeadersParser', () => {
   let parser
   setup(() => {
-    parser = new HeadersParser({
+    parser = HeadersParser({
       column: headers.Alphabetic(),
       row: headers.Numeric()
     })
