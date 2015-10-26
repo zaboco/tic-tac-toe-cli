@@ -4,7 +4,7 @@ const implementations = require('..')
 
 module.exports = {
   Named(container) {
-    return implementations.Named(container.adviser, container.nameChooser, container.nameLabel)
+    return implementations.Named(container.adviser, container.nameReader, container.nameLabel)
   },
 
   Simple(container) {
