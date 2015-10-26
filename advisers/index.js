@@ -1,5 +1,5 @@
 'use strict'
 
-module.exports = {
-  manual: require('./manual')
-}
+exports.DummySolver = require('./src/DummySolverAdviser')
+
+exports.Reader = require('./src/ReaderAdviser')

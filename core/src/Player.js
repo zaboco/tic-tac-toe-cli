@@ -7,11 +7,15 @@ module.exports = class Player {
   }
 
   willChooseCoordsFor(board) {
-    return this.moveAdviser.coordsFor(board, this.sign)
+    return this.moveAdviser(board, this.sign)
   }
 
   fillCellOnBoard(board, coords) {
     return board.fillCell(coords, this.sign)
+  }
+
+  hasSign(sign) {
+    return this.sign === sign
   }
 
   toString() {

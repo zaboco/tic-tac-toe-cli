@@ -2,25 +2,26 @@
 
 require('chai').should()
 
-const Player = require('../src/Player'),
-  Board = require('../src/board'),
-  ManualMoveAdviser = require('../../advisers/manual')
+const wco = require('co').wrap
+
+const services = require('../../services'),
+  Board = require('../src/board')
 
 const someSign = 'X'
 
 suite('Player', function() {
   this.timeout(100)
 
-  let emptyBoard, manualMoveAdviser
+  let emptyBoard
   suiteSetup(() => {
-    manualMoveAdviser = new ManualMoveAdviser()
+    services.choose('playerMaker', 'Fake')
     emptyBoard = Board.empty()
   })
 
   let player
-  setup(() => {
-    player = new Player(someSign, manualMoveAdviser)
-  })
+  setup(wco(function*() {
+    player = yield services.playerMaker(someSign)
+  }))
 
   test('can choose coordinates for a board', done => {
     const someCoords = [1, 0]
@@ -28,7 +29,7 @@ suite('Player', function() {
       coords.should.equal(someCoords)
       done()
     })
-    manualMoveAdviser.triggerAdvice(someCoords)
+    player.chooseCoords(someCoords)
   })
 
   test('places sign on board at top left', () => {

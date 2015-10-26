@@ -7,22 +7,20 @@ require('chai').use(require('sinon-chai')).should()
 const wco = require('co').wrap
 
 const FakeGame = require('./fakes/FakeGame'),
-  Player = require('../src/Player'),
-  BoardError = require('../src/board/BoardError'),
-  ManualMoveAdviser = require('../../advisers/manual')
-
+  services = require('../../services'),
+  BoardError = require('../src/board/BoardError')
 suite('Game', function() {
   const X = 'X', O = 'O', _ = null
   let game, firstPlayer, secondPlayer
 
   const __ = sinon.match.any
   let eventHandler
-  setup(() => {
-    firstPlayer = makePlayer(X)
-    secondPlayer = makePlayer(O)
+  setup(wco(function*() {
+    firstPlayer = yield makeFakePlayer(X)
+    secondPlayer = yield makeFakePlayer(O)
     game = new FakeGame([firstPlayer, secondPlayer])
     eventHandler = sinon.spy()
-  })
+  }))
 
   suite('on run', () => {
     test('the game starts', () => {
@@ -92,7 +90,7 @@ suite('Game', function() {
       test('with the updated board', wco(function* () {
         yield firstPlayer.chooseCoords(someCoords)
         eventHandler.should.have.been.calledWith(__, sinon.match(board => {
-          return board.getSignAt(someCoords) === firstPlayer.sign
+          return firstPlayer.hasSign(board.getSignAt(someCoords))
         }))
       }))
     })
@@ -136,7 +134,7 @@ suite('Game', function() {
     test('first player wins', wco(function* () {
       game.on('game.end', eventHandler)
       yield firstPlayer.chooseCoords(winningCoords)
-      eventHandler.should.have.been.calledWith('win', firstPlayer.sign)
+      eventHandler.should.have.been.calledWith('win', firstPlayer)
     }))
 
     test('it is a tie if first player chooses poorly', wco(function* () {
@@ -148,10 +146,7 @@ suite('Game', function() {
   })
 })
 
-function makePlayer(sign) {
-  const player = new Player(sign, new ManualMoveAdviser())
-  player.chooseCoords = function(coords) {
-    return this.moveAdviser.triggerAdvice(coords)
-  }
-  return player
+function makeFakePlayer(sign) {
+  services.choose('playerMaker', 'Fake')
+  return services.playerMaker(sign)
 }
