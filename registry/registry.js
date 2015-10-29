@@ -17,9 +17,9 @@ let playerTemplates = deependr.container({
     nameReader: $$('inputReaders.Text', { message: 'Name' }),
     nameLabel: 'H'
   }),
-  Computer: $$('playerMakers.Computer', {
+  Computer: $$('playerMakers.Named', {
     adviser: $$('advisers.DummySolver'),
-    nameReader: $$('inputReaders.Empty'),
+    nameReader: $$('inputReaders.Static', { value: '' }),
     nameLabel: 'AI 0'
   })
 })
@@ -50,6 +50,5 @@ let registry = deependr.container({
 })
 
 registry.$$ = deependr.components.factory.predefinedFrom(require('./implementations'))
-
 
 module.exports = registry
