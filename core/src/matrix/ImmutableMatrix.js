@@ -51,8 +51,8 @@ module.exports = class ImmutableMatrix {
     return _.flatten(this.allRows())
   }
 
-  formatAs(Structure, formatter) {
-    return Structure.use(formatter).format(this)
+  formatWith(formatter) {
+    return formatter(this)
   }
 
   areCoordsOutside(coords) {

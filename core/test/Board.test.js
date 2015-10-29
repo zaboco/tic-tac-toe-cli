@@ -8,8 +8,7 @@ require('chai').use(require('sinon-chai')).should()
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
   prefilledBoard = require('../src/board/prefilled'),
-  table = require('../../structures/table'),
-  headers = require('../../headers')
+  registry = require('../../registry')
 
 const X = 'X', O = 'O', _ = null
 
@@ -228,20 +227,16 @@ suite('Board', () => {
       [O, X, X],
       [X, O, O]
     ])
-    let fullTableFormat = table.format.solid()
-      .withHeaderRow(headers.Alphabetic())
-      .addModifier(table.modifiers.border({ left: '|', right: '|' }))
-      .addModifier(table.modifiers.headerColumn(headers.Numeric()))
-    let formattedBoard = fullBoard.formatAs(table.Structure, fullTableFormat)
+    let formattedBoard = fullBoard.formatWith(registry.boardFormatter)
     formattedBoard.should.equal([
       '    a   b   c ',
-      '   -----------',
-      '1 | X | X | O |',
-      '  |-----------|',
-      '2 | O | X | X |',
-      '  |-----------|',
-      '3 | X | O | O |',
-      '   -----------'
+      '   ───────────',
+      '1 │ X │ X │ O │',
+      '  │───────────│',
+      '2 │ O │ X │ X │',
+      '  │───────────│',
+      '3 │ X │ O │ O │',
+      '   ───────────'
     ].join('\n'))
   })
 })

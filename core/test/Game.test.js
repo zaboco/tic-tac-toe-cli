@@ -7,7 +7,7 @@ require('chai').use(require('sinon-chai')).should()
 const wco = require('co').wrap
 
 const FakeGame = require('./fakes/FakeGame'),
-  services = require('../../services'),
+  registry = require('../../registry'),
   BoardError = require('../src/board/BoardError')
 suite('Game', function() {
   const X = 'X', O = 'O', _ = null
@@ -132,21 +132,21 @@ suite('Game', function() {
     })
 
     test('first player wins', wco(function* () {
-      game.on('game.end', eventHandler)
+      game.on('game.won', eventHandler)
       yield firstPlayer.chooseCoords(winningCoords)
-      eventHandler.should.have.been.calledWith('win', firstPlayer)
+      eventHandler.should.have.been.calledWith(firstPlayer)
     }))
 
     test('it is a tie if first player chooses poorly', wco(function* () {
       yield firstPlayer.chooseCoords(tieCoords)
-      game.on('game.end', eventHandler)
+      game.on('game.tie', eventHandler)
       yield secondPlayer.chooseCoords(winningCoords)
-      eventHandler.should.have.been.calledWith('tie')
+      eventHandler.should.have.been.called
     }))
   })
 })
 
 function makeFakePlayer(sign) {
-  services.choose('playerMaker', 'Fake')
-  return services.playerMaker(sign)
+  registry.set('playerMaker', registry.$$('playerMakers.Fake'))
+  return registry.playerMaker(sign)
 }

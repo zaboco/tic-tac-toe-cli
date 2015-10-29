@@ -4,9 +4,6 @@ const implementations = require('.')
 
 module.exports = {
   Headers(container) {
-    return implementations.Headers({
-      row: container.rowHeaderMapper,
-      column: container.columnHeaderMapper
-    })
+    return implementations.Headers(container.headerMappers)
   }
 }

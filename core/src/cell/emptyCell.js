@@ -23,6 +23,6 @@ module.exports = {
 
   /* istanbul ignore next */
   toString() {
-    return '_'
+    return ' '
   }
 }

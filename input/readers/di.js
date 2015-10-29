@@ -4,10 +4,14 @@ const implementations = require('.')
 
 module.exports = {
   Text(container) {
-    return implementations.Text(container.promptMessage)
+    return implementations.Text(container.message)
   },
 
   List(container) {
-    return implementations.List(container.promptMessage, container.choices)
+    return implementations.List(container.message, container.choices)
+  },
+
+  Static(container) {
+    return implementations.Static(container.value)
   }
 }

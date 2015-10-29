@@ -4,6 +4,7 @@ module.exports = class TableBorderAdder {
   constructor(settings) {
     this.left = settings.left || ''
     this.right = settings.right || ''
+    this.leftMargin = ' '.repeat(this.left.length)
   }
 
   modifyInnerBorder(innerBorder) {
@@ -15,11 +16,11 @@ module.exports = class TableBorderAdder {
   }
 
   modifyOuterBorder(topBorder) {
-    return topBorder.prepend(' ')
+    return topBorder.prepend(this.leftMargin)
   }
 
   modifyHeaderRow(header) {
-    return header.prepend(' ')
+    return header.prepend(this.leftMargin)
   }
 
   _modifyInnerRow(genericRow) {

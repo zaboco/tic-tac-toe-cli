@@ -8,6 +8,6 @@ module.exports = {
   },
 
   Reader(container) {
-    return implementations.Reader(container.inputReader, container.inputParser)
+    return implementations.Reader(container.coordsReader, container.coordsParser)
   }
 }
