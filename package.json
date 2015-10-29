@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run coverage",
-    "coverage": "npm run _istanbul core/test advisers/test structures/*/test input/*/test player/*/test util/*/test",
+    "coverage": "npm run _istanbul core/test advisers/test structures/*/test input/*/test util/*/test",
     "_istanbul": "istanbul cover ./node_modules/.bin/_mocha -- --ui tdd -R dot"
   },
   "keywords": [
