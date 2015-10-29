@@ -20,11 +20,13 @@ function GameRunner(playerMaker, boardFormatter) {
     game.on('round.end', (player, coords) => {
       console.log(`${player} has moved at ${coords}`)
     })
-    game.on('game.won', sign => {
-      console.log(`Player with ${sign} wins!`)
+    game.on('game.won', (player, board) => {
+      console.log(`${player} wins!`)
+      console.log(board.formatWith(boardFormatter))
     })
-    game.on('game.tie', () => {
+    game.on('game.tie', board => {
       console.log(`The game ends with a tie!`)
+      console.log(board.formatWith(boardFormatter))
     })
     game.run()
   })

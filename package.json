@@ -4,6 +4,7 @@
   "description": "CLI for TicTacToe with AI",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "npm run coverage",
     "coverage": "npm run _istanbul core/test advisers/test formatters/test input/*/test util/*/test",
     "_istanbul": "istanbul cover ./node_modules/.bin/_mocha -- --ui tdd -R dot"
