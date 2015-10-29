@@ -5,5 +5,6 @@ module.exports = {
   inputReaders: require('../input/readers/di'),
   inputParsers: require('../input/parsers/di'),
   headerMappers: require('../headers/di'),
-  advisers: require('../advisers/di')
+  advisers: require('../advisers/di'),
+  boardFormatters: require('../formatters/di')
 }

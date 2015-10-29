@@ -90,8 +90,8 @@ module.exports = class Board {
     return this.matrix.toString()
   }
 
-  formatAs(Structure, format) {
-    return this.matrix.formatAs(Structure, format)
+  formatWith(formatter) {
+    return this.matrix.formatWith(formatter)
   }
 
   static empty() {

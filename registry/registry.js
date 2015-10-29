@@ -24,10 +24,28 @@ let playerTemplates = deependr.container({
   })
 })
 
+let borders = {
+  horizontal: {
+    top: '─',
+    inner: '─',
+    bottom:'─'
+  },
+  vertical: {
+    left: '│',
+    inner: '│',
+    right: '│'
+  }
+}
+
 let registry = deependr.container({
   playerMaker: $$('playerMakers.Typed', {
     playerTemplates,
     typeReader: $$('inputReaders.List', { message: 'Choose type', choices: ['Human', 'Computer'] })
+  }),
+  boardFormatter: $$('boardFormatters.Table', {
+    headerMappers,
+    borders,
+    padding: 1
   })
 })
 
