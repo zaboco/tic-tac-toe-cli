@@ -5,6 +5,6 @@ module.exports = DummySolverAdviser
 function DummySolverAdviser() {
   return function chooseCoords(board) {
     let emptyCells = board.findCells(it => it.isEmpty())
-    return emptyCells[0].positionAsCoords()
+    return Promise.resolve(emptyCells[0].positionAsCoords())
   }
 }
