@@ -4,15 +4,15 @@ const deependr = require('deependr')
 const $$ = deependr.components.factory.predefinedFrom(require('./implementations'))
 
 let headerMappers = deependr.container({
-  row: $$('headerMappers.Alphabetic'),
-  column: $$('headerMappers.Numeric')
+  column: $$('headerMappers.Alphabetic'),
+  row: $$('headerMappers.Numeric')
 })
 
 let playerTemplates = deependr.container({
   Human: $$('playerMakers.Named', {
     adviser: $$('advisers.Reader', {
       coordsReader: $$('inputReaders.Text', { message: 'Choose empty cell' }),
-      parser: $$('inputParsers.Headers', { headerMappers })
+      coordsParser: $$('inputParsers.Headers', { headerMappers })
     }),
     nameReader: $$('inputReaders.Text', { message: 'Name' }),
     nameLabel: 'H'

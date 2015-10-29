@@ -206,7 +206,7 @@ suite('structures/table', () => {
       })
     })
 
-    suite('with header row', () => {
+    suite('with headers for columns', () => {
       let basicTableFormat
       setup(() => {
         basicTableFormat = {
@@ -224,7 +224,7 @@ suite('structures/table', () => {
       })
 
       test('as numeric indexes', () => {
-        basicTableFormat.headerMappers.row =  headers.Numeric()
+        basicTableFormat.headerMappers.column =  headers.Numeric()
         let formattedMatrix = fullMatrix.formatWith(TableFormatter(basicTableFormat))
         formattedMatrix.should.equal([
           ' 1   2   3 ',
@@ -239,7 +239,7 @@ suite('structures/table', () => {
       })
 
       test('aligned if left border is present', () => {
-        basicTableFormat.headerMappers.row =  headers.Numeric()
+        basicTableFormat.headerMappers.column =  headers.Numeric()
         basicTableFormat.borders.vertical.left = '|'
         let formattedMatrix = fullMatrix.formatWith(TableFormatter(basicTableFormat))
         formattedMatrix.should.equal([
@@ -256,7 +256,7 @@ suite('structures/table', () => {
 
       test('as alphabetic indexes', () => {
         let oneLineMatrix = new Matrix([[0, 1, 2]])
-        basicTableFormat.headerMappers.row =  headers.Alphabetic()
+        basicTableFormat.headerMappers.column =  headers.Alphabetic()
         oneLineMatrix.formatWith(TableFormatter(basicTableFormat)).should.equal([
           ' a   b   c ',
           '-----------',
@@ -266,7 +266,7 @@ suite('structures/table', () => {
       })
     })
 
-    suite('with header column', () => {
+    suite('with headers for rows', () => {
       let oneColumnMatrix, basicTableFormat
       setup(() => {
         oneColumnMatrix = new Matrix([[0], [3], [6]])
@@ -285,7 +285,7 @@ suite('structures/table', () => {
       })
 
       test('numeric', () => {
-        basicTableFormat.headerMappers.column =  headers.Numeric(0)
+        basicTableFormat.headerMappers.row =  headers.Numeric(0)
         let formattedMatrix = oneColumnMatrix.formatWith(TableFormatter(basicTableFormat))
         formattedMatrix.should.equal([
           '  ---',
@@ -299,7 +299,7 @@ suite('structures/table', () => {
       })
 
       test('alphabetic', () => {
-        basicTableFormat.headerMappers.column =  headers.Alphabetic('i')
+        basicTableFormat.headerMappers.row =  headers.Alphabetic('i')
         let formattedMatrix = oneColumnMatrix.formatWith(TableFormatter(basicTableFormat))
         formattedMatrix.should.equal([
           '  ---',
@@ -313,7 +313,7 @@ suite('structures/table', () => {
       })
 
       test('and left border', () => {
-        basicTableFormat.headerMappers.column =  headers.Alphabetic('i')
+        basicTableFormat.headerMappers.row =  headers.Alphabetic('i')
         basicTableFormat.borders.vertical.left =  '|'
         let formattedMatrix = oneColumnMatrix.formatWith(TableFormatter(basicTableFormat))
         formattedMatrix.should.equal([

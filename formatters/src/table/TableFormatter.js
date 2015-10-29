@@ -19,7 +19,7 @@ function TableFormatter(settings) {
   return function(matrix) {
     let basicSettings = {
       padding: settings.padding,
-      header: settings.headerMappers.row,
+      header: settings.headerMappers.column,
       verticalSeparator: settings.borders.vertical.inner,
       border: settings.borders.horizontal
     }
@@ -28,8 +28,8 @@ function TableFormatter(settings) {
         left: settings.borders.vertical.left,
         right: settings.borders.vertical.right
       }))
-    if (settings.headerMappers.column) {
-      tableFormat = tableFormat.addModifier(modifiers.headerColumn(settings.headerMappers.column))
+    if (settings.headerMappers.row) {
+      tableFormat = tableFormat.addModifier(modifiers.headerColumn(settings.headerMappers.row))
     }
     return Structure.use(tableFormat).format(matrix)
   }
