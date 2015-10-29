@@ -4,7 +4,7 @@ require('chai').should()
 
 const wco = require('co').wrap
 
-const services = require('../../services'),
+const registry = require('../../registry'),
   Board = require('../src/board')
 
 const someSign = 'X'
@@ -14,13 +14,13 @@ suite('Player', function() {
 
   let emptyBoard
   suiteSetup(() => {
-    services.choose('playerMaker', 'Fake')
+    registry.set('playerMaker', registry.$$('playerMakers.Fake'))
     emptyBoard = Board.empty()
   })
 
   let player
   setup(wco(function*() {
-    player = yield services.playerMaker(someSign)
+    player = yield registry.playerMaker(someSign)
   }))
 
   test('can choose coordinates for a board', done => {

@@ -7,7 +7,7 @@ require('chai').use(require('sinon-chai')).should()
 const wco = require('co').wrap
 
 const FakeGame = require('./fakes/FakeGame'),
-  services = require('../../services'),
+  registry = require('../../registry'),
   BoardError = require('../src/board/BoardError')
 suite('Game', function() {
   const X = 'X', O = 'O', _ = null
@@ -147,6 +147,6 @@ suite('Game', function() {
 })
 
 function makeFakePlayer(sign) {
-  services.choose('playerMaker', 'Fake')
-  return services.playerMaker(sign)
+  registry.set('playerMaker', registry.$$('playerMakers.Fake'))
+  return registry.playerMaker(sign)
 }

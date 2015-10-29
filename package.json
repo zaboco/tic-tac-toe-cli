@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "co": "^4.6.0",
+    "deependr": "^0.2.0",
     "inquirer": "^0.10.1",
     "lodash": "^3.10.1",
     "pimple": "^1.0.0"
