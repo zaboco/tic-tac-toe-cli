@@ -45,6 +45,14 @@ module.exports = class Board {
     return this._getCellAt(coords).isEmpty()
   }
 
+  isFinished() {
+    return this.performOnStatus({
+      win: () => true,
+      tie: () => true,
+      ongoing: () => false
+    })
+  }
+
   areCoordsOutside(coords) {
     return this.matrix.areCoordsOutside(coords)
   }
