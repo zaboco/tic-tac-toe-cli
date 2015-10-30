@@ -21,7 +21,7 @@ suite('advisers/smartSolver', () => {
         ])
         calculateBestOutcome.bind(null, board, currentSign, [2, 1]).should.throw(/finished/i)
       })
-      
+
       test('it is win if, by filling the cell, the current sign wins', () => {
         let currentSign = 'O'
         board = Board.prefilled.fromMatrix([
@@ -74,6 +74,18 @@ suite('advisers/smartSolver', () => {
         calculateBestOutcome(board, currentSign, chosenCoords).should.equal(LOSS)
       })
     })
+
+    suite('for three empty cells on board', () => {
+      test('it is loss if opponent has a winning next move', () => {
+        let currentSign = 'O', chosenCoords = [2, 0]
+        board = Board.prefilled.fromMatrix([
+          [X, O, O],
+          [O, X, X],
+          [_, _, _]
+        ])
+        calculateBestOutcome(board, currentSign, chosenCoords).should.equal(LOSS)
+      })
+    })
   })
 })
 
@@ -93,10 +105,20 @@ function calculateBestOutcome(board, currentSign, coords) {
     },
     ongoing() {
       let emptyCoordsPairs = newBoard.findCells(it => it.isEmpty()).map(it => it.positionAsCoords())
-      let bestOpponentOutcome = calculateBestOutcome(newBoard, otherSign(currentSign), emptyCoordsPairs[0])
-      return negate(bestOpponentOutcome)
+      let opponentBestOutcome = emptyCoordsPairs.reduce((bestOutcomeSoFar, coords) => {
+        let currentOutcome = calculateBestOutcome(newBoard, otherSign(currentSign), coords)
+        if (isBetter(currentOutcome, bestOutcomeSoFar)) {
+          return currentOutcome
+        }
+        return bestOutcomeSoFar
+      }, LOSS)
+      return negate(opponentBestOutcome)
     }
   })
+}
+
+function isBetter(oneOutcome, otherOutcome) {
+  return oneOutcome > otherOutcome
 }
 
 function negate(outcome) {
