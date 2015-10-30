@@ -95,15 +95,9 @@ function calculateBestOutcomeForMove(board, currentSign, coords) {
   }
   let newBoard = board.fillCell(coords, currentSign)
   return newBoard.performOnStatus({
-    win(sign) {
-      if (sign === currentSign) {
-        return WIN
-      }
-    },
-    tie() {
-      return TIE
-    },
-    ongoing() {
+    win: () => WIN,
+    tie: () => TIE,
+    ongoing: () => {
       let opponentBestOutcome = calculateBestOutcome(newBoard, otherSign(currentSign))
       return negate(opponentBestOutcome)
     }
