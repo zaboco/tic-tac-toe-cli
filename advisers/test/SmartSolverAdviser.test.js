@@ -8,7 +8,7 @@ const WIN = 1, TIE = 0, LOSS = -1
 suite('advisers/smartSolver', () => {
   const X = 'X', O = 'O', _ = null
 
-  suite('calculateBestOutcome', () => {
+  suite('calculateBestOutcomeForMove', () => {
     let board
 
     suite('for only one empty cell', () => {
@@ -19,7 +19,7 @@ suite('advisers/smartSolver', () => {
           [O, O, X],
           [X, _, O]
         ])
-        calculateBestOutcome.bind(null, board, currentSign, [2, 1]).should.throw(/finished/i)
+        calculateBestOutcomeForMove.bind(null, board, currentSign, [2, 1]).should.throw(/finished/i)
       })
 
       test('it is win if, by filling the cell, the current sign wins', () => {
@@ -29,7 +29,7 @@ suite('advisers/smartSolver', () => {
           [O, O, X],
           [X, _, O]
         ])
-        calculateBestOutcome(board, currentSign, [2, 1]).should.equal(WIN)
+        calculateBestOutcomeForMove(board, currentSign, [2, 1]).should.equal(WIN)
       })
 
       test('it is tie if, by filling the cell, the game ends with a tie', () => {
@@ -39,7 +39,7 @@ suite('advisers/smartSolver', () => {
           [O, X, X],
           [X, _, O]
         ])
-        calculateBestOutcome(board, currentSign, [2, 1]).should.equal(TIE)
+        calculateBestOutcomeForMove(board, currentSign, [2, 1]).should.equal(TIE)
       })
     })
 
@@ -51,7 +51,7 @@ suite('advisers/smartSolver', () => {
           [O, O, X],
           [O, _, _]
         ])
-        calculateBestOutcome(board, currentSign, chosenCoords).should.equal(WIN)
+        calculateBestOutcomeForMove(board, currentSign, chosenCoords).should.equal(WIN)
       })
 
       test('it is tie if opponent`s next move will end the game as such', () => {
@@ -61,7 +61,7 @@ suite('advisers/smartSolver', () => {
           [O, O, X],
           [O, _, _]
         ])
-        calculateBestOutcome(board, currentSign, chosenCoords).should.equal(TIE)
+        calculateBestOutcomeForMove(board, currentSign, chosenCoords).should.equal(TIE)
       })
 
       test('it is loss if opponent`s next move will win', () => {
@@ -71,7 +71,7 @@ suite('advisers/smartSolver', () => {
           [O, O, X],
           [X, _, _]
         ])
-        calculateBestOutcome(board, currentSign, chosenCoords).should.equal(LOSS)
+        calculateBestOutcomeForMove(board, currentSign, chosenCoords).should.equal(LOSS)
       })
     })
 
@@ -83,13 +83,13 @@ suite('advisers/smartSolver', () => {
           [O, X, X],
           [_, _, _]
         ])
-        calculateBestOutcome(board, currentSign, chosenCoords).should.equal(LOSS)
+        calculateBestOutcomeForMove(board, currentSign, chosenCoords).should.equal(LOSS)
       })
     })
   })
 })
 
-function calculateBestOutcome(board, currentSign, coords) {
+function calculateBestOutcomeForMove(board, currentSign, coords) {
   if (board.isFinished()) {
     throw Error('No move can be made, the game has already finished')
   }
@@ -104,17 +104,21 @@ function calculateBestOutcome(board, currentSign, coords) {
       return TIE
     },
     ongoing() {
-      let emptyCoordsPairs = newBoard.findCells(it => it.isEmpty()).map(it => it.positionAsCoords())
-      let opponentBestOutcome = emptyCoordsPairs.reduce((bestOutcomeSoFar, coords) => {
-        let currentOutcome = calculateBestOutcome(newBoard, otherSign(currentSign), coords)
-        if (isBetter(currentOutcome, bestOutcomeSoFar)) {
-          return currentOutcome
-        }
-        return bestOutcomeSoFar
-      }, LOSS)
+      let opponentBestOutcome = calculateBestOutcome(newBoard, otherSign(currentSign))
       return negate(opponentBestOutcome)
     }
   })
+}
+
+function calculateBestOutcome(board, currentSign) {
+  let emptyCoordsPairs = board.findCells(it => it.isEmpty()).map(it => it.positionAsCoords())
+  return emptyCoordsPairs.reduce((bestOutcomeSoFar, coords) => {
+    let currentOutcome = calculateBestOutcomeForMove(board, currentSign, coords)
+    if (isBetter(currentOutcome, bestOutcomeSoFar)) {
+      return currentOutcome
+    }
+    return bestOutcomeSoFar
+  }, LOSS)
 }
 
 function isBetter(oneOutcome, otherOutcome) {
