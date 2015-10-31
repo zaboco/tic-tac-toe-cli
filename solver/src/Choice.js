@@ -5,34 +5,34 @@ const outcomes = require('./outcomes')
 module.exports = class Choice {
   constructor(outcome, coords) {
     this.outcome = outcome
-    this.coords = coords
+    this.coords = coords || []
   }
 
   getOutcome() {
     return this.outcome
   }
 
-  negate() {
-    return new Choice(this.outcome.negate(), this.coords)
+  negate(coords) {
+    return new Choice(this.outcome.negate(), coords)
   }
 
   orBetter(otherChoice) {
-    return otherChoice.hasOutcomeBetterThan(this.outcome) ? otherChoice : this
+    return this.outcome.isBetterThan(otherChoice.outcome) ? this : otherChoice
   }
 
-  hasOutcomeBetterThan(otherOutcome) {
-    return this.outcome.isBetterThan(otherOutcome)
+  toString() {
+    return `${this.outcome.id} (${this.coords.join(':')})`
   }
 
-  static get best() {
-    return new Choice(outcomes.WIN)
+  static best(coords) {
+    return new Choice(outcomes.WIN, coords)
   }
 
-  static get neutral() {
-    return new Choice(outcomes.TIE)
+  static neutral(coords) {
+    return new Choice(outcomes.TIE, coords)
   }
 
-  static get worst() {
-    return new Choice(outcomes.LOSS)
+  static worst(coords) {
+    return new Choice(outcomes.LOSS, coords)
   }
 }

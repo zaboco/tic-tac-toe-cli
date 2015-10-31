@@ -2,12 +2,14 @@
 
 exports.WIN = {
   negate: () => exports.LOSS,
-  isBetterThan: () => true
+  isBetterThan: () => true,
+  id: 'WIN'
 }
 
 exports.LOSS = {
   negate: () => exports.WIN,
-  isBetterThan: () => false
+  isBetterThan: () => false,
+  id: 'LOSS'
 }
 
 exports.TIE = {
@@ -16,5 +18,6 @@ exports.TIE = {
     return otherOutcome !== exports.TIE ?
       !otherOutcome.isBetterThan(exports.TIE) :
       false
-  }
+  },
+  id: 'TIE'
 }

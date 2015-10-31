@@ -11,7 +11,7 @@ function ChoiceOptimizer(board, sign) {
       .reduce((bestChoiceSoFar, coords) => {
         let currentChoice = choiceWithBestOutcome(coords)
         return bestChoiceSoFar.orBetter(currentChoice)
-      }, Choice.worst)
+      }, Choice.worst())
   }
 
   function choiceWithBestOutcome(coords) {
@@ -20,11 +20,11 @@ function ChoiceOptimizer(board, sign) {
     }
     let newBoard = board.fillCellAt(coords, sign)
     return newBoard.performOnStatus({
-      win: () => Choice.best,
-      tie: () => Choice.neutral,
+      win: () => Choice.best(coords),
+      tie: () => Choice.neutral(coords),
       ongoing: () => {
         let opponentBestChoice = ChoiceOptimizer(newBoard, otherSign(sign)).bestChoice()
-        return opponentBestChoice.negate()
+        return opponentBestChoice.negate(coords)
       }
     })
   }

@@ -10,6 +10,7 @@ const WIN = outcomes.WIN, TIE = outcomes.TIE, LOSS = outcomes.LOSS
 suite('ChoiceOptimizer', () => {
   const X = 'X', O = 'O', _ = null
 
+  const bottomLeft = [2, 0], bottomCenter = [2, 1], bottomRight = [2, 2]
   suite('bestOutcomeWhenChoosing', () => {
     let board
 
@@ -19,7 +20,6 @@ suite('ChoiceOptimizer', () => {
         .should.throw(/finished/i)
     })
 
-    const bottomLeft = [2, 0], bottomCenter = [2, 1], bottomRight = [2, 2]
     suite('for only one empty cell', () => {
       const currentSign = 'O'
 
@@ -99,6 +99,45 @@ suite('ChoiceOptimizer', () => {
           [_, _, O]
         ])
         ChoiceOptimizer(board, currentSign).bestOutcomeWhenChoosing(bottomLeft).should.equal(WIN)
+      })
+    })
+  })
+
+  suite('bestChoice', () => {
+    const currentSign = 'O'
+    test('it is WIN with the move for which the opponent has a no chance to avoid losing', () => {
+      let board = Board.prefilled.fromMatrix([
+        [O, O, X],
+        [_, X, O],
+        [_, _, O]
+      ])
+      ChoiceOptimizer(board, currentSign).bestChoice().should.eql({
+        coords: bottomLeft,
+        outcome: WIN
+      })
+    })
+
+    test('it is TIE with the move that prevents the opponent from winning', () => {
+      let board = Board.prefilled.fromMatrix([
+        [X, O, O],
+        [O, X, X],
+        [_, _, _]
+      ])
+      ChoiceOptimizer(board, currentSign).bestChoice().should.eql({
+        coords: bottomRight,
+        outcome: TIE
+      })
+    })
+
+    test('it is LOSS when the no move can prevent losing', () => {
+      let board = Board.prefilled.fromMatrix([
+        [X, X, O],
+        [_, O, X],
+        [X, _, X]
+      ])
+      ChoiceOptimizer(board, currentSign).bestChoice().should.eql({
+        coords: bottomCenter,
+        outcome: LOSS
       })
     })
   })
