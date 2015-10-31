@@ -64,7 +64,7 @@ suite('Board', () => {
       })
 
       test('cannot fill cell', () => {
-        emptyBoard.fillCell.bind(emptyBoard, outBoardCoords)
+        emptyBoard.fillCellAt.bind(emptyBoard, outBoardCoords)
           .should.throw(BoardError.CellOutsideBoard)
       })
     })
@@ -77,7 +77,7 @@ suite('Board', () => {
       otherCellCoords = [0, 1],
       someSign = X
     setup(() => {
-      newBoard = emptyBoard.fillCell(someCellCoords, someSign)
+      newBoard = emptyBoard.fillCellAt(someCellCoords, someSign)
     })
 
     test('a board is returned', () => {
@@ -123,7 +123,7 @@ suite('Board', () => {
 
   test('filling a board with a `null` leaves the cell empty', () => {
     const someCoords = [1, 2]
-    const boardAfterSettingNullSign = emptyBoard.fillCell(someCoords, null)
+    const boardAfterSettingNullSign = emptyBoard.fillCellAt(someCoords, null)
     boardAfterSettingNullSign.isEmptyAt(someCoords)
   })
 
@@ -132,22 +132,22 @@ suite('Board', () => {
     const firstCellCoords = [1, 2], firstSign = X,
       secondCellCoords = [0, 1], secondSign = O
     setup(() => {
-      boardAfterFirstFill = emptyBoard.fillCell(firstCellCoords, firstSign)
+      boardAfterFirstFill = emptyBoard.fillCellAt(firstCellCoords, firstSign)
     })
 
     test('fails for the same cell', () => {
       const anySign = '*'
-      boardAfterFirstFill.fillCell.bind(boardAfterFirstFill, firstCellCoords, anySign)
+      boardAfterFirstFill.fillCellAt.bind(boardAfterFirstFill, firstCellCoords, anySign)
         .should.throw(BoardError.CellNotEmpty)
     })
 
     test('marks a free cell with the right sign', () => {
-      let boardAfterSecondFill = boardAfterFirstFill.fillCell(secondCellCoords, secondSign)
+      let boardAfterSecondFill = boardAfterFirstFill.fillCellAt(secondCellCoords, secondSign)
       boardAfterSecondFill.getSignAt(secondCellCoords).should.equal(secondSign)
     })
 
     test('the previous board is not changed', () => {
-      boardAfterFirstFill.fillCell(secondCellCoords, secondSign)
+      boardAfterFirstFill.fillCellAt(secondCellCoords, secondSign)
       boardAfterFirstFill.isEmptyAt(secondCellCoords).should.equal(true)
     })
   })

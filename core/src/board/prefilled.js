@@ -16,12 +16,12 @@ exports.fromColumn = function prefillBoardFromRow(column, index) {
 
 function fillFromRow(board, row, rowIndex) {
   return row.reduce((board, sign, columnIndex) => {
-    return board.fillCell([rowIndex, columnIndex], sign)
+    return board.fillCellAt([rowIndex, columnIndex], sign)
   }, board)
 }
 
 function fillFromColumn(board, column, columnIndex) {
   return column.reduce((board, sign, rowIndex) => {
-    return board.fillCell([rowIndex, columnIndex], sign)
+    return board.fillCellAt([rowIndex, columnIndex], sign)
   }, board)
 }

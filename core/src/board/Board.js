@@ -33,6 +33,10 @@ module.exports = class Board {
     return filledCells.length === 0
   }
 
+  emptyCells() {
+    return this.findCells(it => it.isEmpty())
+  }
+
   findCells(predicate) {
     return _.filter(this.cells, predicate)
   }
@@ -57,7 +61,7 @@ module.exports = class Board {
     return this.matrix.areCoordsOutside(coords)
   }
 
-  fillCell(coords, sign) {
+  fillCellAt(coords, sign) {
     const newMatrix = this._makeNewMatrixByFilling(coords, sign)
     return new Board(newMatrix)
   }
