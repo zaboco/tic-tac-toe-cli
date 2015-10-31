@@ -3,8 +3,7 @@
 require('chai').should()
 
 const Board = require('../../core').Board
-const ChoiceOptimizer = require('../src/ChoiceOptimizer')
-const SmartSolver = require('../src/SmartSolver')
+const solver = require('../src/OpeningsAwareSolver')
 const registry = require('../../registry')
 
 const computerSign = 'X', opponentSign = 'O'
@@ -81,6 +80,7 @@ function formatOpponentSuiteDescription(round, optionIndex, totalOptions, move) 
 
 function assertComputerHasNotLoose(board, moves) {
   test(`computer didn't loose for ${moves}`, () => {
+    //console.log('\n', board.formatWith(registry.boardFormatter))
     board.hasWinner(opponentSign).should.be.false
   })
 }
@@ -96,7 +96,6 @@ function FixedMover(sign) {
 }
 
 function ComputerMover(sign) {
-  let solver = SmartSolver()
   return function moveOn(initialBoard) {
     let coords = solver(initialBoard, sign)
     let board = initialBoard.fillCellAt(coords, sign)
