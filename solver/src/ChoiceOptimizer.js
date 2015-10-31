@@ -6,15 +6,28 @@ const Choice = require('./Choice')
 
 function ChoiceOptimizer(board, sign) {
   function bestChoice() {
-    return board.emptyCells()
-      .map(it => it.positionAsCoords())
-      .reduce((bestChoiceSoFar, coords) => {
-        if (bestChoiceSoFar.isBest()) {
-          return bestChoiceSoFar
-        }
-        let currentChoice = choiceWithBestOutcome(coords)
-        return bestChoiceSoFar.orBetter(currentChoice)
-      }, Choice.worst())
+    let emptyLocations = board.emptyCells().map(it => it.positionAsCoords())
+    return immediateWinner(emptyLocations) || _chooseBestFromAllMoves(emptyLocations)
+  }
+
+  function _chooseBestFromAllMoves(locations) {
+    return locations.reduce((bestChoiceSoFar, coords) => {
+      if (bestChoiceSoFar.isBest()) {
+        return bestChoiceSoFar
+      }
+      let currentChoice = choiceWithBestOutcome(coords)
+      return bestChoiceSoFar.orBetter(currentChoice)
+    }, Choice.worst())
+  }
+
+  function immediateWinner(locations) {
+    let winningLocation = locations.find(isImmediateWinner)
+    return winningLocation && Choice.best(winningLocation)
+  }
+
+  function isImmediateWinner(coords) {
+    let newBoard = board.fillCellAt(coords, sign)
+    return newBoard.hasWinner(sign)
   }
 
   function choiceWithBestOutcome(coords) {
@@ -36,7 +49,11 @@ function ChoiceOptimizer(board, sign) {
     return choiceWithBestOutcome(coords).getOutcome()
   }
 
-  return { bestOutcomeWhenChoosing, bestChoice }
+  function bestMove() {
+    return bestChoice().getCoords()
+  }
+
+  return { bestOutcomeWhenChoosing, bestChoice, bestMove }
 }
 
 function otherSign(sign) {

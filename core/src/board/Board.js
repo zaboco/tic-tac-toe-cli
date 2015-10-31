@@ -98,6 +98,14 @@ module.exports = class Board {
     return this.matrix.setAtCoords(coords, cell)
   }
 
+  hasWinner(wantedSign) {
+    return this.performOnStatus({
+      win: winningSign => winningSign === wantedSign,
+      tie: () => false,
+      ongoing: () => false
+    })
+  }
+
   toString() {
     return this.matrix.toString()
   }

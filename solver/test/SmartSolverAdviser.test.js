@@ -131,6 +131,15 @@ suite('ChoiceOptimizer', () => {
       ])
       choiceShouldBe(ChoiceOptimizer(board, currentSign).bestChoice(), LOSS, bottomCenter)
     })
+
+    test('it is WIN for immediate winning move', () => {
+      let board = Board.prefilled.fromMatrix([
+        [X, X, O],
+        [_, _, _],
+        [_, _, O]
+      ])
+      choiceShouldBe(ChoiceOptimizer(board, currentSign).bestChoice(), WIN, [1, 2])
+    })
   })
 })
 
