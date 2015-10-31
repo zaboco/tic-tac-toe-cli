@@ -38,6 +38,7 @@ let borders = {
 }
 
 let registry = deependr.container({
+  headerMappers,
   playerMaker: $$('playerMakers.Typed', {
     playerTemplates,
     typeReader: $$('inputReaders.List', { message: 'Choose type', choices: ['Human', 'Computer'] })
