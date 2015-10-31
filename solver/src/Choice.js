@@ -1,6 +1,6 @@
 'use strict'
 
-const WIN = 1, TIE = 0, LOSS = -1
+const outcomes = require('./outcomes')
 
 module.exports = class Choice {
   constructor(outcome, coords) {
@@ -13,31 +13,26 @@ module.exports = class Choice {
   }
 
   negate() {
-    return new Choice(negateOutcome(this.outcome), this.coords)
+    return new Choice(this.outcome.negate(), this.coords)
   }
 
   orBetter(otherChoice) {
-    let hasBetterOutcome = isBetter(this.outcome, otherChoice.outcome)
-    return hasBetterOutcome ? this : otherChoice
+    return otherChoice.hasOutcomeBetterThan(this.outcome) ? otherChoice : this
+  }
+
+  hasOutcomeBetterThan(otherOutcome) {
+    return this.outcome.isBetterThan(otherOutcome)
   }
 
   static get best() {
-    return new Choice(WIN)
+    return new Choice(outcomes.WIN)
   }
 
   static get neutral() {
-    return new Choice(TIE)
+    return new Choice(outcomes.TIE)
   }
 
   static get worst() {
-    return new Choice(LOSS)
+    return new Choice(outcomes.LOSS)
   }
-}
-
-function isBetter(oneOutcome, otherOutcome) {
-  return oneOutcome > otherOutcome
-}
-
-function negateOutcome(outcome) {
-  return -outcome
 }

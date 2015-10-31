@@ -4,8 +4,9 @@ require('chai').should()
 
 const Board = require('../../core').Board
 const ChoiceOptimizer = require('../src/ChoiceOptimizer')
+const outcomes = require('../src/outcomes')
 
-const WIN = 1, TIE = 0, LOSS = -1
+const WIN = outcomes.WIN, TIE = outcomes.TIE, LOSS = outcomes.LOSS
 suite('ChoiceOptimizer', () => {
   const X = 'X', O = 'O', _ = null
 
