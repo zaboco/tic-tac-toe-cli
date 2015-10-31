@@ -3,9 +3,14 @@
 const outcomes = require('./outcomes')
 
 module.exports = class Choice {
-  constructor(outcome, coords) {
+  constructor(outcome, coords, stack) {
     this.outcome = outcome
     this.coords = coords || []
+    this.stack = [coords].concat(stack || [])
+  }
+
+  getCoords() {
+    return this.stack[0]
   }
 
   getOutcome() {
@@ -13,7 +18,7 @@ module.exports = class Choice {
   }
 
   negate(coords) {
-    return new Choice(this.outcome.negate(), coords)
+    return new Choice(this.outcome.negate(), coords, this.stack)
   }
 
   orBetter(otherChoice) {
@@ -21,7 +26,7 @@ module.exports = class Choice {
   }
 
   toString() {
-    return `${this.outcome.id} (${this.coords.join(':')})`
+    return `${this.outcome.id} (${this.stack.join(' : ')})`
   }
 
   static best(coords) {

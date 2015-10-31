@@ -111,10 +111,7 @@ suite('ChoiceOptimizer', () => {
         [_, X, O],
         [_, _, O]
       ])
-      ChoiceOptimizer(board, currentSign).bestChoice().should.eql({
-        coords: bottomLeft,
-        outcome: WIN
-      })
+      choiceShouldBe(ChoiceOptimizer(board, currentSign).bestChoice(), WIN, bottomLeft)
     })
 
     test('it is TIE with the move that prevents the opponent from winning', () => {
@@ -123,10 +120,7 @@ suite('ChoiceOptimizer', () => {
         [O, X, X],
         [_, _, _]
       ])
-      ChoiceOptimizer(board, currentSign).bestChoice().should.eql({
-        coords: bottomRight,
-        outcome: TIE
-      })
+      choiceShouldBe(ChoiceOptimizer(board, currentSign).bestChoice(), TIE, bottomRight)
     })
 
     test('it is LOSS when the no move can prevent losing', () => {
@@ -135,10 +129,12 @@ suite('ChoiceOptimizer', () => {
         [_, O, X],
         [X, _, X]
       ])
-      ChoiceOptimizer(board, currentSign).bestChoice().should.eql({
-        coords: bottomCenter,
-        outcome: LOSS
-      })
+      choiceShouldBe(ChoiceOptimizer(board, currentSign).bestChoice(), LOSS, bottomCenter)
     })
   })
 })
+
+function choiceShouldBe(choice, outcome, coords) {
+  choice.getOutcome().should.equal(outcome)
+  choice.getCoords().should.eql(coords)
+}
