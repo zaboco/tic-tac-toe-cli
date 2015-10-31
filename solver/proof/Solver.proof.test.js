@@ -23,7 +23,25 @@ suite('solver', () => {
   suite('when second to move', () => {
     testAllOpponentMoves(Board.empty(), [])
   })
+
+  test('against itself results in a tie', () => {
+    let firstMover = ComputerMover(computerSign)
+    let secondMover = ComputerMover(opponentSign)
+    firstMover.next = secondMover
+    secondMover.next = firstMover
+    let finalBoard = moveUntilFinished(firstMover, Board.empty())
+    let isTieGame = finalBoard.performOnStatus({ tie: () => true })
+    isTieGame.should.be.true
+  })
 })
+
+function moveUntilFinished(mover, board) {
+  if (board.isFinished()) {
+    return board
+  }
+  let newBoard = mover(board).board
+  return moveUntilFinished(mover.next, newBoard)
+}
 
 function testComputerMove(board, moves) {
   let computerMove = computerMover(board)
