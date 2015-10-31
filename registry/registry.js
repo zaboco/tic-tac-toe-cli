@@ -18,9 +18,14 @@ let playerTemplates = deependr.container({
     nameLabel: 'H'
   }),
   Computer: $$('playerMakers.Named', {
+    adviser: $$('advisers.SmartSolver'),
+    nameReader: $$('inputReaders.Static', { value: '' }),
+    nameLabel: 'C'
+  }),
+  Dummy: $$('playerMakers.Named', {
     adviser: $$('advisers.DummySolver'),
     nameReader: $$('inputReaders.Static', { value: '' }),
-    nameLabel: 'AI 0'
+    nameLabel: '_'
   })
 })
 
@@ -38,9 +43,10 @@ let borders = {
 }
 
 let registry = deependr.container({
+  headerMappers,
   playerMaker: $$('playerMakers.Typed', {
     playerTemplates,
-    typeReader: $$('inputReaders.List', { message: 'Choose type', choices: ['Human', 'Computer'] })
+    typeReader: $$('inputReaders.List', { message: 'Choose type', choices: ['Human', 'Computer', 'Dummy'] })
   }),
   boardFormatter: $$('boardFormatters.Table', {
     headerMappers,

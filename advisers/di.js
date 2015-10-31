@@ -9,5 +9,9 @@ module.exports = {
 
   Reader(container) {
     return implementations.Reader(container.coordsReader, container.coordsParser)
+  },
+
+  SmartSolver() {
+    return implementations.SmartSolver()
   }
 }

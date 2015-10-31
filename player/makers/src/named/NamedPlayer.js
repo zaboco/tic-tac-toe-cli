@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('lodash')
+
 const Player = require('../../../../core').Player
 
 module.exports = class NamedPlayer {
@@ -22,6 +24,7 @@ module.exports = class NamedPlayer {
   }
 
   toString() {
-    return `(${this.sign}) ${this.name}`
+    let namePart = _.isEmpty(this.name) ? '' : `${this.name}`
+    return `(${this.sign})${namePart}`
   }
 }

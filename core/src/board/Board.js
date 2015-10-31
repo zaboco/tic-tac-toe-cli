@@ -33,6 +33,10 @@ module.exports = class Board {
     return filledCells.length === 0
   }
 
+  emptyCells() {
+    return this.findCells(it => it.isEmpty())
+  }
+
   findCells(predicate) {
     return _.filter(this.cells, predicate)
   }
@@ -45,11 +49,19 @@ module.exports = class Board {
     return this._getCellAt(coords).isEmpty()
   }
 
+  isFinished() {
+    return this.performOnStatus({
+      win: () => true,
+      tie: () => true,
+      ongoing: () => false
+    })
+  }
+
   areCoordsOutside(coords) {
     return this.matrix.areCoordsOutside(coords)
   }
 
-  fillCell(coords, sign) {
+  fillCellAt(coords, sign) {
     const newMatrix = this._makeNewMatrixByFilling(coords, sign)
     return new Board(newMatrix)
   }
@@ -84,6 +96,14 @@ module.exports = class Board {
 
   _setCellAt(coords, cell) {
     return this.matrix.setAtCoords(coords, cell)
+  }
+
+  hasWinner(wantedSign) {
+    return this.performOnStatus({
+      win: winningSign => winningSign === wantedSign,
+      tie: () => false,
+      ongoing: () => false
+    })
   }
 
   toString() {
