@@ -49,11 +49,7 @@ function ChoiceOptimizer(board, sign) {
     return choiceWithBestOutcome(coords).getOutcome()
   }
 
-  function bestMove() {
-    return bestChoice().getCoords()
-  }
-
-  return { bestOutcomeWhenChoosing, bestChoice, bestMove }
+  return { bestOutcomeWhenChoosing, bestChoice }
 }
 
 function otherSign(sign) {

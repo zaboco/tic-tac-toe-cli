@@ -4,6 +4,7 @@ require('chai').should()
 
 const Board = require('../../core').Board
 const ChoiceOptimizer = require('../src/ChoiceOptimizer')
+const SmartSolver = require('../src/SmartSolver')
 const registry = require('../../registry')
 
 const computerSign = 'X', opponentSign = 'O'
@@ -95,8 +96,9 @@ function FixedMover(sign) {
 }
 
 function ComputerMover(sign) {
+  let solver = SmartSolver()
   return function moveOn(initialBoard) {
-    let coords = ChoiceOptimizer(initialBoard, sign).bestMove()
+    let coords = solver(initialBoard, sign)
     let board = initialBoard.fillCellAt(coords, sign)
     return { coords, board }
   }
