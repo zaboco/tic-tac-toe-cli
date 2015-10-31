@@ -2,17 +2,18 @@
 
 module.exports = ChoiceOptimizer
 
+const Choice = require('./Choice')
+
 const WIN = 1, TIE = 0, LOSS = -1
 
 function ChoiceOptimizer(board, sign) {
   function bestChoice() {
-    return board.emptyCells().reduce((bestOutcomeSoFar, cell) => {
-      let currentOutcome = bestOutcomeWhenChoosing(cell.positionAsCoords())
-      if (isBetter(currentOutcome, bestOutcomeSoFar)) {
-        bestOutcomeSoFar = currentOutcome
-      }
-      return bestOutcomeSoFar
-    }, LOSS)
+    return board.emptyCells()
+      .map(it => it.positionAsCoords())
+      .reduce((bestChoiceSoFar, coords) => {
+        let currentChoice = new Choice(bestOutcomeWhenChoosing(coords), coords)
+        return bestChoiceSoFar.orBetter(currentChoice)
+      }, Choice.worst)
   }
 
   function bestOutcomeWhenChoosing(coords) {
@@ -25,20 +26,12 @@ function ChoiceOptimizer(board, sign) {
       tie: () => TIE,
       ongoing: () => {
         let opponentBestChoice = ChoiceOptimizer(newBoard, otherSign(sign)).bestChoice()
-        return negate(opponentBestChoice)
+        return opponentBestChoice.negatedOutcome()
       }
     })
   }
 
-  return { bestOutcomeWhenChoosing, bestChoice}
-}
-
-function isBetter(oneOutcome, otherOutcome) {
-  return oneOutcome > otherOutcome
-}
-
-function negate(outcome) {
-  return -outcome
+  return { bestOutcomeWhenChoosing, bestChoice }
 }
 
 function otherSign(sign) {
