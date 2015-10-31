@@ -8,13 +8,25 @@ module.exports = class Choice {
     this.coords = coords
   }
 
-  negatedOutcome() {
-    return negate(this.outcome)
+  getOutcome() {
+    return this.outcome
+  }
+
+  negate() {
+    return new Choice(negateOutcome(this.outcome), this.coords)
   }
 
   orBetter(otherChoice) {
     let hasBetterOutcome = isBetter(this.outcome, otherChoice.outcome)
     return hasBetterOutcome ? this : otherChoice
+  }
+
+  static get best() {
+    return new Choice(WIN)
+  }
+
+  static get neutral() {
+    return new Choice(TIE)
   }
 
   static get worst() {
@@ -26,6 +38,6 @@ function isBetter(oneOutcome, otherOutcome) {
   return oneOutcome > otherOutcome
 }
 
-function negate(outcome) {
+function negateOutcome(outcome) {
   return -outcome
 }

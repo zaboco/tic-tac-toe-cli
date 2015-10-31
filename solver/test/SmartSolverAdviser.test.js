@@ -6,10 +6,10 @@ const Board = require('../../core').Board
 const ChoiceOptimizer = require('../src/ChoiceOptimizer')
 
 const WIN = 1, TIE = 0, LOSS = -1
-suite('advisers/smartSolver', () => {
+suite('ChoiceOptimizer', () => {
   const X = 'X', O = 'O', _ = null
 
-  suite('calculateBestOutcomeForMove', () => {
+  suite('bestOutcomeWhenChoosing', () => {
     let board
 
     test('it throws error when receiving winning board', () => {
