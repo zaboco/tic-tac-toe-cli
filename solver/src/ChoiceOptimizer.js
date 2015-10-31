@@ -9,6 +9,9 @@ function ChoiceOptimizer(board, sign) {
     return board.emptyCells()
       .map(it => it.positionAsCoords())
       .reduce((bestChoiceSoFar, coords) => {
+        if (bestChoiceSoFar.isBest()) {
+          return bestChoiceSoFar
+        }
         let currentChoice = choiceWithBestOutcome(coords)
         return bestChoiceSoFar.orBetter(currentChoice)
       }, Choice.worst())

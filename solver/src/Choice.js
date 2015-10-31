@@ -25,6 +25,10 @@ module.exports = class Choice {
     return this.outcome.isBetterThan(otherChoice.outcome) ? this : otherChoice
   }
 
+  isBest() {
+    return this.outcome === outcomes.WIN
+  }
+
   toString() {
     return `${this.outcome.id} (${this.stack.join(' : ')})`
   }
