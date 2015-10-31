@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "npm run coverage",
+    "check_solver": "mocha --ui tdd -R spec solver/proof",
     "coverage": "npm run _istanbul */test input/*/test util/*/test",
     "_istanbul": "istanbul cover _mocha -- --ui tdd -R dot"
   },
