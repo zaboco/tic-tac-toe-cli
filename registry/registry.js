@@ -11,7 +11,7 @@ let headerMappers = deependr.container({
 let playerTemplates = deependr.container({
   Human: $$('playerMakers.Named', {
     adviser: $$('advisers.Reader', {
-      coordsReader: $$('inputReaders.Text', { message: 'Choose empty cell' }),
+      coordsReader: $$('inputReaders.Text', { message: 'Choose empty cell (a1-c3)' }),
       coordsParser: $$('inputParsers.Headers', { headerMappers })
     }),
     nameReader: $$('inputReaders.Text', { message: 'Name' }),
@@ -46,7 +46,7 @@ let registry = deependr.container({
   headerMappers,
   playerMaker: $$('playerMakers.Typed', {
     playerTemplates,
-    typeReader: $$('inputReaders.List', { message: 'Choose type', choices: ['Human', 'Computer', 'Dummy'] })
+    typeReader: $$('inputReaders.List', { message: 'Choose type', choices: ['Human', 'Computer'] })
   }),
   boardFormatter: $$('boardFormatters.Table', {
     headerMappers,
