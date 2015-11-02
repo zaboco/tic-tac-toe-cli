@@ -25,6 +25,6 @@ module.exports = class NamedPlayer {
 
   toString() {
     let namePart = _.isEmpty(this.name) ? '' : `${this.name}`
-    return `(${this.sign})${namePart}`
+    return `${this.sign}${namePart}`
   }
 }
