@@ -8,7 +8,7 @@ require('chai').use(require('sinon-chai')).should()
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
   prefilledBoard = require('../src/board/prefilled'),
-  registry = require('../../registry')
+  GridFormatter = require('../src/GridFormatter')
 
 const X = 'X', O = 'O', _ = null
 
@@ -221,22 +221,19 @@ suite('Board', () => {
     })
   })
 
-  test('formatting as table', () => {
+  test('formatting as grid', () => {
     let fullBoard = prefilledBoard.fromMatrix([
       [X, X, O],
       [O, X, X],
       [X, O, O]
     ])
-    let formattedBoard = fullBoard.formatWith(registry.boardFormatter)
-    formattedBoard.should.equal([
-      '    a   b   c ',
-      '   ───────────',
-      '1 │ X │ X │ O │',
-      '  │───────────│',
-      '2 │ O │ X │ X │',
-      '  │───────────│',
-      '3 │ X │ O │ O │',
-      '   ───────────'
+    let formatter = GridFormatter.standard
+    fullBoard.formatWith(formatter).should.equal([
+      ' X │ X │ O ',
+      '───────────',
+      ' O │ X │ X ',
+      '───────────',
+      ' X │ O │ O '
     ].join('\n'))
   })
 })
