@@ -13,20 +13,18 @@ function GameRunner(playerMaker, boardFormatter) {
     game.on('game.start', () => {
       console.log('The game starts now!')
     })
-    game.on('round.start', (player, board) => {
+    game.on('round.start', player => {
       console.log(`\nIt is ${player}'s turn:`)
+    })
+    game.on('round.end', (player, board) => {
+      console.log(`${player} has moved:`)
       console.log(board.formatWith(boardFormatter))
     })
-    game.on('round.end', (player, coords) => {
-      console.log(`${player} has moved at ${coords}`)
-    })
-    game.on('game.won', (player, board) => {
+    game.on('game.won', player => {
       console.log(`${player} wins!`)
-      console.log(board.formatWith(boardFormatter))
     })
-    game.on('game.tie', board => {
+    game.on('game.tie', () => {
       console.log(`The game ends with a tie!`)
-      console.log(board.formatWith(boardFormatter))
     })
     game.run()
   })

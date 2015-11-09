@@ -8,6 +8,7 @@
     "test": "npm run coverage",
     "check_solver": "mocha --ui tdd -R spec solver/proof",
     "coverage": "npm run _istanbul */test input/*/test util/*/test",
+    "cov:core": "npm run _istanbul core/test",
     "_istanbul": "istanbul cover _mocha -- --ui tdd -R dot"
   },
   "keywords": [

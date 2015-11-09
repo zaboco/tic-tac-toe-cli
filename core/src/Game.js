@@ -25,20 +25,20 @@ module.exports = class Game {
   }
 
   _startRound() {
-    this._emit('round.start', this._currentPlayer(), this.board)
+    this._emit('round.start', this._currentPlayer())
     this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
-      this._handleMove(coords)
+      this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
+      this._handleMove()
     }).catch(err => {
       this._emit('error', err)
     })
   }
 
-  _handleMove(coords) {
-    this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
+  _handleMove() {
     this.board.performOnStatus({
       win: (sign) => this._emit('game.won', this._playerWithSign(sign), this.board),
       tie: () => this._emit('game.tie', this.board),
-      ongoing: () => this._endRound(coords)
+      ongoing: () => this._endRound(this.board)
     })
   }
 
@@ -46,8 +46,8 @@ module.exports = class Game {
     return this.players.find(player => player.hasSign(sign))
   }
 
-  _endRound(coords) {
-    this._emit('round.end', this._currentPlayer(), coords)
+  _endRound(board) {
+    this._emit('round.end', this._currentPlayer(), board)
     this._swapPlayers()
     return this._startRound()
   }
