@@ -46,13 +46,13 @@ suite('Game', function() {
 
     test('first round ends with the first player and updated board', () => {
       let roundEnd = waitForRoundEnd()
-      firstPlayer.chooseCoords(someCoords)
+      firstPlayer.makeMove(someCoords)
       assertPlayerHasMoved(roundEnd, firstPlayer, someCoords)
     })
 
     test('second round starts with the second player', () => {
       let roundStart = waitFor('round.start')
-      firstPlayer.chooseCoords(someCoords)
+      firstPlayer.makeMove(someCoords)
       return roundStart.should.eventually.equal(secondPlayer)
     })
   })
@@ -62,19 +62,19 @@ suite('Game', function() {
 
     setup(() => {
       game.run()
-      firstPlayer.chooseCoords(firstCoords)
+      firstPlayer.makeMove(firstCoords)
       return secondPlayer.waitUntilReady()
     })
 
     test('second round ends with the second player', () => {
       let roundEnd = waitForRoundEnd()
-      secondPlayer.chooseCoords(secondCoords)
+      secondPlayer.makeMove(secondCoords)
       return assertPlayerHasMoved(roundEnd, secondPlayer, secondCoords)
     })
 
     test('third round starts with the first player', () => {
       let roundStart = waitFor('round.start')
-      secondPlayer.chooseCoords(secondCoords)
+      secondPlayer.makeMove(secondCoords)
       return roundStart.should.eventually.equal(firstPlayer)
     })
   })
@@ -92,7 +92,7 @@ suite('Game', function() {
 
     test('round ends and first player wins for a good move', () => {
       let gameWonAtEndOfRound = waitForGameWonAtEndOfRound()
-      firstPlayer.chooseCoords(winningCoords)
+      firstPlayer.makeMove(winningCoords)
       return gameWonAtEndOfRound.should.eventually.equal(firstPlayer)
     })
 
@@ -105,8 +105,8 @@ suite('Game', function() {
   })
 
   function makeMovesOfBothPlayers(firstCoords, secondCoords) {
-    firstPlayer.chooseCoords(firstCoords)
-    secondPlayer.waitUntilReady().then(() => secondPlayer.chooseCoords(secondCoords))
+    firstPlayer.makeMove(firstCoords)
+    secondPlayer.waitUntilReady().then(() => secondPlayer.makeMove(secondCoords))
   }
 
   function waitForGameWonAtEndOfRound() {

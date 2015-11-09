@@ -1,8 +1,10 @@
 'use strict'
 
-module.exports = class FakePlayer {
+const Player = require('../../src/Player')
+
+module.exports = class FakePlayer extends Player {
   constructor(sign) {
-    this.sign = sign
+    super(sign)
     this.becomeReady = () => {}
   }
 
@@ -17,21 +19,13 @@ module.exports = class FakePlayer {
 
   makeWrongMove() {
     const outsideCoords = [3, 5]
-    this.chooseCoords(outsideCoords)
+    this.makeMove(outsideCoords)
   }
 
-  chooseCoords(coords) {
+  makeMove(coords) {
     if (this.moveCallback == null) {
       throw Error(`Player ${this.sign} was no required to move`)
     }
     this.moveCallback(coords)
-  }
-
-  fillCellOnBoard(board, coords) {
-    return board.fillCellAt(coords, this.sign)
-  }
-
-  getSign() {
-    return this.sign
   }
 }
