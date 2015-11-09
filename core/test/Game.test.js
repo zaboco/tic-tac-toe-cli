@@ -47,7 +47,7 @@ suite('Game', function() {
     test('first round ends with the first player and updated board', () => {
       let roundEnd = waitForRoundEnd()
       firstPlayer.makeMove(someCoords)
-      assertPlayerHasMoved(roundEnd, firstPlayer, someCoords)
+      return assertPlayerHasMoved(roundEnd, firstPlayer, someCoords)
     })
 
     test('second round starts with the second player', () => {
@@ -63,7 +63,7 @@ suite('Game', function() {
     setup(() => {
       game.run()
       firstPlayer.makeMove(firstCoords)
-      return secondPlayer.waitUntilReady()
+      return secondPlayer.waitUntilAsked()
     })
 
     test('second round ends with the second player', () => {
@@ -106,7 +106,7 @@ suite('Game', function() {
 
   function makeMovesOfBothPlayers(firstCoords, secondCoords) {
     firstPlayer.makeMove(firstCoords)
-    secondPlayer.waitUntilReady().then(() => secondPlayer.makeMove(secondCoords))
+    secondPlayer.waitUntilAsked().then(() => secondPlayer.makeMove(secondCoords))
   }
 
   function waitForGameWonAtEndOfRound() {

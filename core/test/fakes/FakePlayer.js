@@ -5,16 +5,16 @@ const Player = require('../../src/Player')
 module.exports = class FakePlayer extends Player {
   constructor(sign) {
     super(sign)
-    this.becomeReady = () => {}
+    this.notifyItWasAsked = () => {}
   }
 
-  waitUntilReady() {
-    return new Promise(resolve => this.becomeReady = resolve)
+  waitUntilAsked() {
+    return new Promise(resolve => this.notifyItWasAsked = resolve)
   }
 
   willChooseCoordsFor() {
-    this.becomeReady()
-    return new Promise(resolve => this.moveCallback = resolve)
+    this.notifyItWasAsked()
+    return new Promise(resolve => this.notifyAboutMove = resolve)
   }
 
   makeWrongMove() {
@@ -23,9 +23,6 @@ module.exports = class FakePlayer extends Player {
   }
 
   makeMove(coords) {
-    if (this.moveCallback == null) {
-      throw Error(`Player ${this.sign} was no required to move`)
-    }
-    this.moveCallback(coords)
+    this.notifyAboutMove(coords)
   }
 }
