@@ -101,6 +101,12 @@ suite('Game', function() {
       done()
     })
 
+    test('round ends', wco(function*() {
+      game.on('round.end', eventHandler)
+      yield firstPlayer.chooseCoords(winningCoords)
+      eventHandler.should.have.been.calledWith(firstPlayer)
+    }))
+
     test('first player wins', wco(function* () {
       game.on('game.won', eventHandler)
       yield firstPlayer.chooseCoords(winningCoords)
