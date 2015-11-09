@@ -1,50 +1,43 @@
 'use strict'
 
-require('chai').should()
+const sinon = require('sinon')
 
-const wco = require('co').wrap
+require('chai').use(require('sinon-chai')).should()
 
-const registry = require('../../registry'),
+const Player = require('../src/Player'),
   Board = require('../src/board')
 
-const someSign = 'X'
-
-suite('Player', function() {
-  this.timeout(100)
-
+suite('Player', () => {
+  const playerSign = 'X'
   let emptyBoard
   suiteSetup(() => {
-    registry.set('playerMaker', registry.$$('playerMakers.Fake'))
     emptyBoard = Board.empty()
   })
 
-  let player
-  setup(wco(function*() {
-    player = yield registry.playerMaker(someSign)
-  }))
+  let player, adviserSpy
+  setup(() => {
+    adviserSpy = sinon.spy()
+    player = new Player(playerSign, adviserSpy)
+  })
 
-  test('can choose coordinates for a board', done => {
-    const someCoords = [1, 0]
-    player.willChooseCoordsFor(emptyBoard).then(coords => {
-      coords.should.equal(someCoords)
-      done()
-    })
-    player.chooseCoords(someCoords)
+  test('forwards coordinates choosing to the adviser', () => {
+    player.willChooseCoordsFor(emptyBoard)
+    adviserSpy.should.have.been.calledWith(emptyBoard, playerSign)
   })
 
   test('places sign on board at top left', () => {
     const topLeft = [0, 0]
     let newBoard = player.fillCellOnBoard(emptyBoard, topLeft)
-    newBoard.getSignAt(topLeft).should.equal(someSign)
+    newBoard.getSignAt(topLeft).should.equal(playerSign)
   })
 
-  test('places sign on board at top left', () => {
+  test('places sign on board at bottom right', () => {
     const bottomRight = [2, 2]
-    var newBoard = player.fillCellOnBoard(emptyBoard, bottomRight)
-    newBoard.getSignAt(bottomRight).should.equal(someSign)
+    let newBoard = player.fillCellOnBoard(emptyBoard, bottomRight)
+    newBoard.getSignAt(bottomRight).should.equal(playerSign)
   })
 
   test('toString contains sign', () => {
-    player.toString().should.contain(someSign)
+    player.toString().should.contain(playerSign)
   })
 })
