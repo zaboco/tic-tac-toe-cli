@@ -49,7 +49,7 @@ module.exports = class Game {
   }
 
   _playerWithSign(sign) {
-    return this.players.find(player => player.hasSign(sign))
+    return this.players.find(player => player.getSign() === sign)
   }
 
   _swapPlayers() {

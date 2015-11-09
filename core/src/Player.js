@@ -14,8 +14,8 @@ module.exports = class Player {
     return board.fillCellAt(coords, this.sign)
   }
 
-  hasSign(sign) {
-    return this.sign === sign
+  getSign() {
+    return this.sign
   }
 
   toString() {

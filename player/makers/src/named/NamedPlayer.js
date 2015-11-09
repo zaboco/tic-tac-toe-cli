@@ -19,8 +19,8 @@ module.exports = class NamedPlayer {
     return this.gamePlayer.fillCellOnBoard(board, coords)
   }
 
-  hasSign(sign) {
-    return this.gamePlayer.hasSign(sign)
+  getSign() {
+    return this.gamePlayer.getSign()
   }
 
   toString() {
