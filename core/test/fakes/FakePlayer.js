@@ -14,7 +14,7 @@ module.exports = class FakePlayer {
     return new Promise(resolve => this.notifyItWasAsked = resolve)
   }
 
-  willChooseCoordsFor() {
+  findMoveFor() {
     this.notifyItWasAsked()
     return new Promise(resolve => this.notifyAboutMove = resolve)
   }

@@ -11,8 +11,8 @@ module.exports = class NamedPlayer {
     this.sign = sign
   }
 
-  willChooseCoordsFor(board) {
-    return this.gamePlayer.willChooseCoordsFor(board)
+  findMoveFor(board) {
+    return this.gamePlayer.findMoveFor(board)
   }
 
   getSign() {

@@ -6,7 +6,7 @@ module.exports = class Player {
     this.moveAdviser = moveAdviser
   }
 
-  willChooseCoordsFor(board) {
+  findMoveFor(board) {
     return this.moveAdviser(board, this.sign)
   }
 

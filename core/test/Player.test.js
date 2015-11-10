@@ -21,7 +21,7 @@ suite('Player', () => {
   })
 
   test('forwards coordinates choosing to the adviser', () => {
-    player.willChooseCoordsFor(emptyBoard)
+    player.findMoveFor(emptyBoard)
     adviserSpy.should.have.been.calledWith(emptyBoard, playerSign)
   })
 
