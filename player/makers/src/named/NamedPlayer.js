@@ -15,10 +15,6 @@ module.exports = class NamedPlayer {
     return this.gamePlayer.willChooseCoordsFor(board)
   }
 
-  fillCellOnBoard(board, coords) {
-    return this.gamePlayer.fillCellOnBoard(board, coords)
-  }
-
   getSign() {
     return this.gamePlayer.getSign()
   }

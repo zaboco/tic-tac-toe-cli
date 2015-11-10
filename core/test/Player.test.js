@@ -25,18 +25,6 @@ suite('Player', () => {
     adviserSpy.should.have.been.calledWith(emptyBoard, playerSign)
   })
 
-  test('places sign on board at top left', () => {
-    const topLeft = [0, 0]
-    let newBoard = player.fillCellOnBoard(emptyBoard, topLeft)
-    newBoard.getSignAt(topLeft).should.equal(playerSign)
-  })
-
-  test('places sign on board at bottom right', () => {
-    const bottomRight = [2, 2]
-    let newBoard = player.fillCellOnBoard(emptyBoard, bottomRight)
-    newBoard.getSignAt(bottomRight).should.equal(playerSign)
-  })
-
   test('toString contains sign', () => {
     player.toString().should.contain(playerSign)
   })

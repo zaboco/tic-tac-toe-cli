@@ -10,10 +10,6 @@ module.exports = class Player {
     return this.moveAdviser(board, this.sign)
   }
 
-  fillCellOnBoard(board, coords) {
-    return board.fillCellAt(coords, this.sign)
-  }
-
   getSign() {
     return this.sign
   }

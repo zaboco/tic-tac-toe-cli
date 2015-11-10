@@ -27,7 +27,7 @@ module.exports = class Game {
   _startRound() {
     this._emit('round.start', this._currentPlayer())
     this._currentPlayer().willChooseCoordsFor(this.board).then(coords => {
-      this.board = this._currentPlayer().fillCellOnBoard(this.board, coords)
+      this.board = this.board.fillCellAt(coords, this._currentPlayer().getSign())
       this._endRound()
     }).catch(err => {
       this._emit('error', err)

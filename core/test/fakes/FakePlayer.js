@@ -1,11 +1,13 @@
 'use strict'
 
-const Player = require('../../src/Player')
-
-module.exports = class FakePlayer extends Player {
+module.exports = class FakePlayer {
   constructor(sign) {
-    super(sign)
+    this.sign = sign
     this.notifyItWasAsked = () => {}
+  }
+
+  getSign() {
+    return this.sign
   }
 
   waitUntilAsked() {
