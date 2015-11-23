@@ -10,25 +10,17 @@ module.exports = class ImmutableMatrix {
     this.size = source.length
   }
 
-  setAtCoords(coords, value) {
-    return this.set(coords[0], coords[1], value)
-  }
-
-  set(rowIndex, columnIndex, value) {
-    const sourceClone = this._cloneSource()
-    sourceClone[rowIndex][columnIndex] = value
-    return new ImmutableMatrix(sourceClone)
+  setAtCoords(coords, newValue) {
+    return this.map((oldValue, rowIndex, columnIndex) => {
+      return coords[0] === rowIndex && coords[1] === columnIndex ? newValue : oldValue
+    })
   }
 
   getAtCoords(coords) {
     if (this.areCoordsOutside(coords)) {
       throw MatrixError.invalidCoords(coords)
     }
-    return this.get(coords[0], coords[1])
-  }
-
-  get(rowIndex, columnIndex) {
-    return this.getRow(rowIndex)[columnIndex]
+    return this.getRow(coords[0])[coords[1]]
   }
 
   getRow(rowIndex) {
@@ -40,11 +32,15 @@ module.exports = class ImmutableMatrix {
   }
 
   getLeftDiagonal() {
-    return [0, 1, 2].map((index) => this.get(index, index))
+    return [0, 1, 2].map((index) => this._get(index, index))
   }
 
   getRightDiagonal() {
-    return [0, 1, 2].map((index) => this.get(index, 2 - index))
+    return [0, 1, 2].map((index) => this._get(index, 2 - index))
+  }
+
+  _get(rowIndex, columnIndex) {
+    return this.getRow(rowIndex)[columnIndex]
   }
 
   allItems() {
@@ -58,10 +54,6 @@ module.exports = class ImmutableMatrix {
   areCoordsOutside(coords) {
     const validCoordRange = [0, this.size - 1]
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))
-  }
-
-  _cloneSource() {
-    return this.allRows().map(copyArray)
   }
 
   /* istanbul ignore next */
@@ -90,8 +82,4 @@ module.exports = class ImmutableMatrix {
 
 function outsideRange(range, value) {
   return value < range[0] || value > range[1]
-}
-
-function copyArray(array) {
-  return [].concat(array)
 }
