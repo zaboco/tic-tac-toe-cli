@@ -73,6 +73,13 @@ module.exports = class ImmutableMatrix {
     return this.source
   }
 
+  map(fn) {
+    let newSource = this.source.map((row, rowIndex) => {
+      return row.map((item, columnIndex) => fn(item, rowIndex, columnIndex))
+    })
+    return new ImmutableMatrix(newSource)
+  }
+
   static make(size, iterator) {
     let matrix = _.range(size).map(i => {
       return _.range(size).map(j => iterator(i, j))

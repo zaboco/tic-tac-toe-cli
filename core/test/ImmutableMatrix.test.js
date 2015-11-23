@@ -54,4 +54,12 @@ suite('ImmutableMatrix', () => {
   test('allItems', () => {
     matrix.allItems().should.eql([0, 1, 2, 10, 11, 12, 20, 21, 22])
   })
+
+  test('map', () => {
+    matrix.map((value, i, j) => `${value}(${i}:${j})`).allRows().should.eql([
+      ['0(0:0)', '1(0:1)', '2(0:2)'],
+      ['10(1:0)', '11(1:1)', '12(1:2)'],
+      ['20(2:0)', '21(2:1)', '22(2:2)']
+    ])
+  })
 })

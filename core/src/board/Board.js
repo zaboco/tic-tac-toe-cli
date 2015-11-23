@@ -33,6 +33,10 @@ module.exports = class Board {
     return filledCells.length === 0
   }
 
+  mapMatrix(fn) {
+    return this.matrix.map(fn)
+  }
+
   emptyCells() {
     return this.findCells(it => it.isEmpty())
   }
