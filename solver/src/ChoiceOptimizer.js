@@ -27,7 +27,7 @@ function ChoiceOptimizer(board, sign) {
 
   function isImmediateWinner(coords) {
     let newBoard = board.fillCellAt(coords, sign)
-    return newBoard.hasWinner(sign)
+    return newBoard.getWinningSign() === sign
   }
 
   function choiceWithBestOutcome(coords) {
@@ -35,14 +35,14 @@ function ChoiceOptimizer(board, sign) {
       throw Error('No move can be made, the game has already finished')
     }
     let newBoard = board.fillCellAt(coords, sign)
-    return newBoard.performOnStatus({
-      win: () => Choice.best(coords),
-      tie: () => Choice.neutral(coords),
-      ongoing: () => {
-        let opponentBestChoice = ChoiceOptimizer(newBoard, otherSign(sign)).bestChoice()
-        return opponentBestChoice.negate(coords)
-      }
-    })
+    if (newBoard.hasWinner()) {
+      return Choice.best(coords)
+    }
+    if (newBoard.hasTie()) {
+      return Choice.neutral(coords)
+    }
+    let opponentBestChoice = ChoiceOptimizer(newBoard, otherSign(sign)).bestChoice()
+    return opponentBestChoice.negate(coords)
   }
 
   function bestOutcomeWhenChoosing(coords) {

@@ -1,9 +1,6 @@
 'use strict'
 
-const sinon = require('sinon'),
-  lodash = require('lodash')
-
-require('chai').use(require('sinon-chai')).should()
+require('chai').should()
 
 const Board = require('../src/board'),
   BoardError = require('../src/board/BoardError'),
@@ -30,45 +27,40 @@ suite('Board', () => {
       emptyBoard.isEmptyAt(bottomRightCoords).should.equal(true)
     })
 
-    test('is all empty', () => {
-      emptyBoard.isEmpty().should.equal(true)
+    test('has no filled cells', () => {
+      emptyBoard.filledCells().should.be.empty
     })
 
     test('there is no sign at top left position', () => {
       emptyBoard.getSignAt(topLeftCoords).should.equal(emptyCellSign)
     })
 
-    test('it has no winner', () => {
-      boardShouldNotHaveStatus(emptyBoard, 'win')
+    test('it is open', () => {
+      assertBoardIsOpen(emptyBoard)
+    })
+  })
+
+  suite('for a position outside the board', () => {
+    const outBoardCoords = [-1, 5]
+
+    test('areCoordsOutside returns true', () => {
+      emptyBoard.areCoordsOutside(outBoardCoords).should.be.true
     })
 
-    test('it is not tie', () => {
-      boardShouldNotHaveStatus(emptyBoard, 'tie')
+    test('cannot check if it`s empty', () => {
+      emptyBoard.isEmptyAt.bind(emptyBoard, outBoardCoords)
+        .should.throw(BoardError.CellOutsideBoard)
     })
 
-    suite('for a position outside the board', () => {
-      const outBoardCoords = [-1, 5]
-
-      test('areCoordsOutside returns true', () => {
-        emptyBoard.areCoordsOutside(outBoardCoords).should.be.true
-      })
-
-      test('cannot check if it`s empty', () => {
-        emptyBoard.isEmptyAt.bind(emptyBoard, outBoardCoords)
-          .should.throw(BoardError.CellOutsideBoard)
-      })
-
-      test('cannot get sign ', () => {
-        emptyBoard.getSignAt.bind(emptyBoard, outBoardCoords)
-          .should.throw(BoardError.CellOutsideBoard)
-      })
-
-      test('cannot fill cell', () => {
-        emptyBoard.fillCellAt.bind(emptyBoard, outBoardCoords)
-          .should.throw(BoardError.CellOutsideBoard)
-      })
+    test('cannot get sign ', () => {
+      emptyBoard.getSignAt.bind(emptyBoard, outBoardCoords)
+        .should.throw(BoardError.CellOutsideBoard)
     })
 
+    test('cannot fill cell', () => {
+      emptyBoard.fillCellAt.bind(emptyBoard, outBoardCoords)
+        .should.throw(BoardError.CellOutsideBoard)
+    })
   })
 
   suite('after filling a cell with a sign', () => {
@@ -88,8 +80,8 @@ suite('Board', () => {
       newBoard.should.not.equal(emptyBoard)
     })
 
-    test('the board is no longer empty', () => {
-      newBoard.isEmpty().should.equal(false)
+    test('the board has filled cells', () => {
+      newBoard.filledCells().should.not.be.empty
     })
 
     test('the filled cell is no longer empty', () => {
@@ -108,12 +100,8 @@ suite('Board', () => {
       newBoard.getSignAt(otherCellCoords).should.equal(emptyCellSign)
     })
 
-    test('the board does not have winner', () => {
-      boardShouldNotHaveStatus(newBoard, 'win')
-    })
-
-    test('the board does not have tie', () => {
-      boardShouldNotHaveStatus(newBoard, 'tie')
+    test('the board is still open', function() {
+      assertBoardIsOpen(newBoard)
     })
 
     test('toString contains the added sign', () => {
@@ -152,73 +140,38 @@ suite('Board', () => {
     })
   })
 
-  suite('winning', () => {
-    test('for first row, with same sign', () => {
-      const boardWithFirstRow = prefilledBoard.fromRow([X, X, X])
-      boardShouldHaveStatus(boardWithFirstRow, 'win')
+  suite('winning', function() {
+    const fullGroupOfX = [X, X, X]
+    const testCases = [
+      [prefilledBoard.fromRow(fullGroupOfX), 'first row'],
+      [prefilledBoard.fromRow(fullGroupOfX, 1), 'second row'],
+      [prefilledBoard.fromRow(fullGroupOfX, 2), 'third row'],
+      [prefilledBoard.fromColumn(fullGroupOfX), 'first column'],
+      [prefilledBoard.fromColumn(fullGroupOfX, 1), 'second column'],
+      [prefilledBoard.fromColumn(fullGroupOfX, 2), 'third column'],
+      [prefilledBoard.fromMatrix([[X, _, _], [_, X, _], [_, _, X]]), 'left diagonal'],
+      [prefilledBoard.fromMatrix([[_, _, X], [_, X, _], [X, _, _]]), 'right diagonal']
+    ]
+    testCases.forEach(testCase => {
+      let expectedWinnerBoard = testCase[0]
+      let testMessage = testCase[1]
+      test(`for ${testMessage}`, function() {
+        assertBoardHasWinner(expectedWinnerBoard, X)
+      })
     })
 
     test('not when the row is mixed', () => {
-      const boardWithMixedRow = prefilledBoard.fromRow([X, X, O])
-      boardShouldNotHaveStatus(boardWithMixedRow, 'win')
-    })
-
-    test('for second row, with same sign', () => {
-      const boardWithSecondRow = prefilledBoard.fromRow([X, X, X], 1)
-      boardShouldHaveStatus(boardWithSecondRow, 'win')
-    })
-
-    test('for first column, with same sign', () => {
-      const boardWithFirstColumn = prefilledBoard.fromColumn([X, X, X])
-      boardShouldHaveStatus(boardWithFirstColumn, 'win')
-    })
-
-    test('for third column, with same sign', () => {
-      const boardWithThirdColumn = prefilledBoard.fromColumn([X, X, X], 1)
-      boardShouldHaveStatus(boardWithThirdColumn, 'win')
-    })
-
-    test('for left diagonal', () => {
-      const boardWithLeftDiagonal = prefilledBoard.fromMatrix([
-        [X, _, _],
-        [_, X, _],
-        [_, _, X]
-      ])
-      boardShouldHaveStatus(boardWithLeftDiagonal, 'win')
-    })
-
-    test('for right diagonal', () => {
-      const boardWithRightDiagonal = prefilledBoard.fromMatrix([
-        [_, _, X],
-        [_, X, _],
-        [X, _, _]
-      ])
-      boardShouldHaveStatus(boardWithRightDiagonal, 'win')
-    })
-
-    test('when it is a win it is not a tie', () => {
-      const winnerBoard = prefilledBoard.fromRow([X, X, X])
-      boardShouldNotHaveStatus(winnerBoard, 'tie')
+      assertBoardIsOpen(prefilledBoard.fromRow([X, X, O]))
     })
   })
 
-  suite('for non-winning full board', () => {
-    let fullMixedBoard
-    setup(() => {
-      fullMixedBoard = prefilledBoard.fromMatrix([
-        [X, X, O],
-        [O, X, X],
-        [X, O, O]
-      ])
-    })
-
-    test('it is a tie', () => {
-      boardShouldHaveStatus(fullMixedBoard, 'tie')
-    })
-
-    test('it is not winner', () => {
-      boardShouldNotHaveStatus(fullMixedBoard, 'win')
-    })
+  test('a non-winning full board has tie', () => {
+    let fullMixedBoard = prefilledBoard.fromMatrix([
+      [X, X, O],
+      [O, X, X],
+      [X, O, O]
+    ])
+    assertBoardHasTie(fullMixedBoard)
   })
 
   test('formatting as grid', () => {
@@ -236,23 +189,23 @@ suite('Board', () => {
       ' X │ O │ O '
     ].join('\n'))
   })
+
+  function assertBoardHasWinner(board, sign) {
+    board.getWinningSign().should.equal(sign)
+    board.hasWinner().should.be.true
+    board.hasTie().should.be.false
+    board.isFinished().should.be.true
+  }
+
+  function assertBoardHasTie(board) {
+    board.hasWinner().should.be.false
+    board.hasTie().should.be.true
+    board.isFinished().should.be.true
+  }
+
+  function assertBoardIsOpen(board) {
+    board.hasWinner().should.be.false
+    board.hasTie().should.be.false
+    board.isFinished().should.be.false
+  }
 })
-
-function boardShouldHaveStatus(board, status) {
-  let statusSpy = makeStatusSpy(board)
-  statusSpy.should.have.been.calledWith(status)
-}
-
-function boardShouldNotHaveStatus(board, status) {
-  let statusSpy = makeStatusSpy(board)
-  statusSpy.should.not.have.been.calledWith(status)
-}
-
-function makeStatusSpy(board) {
-  let eventHandler = sinon.spy()
-  const statuses = ['win', 'tie', 'ongoing'],
-    handlers = statuses.map(status => () => eventHandler(status)),
-    handlersMap = lodash.object(statuses, handlers)
-  board.performOnStatus(handlersMap)
-  return eventHandler
-}

@@ -9,8 +9,7 @@ const SmartSolver = require('./SmartSolver')
 const boardCenter = [1, 1]
 
 function OpeningsAwareSolver(board, sign) {
-  let filledCells = board.findCells(cell => !cell.isEmpty())
-  switch (filledCells.length) {
+  switch (board.filledCells().length) {
     case 0:
       return chooseCoordsForEmptyBoard()
     case 1:

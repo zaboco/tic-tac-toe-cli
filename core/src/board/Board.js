@@ -3,7 +3,6 @@
 const _ = require('lodash')
 
 const BoardError = require('./BoardError'),
-  statuses = require('../statuses'),
   groupsMaker = require('../cell/groupings/groupsMaker'),
   ImmutableMatrix = require('../matrix/ImmutableMatrix'),
   MatrixError = require('../matrix/MatrixError'),
@@ -15,22 +14,24 @@ const SIZE = 3
 module.exports = class Board {
   constructor(matrix) {
     this.matrix = matrix
-    this.groupings = groupsMaker.from(matrix)
     this.cells = matrix.allItems()
-    this.status = statuses.from(this)
+    this.winningSign = winningSignIfAny(this.matrix)
   }
 
-  performOnStatus(possibleActions) {
-    return this.status.performOneOf(possibleActions)
+  isFinished() {
+    return this.hasWinner() || this.hasTie()
   }
 
-  findGroupings(predicate) {
-    return _.filter(this.groupings, predicate)
+  hasWinner() {
+    return this.getWinningSign() != null
   }
 
-  isEmpty() {
-    const filledCells = this.findCells(it => !it.isEmpty())
-    return filledCells.length === 0
+  getWinningSign() {
+    return this.winningSign
+  }
+
+  hasTie() {
+    return !this.winningSign && !this.emptyCells().length
   }
 
   mapMatrix(fn) {
@@ -38,10 +39,14 @@ module.exports = class Board {
   }
 
   emptyCells() {
-    return this.findCells(it => it.isEmpty())
+    return this._findCells(it => it.isEmpty())
   }
 
-  findCells(predicate) {
+  filledCells() {
+    return this._findCells(it => !it.isEmpty())
+  }
+
+  _findCells(predicate) {
     return _.filter(this.cells, predicate)
   }
 
@@ -51,14 +56,6 @@ module.exports = class Board {
 
   isEmptyAt(coords) {
     return this._getCellAt(coords).isEmpty()
-  }
-
-  isFinished() {
-    return this.performOnStatus({
-      win: () => true,
-      tie: () => true,
-      ongoing: () => false
-    })
   }
 
   areCoordsOutside(coords) {
@@ -102,14 +99,6 @@ module.exports = class Board {
     return this.matrix.setAtCoords(coords, cell)
   }
 
-  hasWinner(wantedSign) {
-    return this.performOnStatus({
-      win: winningSign => winningSign === wantedSign,
-      tie: () => false,
-      ongoing: () => false
-    })
-  }
-
   toString() {
     return this.matrix.toString()
   }
@@ -122,4 +111,10 @@ module.exports = class Board {
     let matrix = ImmutableMatrix.make(SIZE, (i, j) => Cell.emptyAt([i, j]))
     return new Board(matrix)
   }
+}
+
+function winningSignIfAny(matrix) {
+  let groupings = groupsMaker.from(matrix)
+  let winningGrouping = groupings.find(it => it.isWinner())
+  return winningGrouping && winningGrouping.commonSign()
 }

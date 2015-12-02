@@ -36,11 +36,13 @@ module.exports = class Game {
 
   _endRound() {
     this._emit('round.end', this._currentPlayer(), this.board)
-    this.board.performOnStatus({
-      win: (sign) => this._emit('game.won', this._playerWithSign(sign)),
-      tie: () => this._emit('game.tie'),
-      ongoing: () => this._nextRound()
-    })
+    if (this.board.hasWinner()) {
+      this._emit('game.won', this._playerWithSign(this.board.getWinningSign()))
+    } else if(this.board.hasTie()) {
+      this._emit('game.tie')
+    } else {
+      this._nextRound()
+    }
   }
 
   _nextRound() {

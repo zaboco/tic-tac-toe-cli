@@ -1,6 +1,6 @@
 'use strict'
 
-require('chai').should()
+const should = require('chai').should()
 
 const Board = require('../../core').Board
 const solver = require('../src/OpeningsAwareSolver')
@@ -30,8 +30,7 @@ suite('solver', () => {
     firstMover.next = secondMover
     secondMover.next = firstMover
     let finalBoard = moveUntilFinished(firstMover, Board.empty())
-    let isTieGame = finalBoard.performOnStatus({ tie: () => true })
-    isTieGame.should.be.true
+    finalBoard.hasTie().should.be.true
   })
 })
 
@@ -81,7 +80,7 @@ function formatOpponentSuiteDescription(round, optionIndex, totalOptions, move) 
 function assertComputerHasNotLoose(board, moves) {
   test(`computer didn't loose for ${moves}`, () => {
     //console.log('\n', board.formatWith(registry.boardFormatter))
-    board.hasWinner(opponentSign).should.be.false
+    should.not.equal(board.getWinningSign(), opponentSign)
   })
 }
 
