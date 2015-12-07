@@ -46,6 +46,10 @@ class _Game {
   _swapPlayers() {
     this.players.reverse()
   }
+
+  static make(players) {
+    return new _Game(players)
+  }
 }
 
 module.exports = wrapClass(_Game)
