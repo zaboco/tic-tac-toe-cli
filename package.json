@@ -21,6 +21,7 @@
   "devDependencies": {
     "chai": "^3.3.0",
     "chai-as-promised": "^5.1.0",
+    "co-mocha": "^1.1.2",
     "ghooks": "^0.3.2",
     "istanbul": "^0.3.21",
     "mocha": "^2.3.3",
@@ -33,6 +34,7 @@
     }
   },
   "dependencies": {
+    "async-class": "^0.4.0",
     "co": "^4.6.0",
     "deependr": "^0.2.0",
     "inquirer": "^0.10.1",

@@ -104,8 +104,8 @@ suite('Board', () => {
       assertBoardIsOpen(newBoard)
     })
 
-    test('toString contains the added sign', () => {
-      newBoard.toString().should.contain(someSign)
+    test('inspect string contains the added sign', () => {
+      newBoard.inspect().should.contain(someSign)
     })
   })
 

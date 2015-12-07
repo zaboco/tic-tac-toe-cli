@@ -99,8 +99,8 @@ module.exports = class Board {
     return this.matrix.setAtCoords(coords, cell)
   }
 
-  toString() {
-    return this.matrix.toString()
+  inspect() {
+    return this.matrix.inspect()
   }
 
   formatWith(formatter) {

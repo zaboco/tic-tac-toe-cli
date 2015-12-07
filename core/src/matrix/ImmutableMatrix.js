@@ -56,8 +56,7 @@ module.exports = class ImmutableMatrix {
     return _.any(coords, (coord) => outsideRange(validCoordRange, coord))
   }
 
-  /* istanbul ignore next */
-  toString() {
+  inspect() {
     return this.allRows().map(row => row.join('|')).join(' : ')
   }
 
